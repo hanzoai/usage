@@ -64,9 +64,13 @@ TAG_NAME="v${NEW_VERSION}"
 DMG_FILE="${RELEASE_DIR}/${PROJECT_NAME}-${NEW_VERSION}.dmg"
 ZIP_FILE="${RELEASE_DIR}/${PROJECT_NAME}-${NEW_VERSION}.zip"
 
-# Check if files exist
+log_info "Looking for release files:"
+log_info "  DMG: ${DMG_FILE}"
+log_info "  ZIP: ${ZIP_FILE}"
+
 if [ ! -f "$DMG_FILE" ] && [ ! -f "$ZIP_FILE" ]; then
-    log_error "No release files found"
+    log_error "No release files found in ${RELEASE_DIR}/"
+    ls -la "${RELEASE_DIR}/" 2>/dev/null || log_error "Release directory does not exist"
     exit 1
 fi
 

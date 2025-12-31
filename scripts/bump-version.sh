@@ -46,6 +46,12 @@ case "${1:-}" in
     *)
         # Support both X.Y.Z and X.Y.Z-beta-N formats
         if [[ "$1" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-beta-[0-9]+)?$ ]]; then
+            # Check if requested version matches current version
+            if [[ "$1" == "$CURRENT_VERSION" ]]; then
+                log_info "Version already at $1, no changes needed"
+                echo "$CURRENT_VERSION"
+                exit 0
+            fi
             BASE_VERSION=$(echo "$1" | sed 's/-beta-.*//')
             IFS='.' read -r MAJOR MINOR PATCH <<< "$BASE_VERSION"
             if [[ "$1" == *"-beta-"* ]]; then
