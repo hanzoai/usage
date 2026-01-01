@@ -198,6 +198,26 @@ final class CLIProxyManager {
         }
     }
     
+    func updateConfigProxyURL(_ url: String?) {
+        guard FileManager.default.fileExists(atPath: configPath),
+              var content = try? String(contentsOfFile: configPath, encoding: .utf8) else { return }
+        
+        let proxyValue = url?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        
+        if let range = content.range(of: #"proxy-url:\s*\"[^\"]*\""#, options: .regularExpression) {
+            content.replaceSubrange(range, with: "proxy-url: \"\(proxyValue)\"")
+            try? content.write(toFile: configPath, atomically: true, encoding: .utf8)
+        } else if let range = content.range(of: #"proxy-url:\s*[^\n]*"#, options: .regularExpression) {
+            content.replaceSubrange(range, with: "proxy-url: \"\(proxyValue)\"")
+            try? content.write(toFile: configPath, atomically: true, encoding: .utf8)
+        } else {
+            if let portRange = content.range(of: #"port:\s*\d+\n"#, options: .regularExpression) {
+                content.insert(contentsOf: "proxy-url: \"\(proxyValue)\"\n", at: portRange.upperBound)
+                try? content.write(toFile: configPath, atomically: true, encoding: .utf8)
+            }
+        }
+    }
+    
     private func ensureConfigExists() {
         guard !FileManager.default.fileExists(atPath: configPath) else { return }
         
@@ -205,6 +225,7 @@ final class CLIProxyManager {
         host: "127.0.0.1"
         port: \(proxyStatus.port)
         auth-dir: "\(authDir)"
+        proxy-url: ""
         
         api-keys:
           - "quotio-local-\(UUID().uuidString.prefix(8))"
@@ -242,6 +263,19 @@ final class CLIProxyManager {
             content.replaceSubrange(range, with: "secret-key: \"\(managementKey)\"")
             try? content.write(toFile: configPath, atomically: true, encoding: .utf8)
         }
+    }
+    
+    private func syncProxyURLInConfig() {
+        let savedURL = UserDefaults.standard.string(forKey: "proxyURL") ?? ""
+        
+        guard !savedURL.isEmpty else {
+            updateConfigProxyURL(nil)
+            return
+        }
+        
+        let sanitized = ProxyURLValidator.sanitize(savedURL)
+        let isValid = ProxyURLValidator.validate(sanitized) == .valid
+        updateConfigProxyURL(isValid ? sanitized : nil)
     }
     
     private func syncCustomProvidersToConfig() {
@@ -494,6 +528,7 @@ final class CLIProxyManager {
         cleanupOrphanProcesses()
         
         syncSecretKeyInConfig()
+        syncProxyURLInConfig()
         syncCustomProvidersToConfig()
         
         // Determine which port CLIProxyAPI should listen on
