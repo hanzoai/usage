@@ -365,6 +365,7 @@ private struct AccountQuotaCardV2: View {
     let isLoading: Bool
     
     @State private var isRefreshing = false
+    @State private var expandedGroups: Set<String> = []
     
     private var hasQuotaData: Bool {
         guard let data = account.quotaData else { return false }
@@ -373,6 +374,46 @@ private struct AccountQuotaCardV2: View {
     
     private var displayEmail: String {
         account.email.masked(if: settings.hideSensitiveInfo)
+    }
+    
+    /// Build 4-group display for Antigravity: Gemini 3 Pro, Gemini 3 Flash, Gemini 3 Image, Claude 4.5
+    private var antigravityDisplayGroups: [AntigravityDisplayGroup] {
+        guard let data = account.quotaData, provider == .antigravity else { return [] }
+        
+        var groups: [AntigravityDisplayGroup] = []
+        
+        // Gemini 3 Pro (excluding image models)
+        let gemini3ProModels = data.models.filter { 
+            $0.name.contains("gemini-3-pro") && !$0.name.contains("image") 
+        }
+        if !gemini3ProModels.isEmpty {
+            let minQuota = gemini3ProModels.map(\.percentage).min() ?? 0
+            groups.append(AntigravityDisplayGroup(name: "Gemini 3 Pro", percentage: minQuota, models: gemini3ProModels))
+        }
+        
+        // Gemini 3 Flash
+        let gemini3FlashModels = data.models.filter { $0.name.contains("gemini-3-flash") }
+        if !gemini3FlashModels.isEmpty {
+            let minQuota = gemini3FlashModels.map(\.percentage).min() ?? 0
+            groups.append(AntigravityDisplayGroup(name: "Gemini 3 Flash", percentage: minQuota, models: gemini3FlashModels))
+        }
+        
+        // Gemini 3 Image (any model containing "image")
+        let geminiImageModels = data.models.filter { $0.name.contains("image") }
+        if !geminiImageModels.isEmpty {
+            let minQuota = geminiImageModels.map(\.percentage).min() ?? 0
+            groups.append(AntigravityDisplayGroup(name: "Gemini 3 Image", percentage: minQuota, models: geminiImageModels))
+        }
+        
+        // Claude 4.5 (any model containing "claude")
+        let claudeModels = data.models.filter { $0.name.contains("claude") }
+        if !claudeModels.isEmpty {
+            let minQuota = claudeModels.map(\.percentage).min() ?? 0
+            groups.append(AntigravityDisplayGroup(name: "Claude 4.5", percentage: minQuota, models: claudeModels))
+        }
+        
+        // Sort by lowest quota first (most urgent)
+        return groups.sorted { $0.percentage < $1.percentage }
     }
     
     var body: some View {
@@ -477,18 +518,25 @@ private struct AccountQuotaCardV2: View {
                 Divider()
                 
                 VStack(spacing: 14) {
-                    if provider == .antigravity && data.hasGroupedModels {
-                        ForEach(data.groupedModels) { groupedModel in
-                            UsageRowV2(
-                                name: groupedModel.displayName,
-                                icon: groupedModel.group.icon,
-                                usedPercent: 100 - groupedModel.percentage,
-                                used: nil,
-                                limit: nil,
-                                resetTime: groupedModel.formattedResetTime
+                    // Antigravity uses 4-group display
+                    if provider == .antigravity && !antigravityDisplayGroups.isEmpty {
+                        ForEach(antigravityDisplayGroups) { group in
+                            ExpandableAntigravityGroupRow(
+                                group: group,
+                                isExpanded: expandedGroups.contains(group.id),
+                                onToggle: {
+                                    withAnimation(.easeInOut(duration: 0.2)) {
+                                        if expandedGroups.contains(group.id) {
+                                            expandedGroups.remove(group.id)
+                                        } else {
+                                            expandedGroups.insert(group.id)
+                                        }
+                                    }
+                                }
                             )
                         }
                     } else {
+                        // Other providers show individual models
                         ForEach(data.models.sorted { $0.name < $1.name }) { model in
                             UsageRowV2(
                                 name: model.displayName,
@@ -678,6 +726,211 @@ private struct UpgradePromptView: View {
         .padding(12)
         .background(tierColor.opacity(0.06))
         .clipShape(RoundedRectangle(cornerRadius: 10))
+    }
+}
+
+// MARK: - Antigravity Display Group (4 groups)
+
+private struct AntigravityDisplayGroup: Identifiable {
+    let name: String
+    let percentage: Double
+    let models: [ModelQuota]
+    
+    var id: String { name }
+    
+    var formattedResetTime: String {
+        // Use earliest reset time from models
+        models.compactMap { model -> Date? in
+            guard !model.formattedResetTime.isEmpty && model.formattedResetTime != "—" else { return nil }
+            // Return nil since we can't easily parse, use first available
+            return nil
+        }.first.map { _ in "" } ?? models.first?.formattedResetTime ?? "—"
+    }
+}
+
+// MARK: - Expandable Antigravity Group Row
+
+private struct ExpandableAntigravityGroupRow: View {
+    let group: AntigravityDisplayGroup
+    let isExpanded: Bool
+    let onToggle: () -> Void
+    
+    @State private var settings = MenuBarSettingsManager.shared
+    
+    private var usedPercent: Double {
+        100 - group.percentage
+    }
+    
+    private var statusColor: Color {
+        if usedPercent < 70 { return .green }
+        if usedPercent < 90 { return .yellow }
+        return .red
+    }
+    
+    private var remainingPercent: Double {
+        max(0, min(100, group.percentage))
+    }
+    
+    private var groupIcon: String {
+        if group.name.contains("Claude") { return "brain.head.profile" }
+        if group.name.contains("Image") { return "photo" }
+        if group.name.contains("Flash") { return "bolt.fill" }
+        return "sparkles" // Gemini Pro
+    }
+    
+    var body: some View {
+        let displayMode = settings.quotaDisplayMode
+        let displayPercent = displayMode == .used ? usedPercent : remainingPercent
+        
+        VStack(alignment: .leading, spacing: 8) {
+            // Header row (clickable to expand)
+            Button(action: onToggle) {
+                HStack {
+                    // Expand/collapse chevron
+                    Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .frame(width: 12)
+                    
+                    // Group icon and name
+                    HStack(spacing: 6) {
+                        Image(systemName: groupIcon)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        Text(group.name)
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+                    }
+                    
+                    // Model count badge
+                    if group.models.count > 1 {
+                        Text("\(group.models.count)")
+                            .font(.caption2)
+                            .fontWeight(.medium)
+                            .foregroundStyle(.secondary)
+                            .padding(.horizontal, 5)
+                            .padding(.vertical, 2)
+                            .background(.quaternary)
+                            .clipShape(Capsule())
+                    }
+                    
+                    Spacer()
+                    
+                    // Usage info
+                    HStack(spacing: 10) {
+                        Text(String(format: "%.0f%% %@", displayPercent, displayMode.suffixKey.localized()))
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(statusColor)
+                        
+                        // Reset time from first model
+                        if let firstModel = group.models.first,
+                           firstModel.formattedResetTime != "—" && !firstModel.formattedResetTime.isEmpty {
+                            HStack(spacing: 3) {
+                                Image(systemName: "clock")
+                                    .font(.caption2)
+                                Text(firstModel.formattedResetTime)
+                                    .font(.caption)
+                            }
+                            .foregroundStyle(.secondary)
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 3)
+                            .background(.quaternary)
+                            .clipShape(Capsule())
+                        }
+                    }
+                }
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            
+            // Progress bar
+            GeometryReader { proxy in
+                ZStack(alignment: .leading) {
+                    Capsule()
+                        .fill(.quaternary)
+                    Capsule()
+                        .fill(statusColor.gradient)
+                        .frame(width: proxy.size.width * (remainingPercent / 100))
+                }
+            }
+            .frame(height: 8)
+            
+            // Expanded model details
+            if isExpanded {
+                VStack(spacing: 10) {
+                    ForEach(group.models.sorted { $0.name < $1.name }) { model in
+                        ModelDetailRow(model: model)
+                    }
+                }
+                .padding(.leading, 20)
+                .padding(.top, 4)
+            }
+        }
+    }
+}
+
+// MARK: - Model Detail Row
+
+private struct ModelDetailRow: View {
+    let model: ModelQuota
+    
+    @State private var settings = MenuBarSettingsManager.shared
+    
+    private var usedPercent: Double {
+        model.usedPercentage
+    }
+    
+    private var statusColor: Color {
+        if usedPercent < 70 { return .green }
+        if usedPercent < 90 { return .yellow }
+        return .red
+    }
+    
+    private var remainingPercent: Double {
+        max(0, min(100, model.percentage))
+    }
+    
+    var body: some View {
+        let displayMode = settings.quotaDisplayMode
+        let displayPercent = displayMode == .used ? usedPercent : remainingPercent
+        
+        VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                // Model name
+                Text(model.displayName)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+                
+                Spacer()
+                
+                // Percentage
+                Text(String(format: "%.0f%% %@", displayPercent, displayMode.suffixKey.localized()))
+                    .font(.caption)
+                    .fontWeight(.medium)
+                    .foregroundStyle(statusColor)
+                
+                // Reset time (if different from group)
+                if model.formattedResetTime != "—" && !model.formattedResetTime.isEmpty {
+                    Text(model.formattedResetTime)
+                        .font(.caption2)
+                        .foregroundStyle(.tertiary)
+                }
+            }
+            
+            // Smaller progress bar
+            GeometryReader { proxy in
+                ZStack(alignment: .leading) {
+                    Capsule()
+                        .fill(.quaternary)
+                    Capsule()
+                        .fill(statusColor.opacity(0.7))
+                        .frame(width: proxy.size.width * (remainingPercent / 100))
+                }
+            }
+            .frame(height: 4)
+        }
     }
 }
 
