@@ -656,7 +656,6 @@ struct LocalizedStrings {
         "antigravity.active": [.english: "Active in IDE", .vietnamese: "Đang dùng trong IDE", .chinese: "在 IDE 中激活", .french: "Actif dans l'IDE"],
         "antigravity.useInIDE": [.english: "Use in IDE", .vietnamese: "Dùng trong IDE", .chinese: "在 IDE 中使用", .french: "Utiliser dans l'IDE"],
         "action.retry": [.english: "Retry", .vietnamese: "Thử lại", .chinese: "重试", .french: "Réessayer"],
-        "action.ok": [.english: "OK", .vietnamese: "OK", .chinese: "确定", .french: "OK"],
         
         // Quota Details
         "quota.details": [.english: "Details", .vietnamese: "Chi tiết", .chinese: "详情", .french: "Détails"],
