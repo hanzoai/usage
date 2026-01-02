@@ -131,6 +131,17 @@ jobs:
             build/release/*.zip
             build/release/appcast.xml
           generate_release_notes: true
+          append_body: true
+          body: |
+            
+            ## Installation
+
+            Download `Quotio-${{ steps.version.outputs.VERSION }}.dmg` or `Quotio-${{ steps.version.outputs.VERSION }}.zip` below.
+
+            > ⚠️ **Note**: The app is not signed with an Apple Developer certificate. If macOS blocks the app, run:
+            > ```bash
+            > xattr -cr /Applications/Quotio.app
+            > ```
           prerelease: ${{ steps.version.outputs.IS_PRERELEASE == 'true' }}
 
       # ===========================================
