@@ -99,6 +99,8 @@ struct AccountRowData: Identifiable, Hashable {
 struct AccountRow: View {
     let account: AccountRowData
     var onDelete: (() -> Void)?
+    var onSwitch: (() -> Void)?
+    var isActiveInIDE: Bool = false
     
     @State private var settings = MenuBarSettingsManager.shared
     @State private var showWarning = false
@@ -172,6 +174,39 @@ struct AccountRow: View {
                     .clipShape(Capsule())
             }
             
+            // Active in IDE badge (Antigravity only)
+            if account.provider == .antigravity && isActiveInIDE {
+                Text("antigravity.active".localized())
+                    .font(.caption2)
+                    .fontWeight(.medium)
+                    .foregroundStyle(Color(red: 0.13, green: 0.55, blue: 0.13))
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 2)
+                    .background(Color(red: 0.85, green: 0.95, blue: 0.85))
+                    .clipShape(Capsule())
+            }
+            
+            // Switch button (Antigravity only, for proxy/direct accounts that are not active)
+            if account.provider == .antigravity && !isActiveInIDE && account.source != .autoDetected {
+                Button {
+                    onSwitch?()
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "rectangle.portrait.and.arrow.right")
+                            .font(.caption2)
+                        Text("antigravity.useInIDE".localized())
+                            .font(.caption2)
+                    }
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(Color.blue.opacity(0.1))
+                    .foregroundStyle(.blue)
+                    .clipShape(Capsule())
+                }
+                .buttonStyle(.plain)
+                .help("antigravity.switch.title".localized())
+            }
+            
             // Menu bar toggle
             MenuBarBadge(
                 isSelected: isMenuBarSelected,
@@ -192,6 +227,17 @@ struct AccountRow: View {
         }
         .contentShape(Rectangle())
         .contextMenu {
+            // Switch account option (Antigravity only)
+            if account.provider == .antigravity && !isActiveInIDE && account.source != .autoDetected {
+                Button {
+                    onSwitch?()
+                } label: {
+                    Label("antigravity.switch.title".localized(), systemImage: "arrow.triangle.2.circlepath")
+                }
+                
+                Divider()
+            }
+            
             // Menu bar toggle
             Button {
                 handleMenuBarToggle()

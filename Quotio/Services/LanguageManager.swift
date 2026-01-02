@@ -642,6 +642,39 @@ struct LocalizedStrings {
         "customProviders.thinkingBudget": [.english: "Thinking Budget", .vietnamese: "Ngân sách suy nghĩ", .chinese: "思考预算", .french: "Budget de réflexion"],
         "customProviders.thinkingBudgetDesc": [.english: "Append (value) to model names for reasoning control", .vietnamese: "Thêm (value) vào tên mô hình để kiểm soát suy luận", .chinese: "在模型名称后添加 (value) 以控制推理", .french: "Ajouter (value) aux noms de modèles pour le contrôle du raisonnement"],
         "customProviders.thinkingBudgetHint": [.english: "e.g., claude-sonnet-4(16000) or gemini-2.5-flash(max)", .vietnamese: "ví dụ: claude-sonnet-4(16000) hoặc gemini-2.5-flash(max)", .chinese: "例如：claude-sonnet-4(16000) 或 gemini-2.5-flash(max)", .french: "ex. claude-sonnet-4(16000) ou gemini-2.5-flash(max)"],
+        
+        // Antigravity Account Switching
+        "antigravity.switch.title": [.english: "Switch Account", .vietnamese: "Chuyển tài khoản", .chinese: "切换账户", .french: "Changer de compte"],
+        "antigravity.switch.confirm": [.english: "Switch to this account in Antigravity IDE?", .vietnamese: "Chuyển sang tài khoản này trong Antigravity IDE?", .chinese: "切换到 Antigravity IDE 中的此账户？", .french: "Passer à ce compte dans Antigravity IDE ?"],
+        "antigravity.switch.ideRunning": [.english: "Antigravity IDE is running and will be restarted.", .vietnamese: "Antigravity IDE đang chạy và sẽ được khởi động lại.", .chinese: "Antigravity IDE 正在运行，将被重启。", .french: "Antigravity IDE est en cours d'exécution et sera redémarré."],
+        "antigravity.switch.progress.closing": [.english: "Closing Antigravity IDE...", .vietnamese: "Đang đóng Antigravity IDE...", .chinese: "正在关闭 Antigravity IDE...", .french: "Fermeture d'Antigravity IDE..."],
+        "antigravity.switch.progress.backup": [.english: "Creating backup...", .vietnamese: "Đang tạo bản sao lưu...", .chinese: "正在创建备份...", .french: "Création de la sauvegarde..."],
+        "antigravity.switch.progress.injecting": [.english: "Switching account...", .vietnamese: "Đang chuyển tài khoản...", .chinese: "正在切换账户...", .french: "Changement de compte..."],
+        "antigravity.switch.progress.restarting": [.english: "Restarting Antigravity IDE...", .vietnamese: "Đang khởi động lại Antigravity IDE...", .chinese: "正在重启 Antigravity IDE...", .french: "Redémarrage d'Antigravity IDE..."],
+        "antigravity.switch.success": [.english: "Account switched successfully", .vietnamese: "Đã chuyển tài khoản thành công", .chinese: "账户切换成功", .french: "Compte changé avec succès"],
+        "antigravity.switch.failed": [.english: "Failed to switch account", .vietnamese: "Chuyển tài khoản thất bại", .chinese: "账户切换失败", .french: "Échec du changement de compte"],
+        "antigravity.active": [.english: "Active in IDE", .vietnamese: "Đang dùng trong IDE", .chinese: "在 IDE 中激活", .french: "Actif dans l'IDE"],
+        "antigravity.useInIDE": [.english: "Use in IDE", .vietnamese: "Dùng trong IDE", .chinese: "在 IDE 中使用", .french: "Utiliser dans l'IDE"],
+        "action.retry": [.english: "Retry", .vietnamese: "Thử lại", .chinese: "重试", .french: "Réessayer"],
+        "action.ok": [.english: "OK", .vietnamese: "OK", .chinese: "确定", .french: "OK"],
+        
+        // Quota Details
+        "quota.details": [.english: "Details", .vietnamese: "Chi tiết", .chinese: "详情", .french: "Détails"],
+        "quota.allModels": [.english: "All Models", .vietnamese: "Tất cả model", .chinese: "所有模型", .french: "Tous les modèles"],
+        "quota.limitReached": [.english: "Limit Reached", .vietnamese: "Đã đạt giới hạn", .chinese: "已达上限", .french: "Limite atteinte"],
+        "quota.usage": [.english: "Usage", .vietnamese: "Sử dụng", .chinese: "使用量", .french: "Utilisation"],
+        "quota.used": [.english: "used", .vietnamese: "đã dùng", .chinese: "已用", .french: "utilisé"],
+        
+        // Settings
+        "settings.appDescription": [.english: "CLIProxyAPI GUI Wrapper", .vietnamese: "Giao diện quản lý CLIProxyAPI", .chinese: "CLIProxyAPI 图形界面", .french: "Interface graphique CLIProxyAPI"],
+        "settings.links": [.english: "Links", .vietnamese: "Liên kết", .chinese: "链接", .french: "Liens"],
+        "settings.versionCopied": [.english: "Version copied to clipboard", .vietnamese: "Đã sao chép phiên bản", .chinese: "版本已复制到剪贴板", .french: "Version copiée dans le presse-papiers"],
+        
+        // Agent Config
+        "agent.generatingPreview": [.english: "Generating preview...", .vietnamese: "Đang tạo xem trước...", .chinese: "正在生成预览...", .french: "Génération de l'aperçu..."],
+        
+        // Custom Provider
+        "customProviders.apiKeyNumber": [.english: "API Key #%@", .vietnamese: "API Key #%@", .chinese: "API 密钥 #%@", .french: "Clé API #%@"],
     ]
     
     static func get(_ key: String, language: AppLanguage) -> String {

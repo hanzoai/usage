@@ -291,7 +291,7 @@ private struct ProviderQuotaView: View {
                     statusColor: .green,
                     authFile: nil,
                     quotaData: data,
-                    subscriptionInfo: nil
+                    subscriptionInfo: subscriptionInfos[key]
                 ))
             }
         }
@@ -301,15 +301,6 @@ private struct ProviderQuotaView: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            // Loading indicator at top if loading
-            if isLoading && !allAccounts.isEmpty {
-                HStack {
-                    Spacer()
-                    ProgressView()
-                        .scaleEffect(0.8)
-                }
-            }
-            
             // Account Cards
             if allAccounts.isEmpty && isLoading {
                 QuotaLoadingView()
@@ -359,13 +350,15 @@ private struct AccountInfo {
 
 private struct AccountQuotaCardV2: View {
     @Environment(QuotaViewModel.self) private var viewModel
-    @State private var settings = MenuBarSettingsManager.shared
+    
+    private var settings: MenuBarSettingsManager { MenuBarSettingsManager.shared }
     let provider: AIProvider
     let account: AccountInfo
     let isLoading: Bool
     
     @State private var isRefreshing = false
-    @State private var expandedGroups: Set<String> = []
+    @State private var showSwitchSheet = false
+    @State private var showModelsDetailSheet = false
     
     private var hasQuotaData: Bool {
         guard let data = account.quotaData else { return false }
@@ -374,6 +367,11 @@ private struct AccountQuotaCardV2: View {
     
     private var displayEmail: String {
         account.email.masked(if: settings.hideSensitiveInfo)
+    }
+    
+    /// Check if this Antigravity account is active in IDE
+    private var isActiveInIDE: Bool {
+        provider == .antigravity && viewModel.isAntigravityAccountActive(email: account.email)
     }
     
     /// Build 4-group display for Antigravity: Gemini 3 Pro, Gemini 3 Flash, Gemini 3 Image, Claude 4.5
@@ -405,11 +403,11 @@ private struct AccountQuotaCardV2: View {
             groups.append(AntigravityDisplayGroup(name: "Gemini 3 Image", percentage: minQuota, models: geminiImageModels))
         }
         
-        // Claude 4.5 (any model containing "claude")
+        // Claude (any model containing "claude")
         let claudeModels = data.models.filter { $0.name.contains("claude") }
         if !claudeModels.isEmpty {
             let minQuota = claudeModels.map(\.percentage).min() ?? 0
-            groups.append(AntigravityDisplayGroup(name: "Claude 4.5", percentage: minQuota, models: claudeModels))
+            groups.append(AntigravityDisplayGroup(name: "Claude", percentage: minQuota, models: claudeModels))
         }
         
         // Sort by lowest quota first (most urgent)
@@ -421,9 +419,6 @@ private struct AccountQuotaCardV2: View {
             VStack(alignment: .leading, spacing: 16) {
                 // Account Header
                 accountHeader
-                
-                // Plan Badge
-                planSection
                 
                 // Usage Section
                 if isLoading {
@@ -444,10 +439,12 @@ private struct AccountQuotaCardV2: View {
     
     private var accountHeader: some View {
         HStack(spacing: 12) {
-            // Status indicator
-            Circle()
-                .fill(account.statusColor)
-                .frame(width: 10, height: 10)
+            // Tier badge (before email) - Antigravity uses SubscriptionBadgeV2, others use PlanBadgeV2
+            if let info = account.subscriptionInfo {
+                SubscriptionBadgeV2(info: info)
+            } else if let planName = account.quotaData?.planDisplayName {
+                PlanBadgeV2Compact(planName: planName)
+            }
             
             // Email
             VStack(alignment: .leading, spacing: 2) {
@@ -464,7 +461,39 @@ private struct AccountQuotaCardV2: View {
             
             Spacer()
             
-            // Refresh button
+            // Active badge (Antigravity only)
+            if isActiveInIDE {
+                Text("antigravity.active".localized())
+                    .font(.caption2)
+                    .fontWeight(.medium)
+                    .foregroundStyle(Color(red: 0.13, green: 0.55, blue: 0.13))
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(Color(red: 0.85, green: 0.95, blue: 0.85))
+                    .clipShape(Capsule())
+            }
+            
+            // Switch account button (Antigravity, non-active)
+            if provider == .antigravity && !isActiveInIDE {
+                Button {
+                    showSwitchSheet = true
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "rectangle.portrait.and.arrow.right")
+                            .font(.caption)
+                        Text("antigravity.useInIDE".localized())
+                            .font(.caption)
+                    }
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(Color.blue.opacity(0.1))
+                    .foregroundStyle(.blue)
+                    .clipShape(Capsule())
+                }
+                .buttonStyle(.plain)
+            }
+            
+            // Refresh button - shows loader when loading
             Button {
                 Task {
                     isRefreshing = true
@@ -472,13 +501,19 @@ private struct AccountQuotaCardV2: View {
                     isRefreshing = false
                 }
             } label: {
-                Image(systemName: "arrow.clockwise")
-                    .font(.subheadline)
+                if isRefreshing || isLoading {
+                    ProgressView()
+                        .controlSize(.small)
+                        .frame(width: 24, height: 24)
+                } else {
+                    Image(systemName: "arrow.clockwise")
+                        .font(.subheadline)
+                        .frame(width: 24, height: 24)
+                }
             }
             .buttonStyle(.plain)
             .foregroundStyle(.secondary)
             .disabled(isRefreshing || isLoading)
-            .opacity(isRefreshing ? 0.5 : 1)
             
             // Forbidden badge
             if let data = account.quotaData, data.isForbidden {
@@ -491,18 +526,18 @@ private struct AccountQuotaCardV2: View {
                     .clipShape(Capsule())
             }
         }
-    }
-    
-    // MARK: - Plan Section
-    
-    @ViewBuilder
-    private var planSection: some View {
-        if let info = account.subscriptionInfo {
-            SubscriptionBadgeV2(info: info)
-        } else if let planName = account.quotaData?.planDisplayName {
-            PlanBadgeV2(planName: planName)
+        .sheet(isPresented: $showSwitchSheet) {
+            SwitchAccountSheet(
+                accountEmail: account.email,
+                onDismiss: {
+                    showSwitchSheet = false
+                }
+            )
+            .environment(viewModel)
         }
     }
+    
+    // MARK: - Plan Section (removed - now in header)
     
     // MARK: - Usage Section
     
@@ -510,34 +545,43 @@ private struct AccountQuotaCardV2: View {
     private var usageSection: some View {
         if let data = account.quotaData {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Usage")
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.secondary)
+                // Header with Details button for Antigravity
+                HStack {
+                    Text("Usage")
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.secondary)
+                    
+                    Spacer()
+                    
+                    // Details button for Antigravity (shows all models)
+                    if provider == .antigravity && data.models.count > 4 {
+                        Button {
+                            showModelsDetailSheet = true
+                        } label: {
+                            HStack(spacing: 4) {
+                                Text("quota.details".localized())
+                                    .font(.caption)
+                                Image(systemName: "list.bullet.rectangle")
+                                    .font(.caption)
+                            }
+                            .foregroundStyle(.secondary)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
                 
                 Divider()
                 
                 VStack(spacing: 14) {
-                    // Antigravity uses 4-group display
+                    // Antigravity uses 4-group display (non-expandable)
                     if provider == .antigravity && !antigravityDisplayGroups.isEmpty {
                         ForEach(antigravityDisplayGroups) { group in
-                            ExpandableAntigravityGroupRow(
-                                group: group,
-                                isExpanded: expandedGroups.contains(group.id),
-                                onToggle: {
-                                    withAnimation(.easeInOut(duration: 0.2)) {
-                                        if expandedGroups.contains(group.id) {
-                                            expandedGroups.remove(group.id)
-                                        } else {
-                                            expandedGroups.insert(group.id)
-                                        }
-                                    }
-                                }
-                            )
+                            AntigravityGroupRow(group: group)
                         }
                     } else {
                         // Other providers show individual models
-                        ForEach(data.models.sorted { $0.name < $1.name }) { model in
+                        ForEach(data.models) { model in
                             UsageRowV2(
                                 name: model.displayName,
                                 icon: nil,
@@ -551,7 +595,67 @@ private struct AccountQuotaCardV2: View {
                 }
             }
             .padding(.top, 8)
+            .sheet(isPresented: $showModelsDetailSheet) {
+                AntigravityModelsDetailSheet(
+                    email: account.email,
+                    models: data.models
+                )
+            }
         }
+    }
+}
+
+// MARK: - Plan Badge V2 Compact (for header inline display)
+
+private struct PlanBadgeV2Compact: View {
+    let planName: String
+    
+    private var tierConfig: (name: String, bgColor: Color, textColor: Color) {
+        let lowercased = planName.lowercased()
+        
+        // Check for Pro variants
+        if lowercased.contains("pro") {
+            return ("Pro", Color(red: 0.8, green: 0.9, blue: 1.0), Color(red: 0.0, green: 0.25, blue: 0.52))
+        }
+        
+        // Check for Plus
+        if lowercased.contains("plus") {
+            return ("Plus", Color(red: 0.85, green: 0.9, blue: 1.0), Color(red: 0.0, green: 0.3, blue: 0.6))
+        }
+        
+        // Check for Team
+        if lowercased.contains("team") {
+            return ("Team", Color(red: 1.0, green: 0.9, blue: 0.8), Color(red: 0.6, green: 0.3, blue: 0.0))
+        }
+        
+        // Check for Enterprise
+        if lowercased.contains("enterprise") {
+            return ("Enterprise", Color(red: 1.0, green: 0.85, blue: 0.85), Color(red: 0.5, green: 0.0, blue: 0.0))
+        }
+        
+        // Free/Standard
+        if lowercased.contains("free") || lowercased.contains("standard") {
+            return ("Free", Color(red: 0.91, green: 0.93, blue: 0.94), Color(red: 0.42, green: 0.46, blue: 0.49))
+        }
+        
+        // Default: use display name
+        let displayName = planName
+            .replacingOccurrences(of: "_", with: " ")
+            .split(separator: " ")
+            .map { $0.prefix(1).uppercased() + $0.dropFirst().lowercased() }
+            .joined(separator: " ")
+        return (displayName, Color(red: 0.91, green: 0.93, blue: 0.94), Color(red: 0.42, green: 0.46, blue: 0.49))
+    }
+    
+    var body: some View {
+        Text(tierConfig.name)
+            .font(.caption)
+            .fontWeight(.medium)
+            .foregroundStyle(tierConfig.textColor)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+            .background(tierConfig.bgColor)
+            .clipShape(Capsule())
     }
 }
 
@@ -625,111 +729,43 @@ private struct PlanBadgeV2: View {
 private struct SubscriptionBadgeV2: View {
     let info: SubscriptionInfo
     
-    private var tierConfig: (color: Color, icon: String) {
-        switch info.tierId {
-        case "g1-pro-tier":
-            return (.purple, "crown.fill")
-        case "g1-ultra-tier":
-            return (.orange, "star.fill")
-        case "standard-tier":
-            return (.blue, "star.fill")
-        default:
-            return (.gray, "person.fill")
+    private var tierConfig: (name: String, bgColor: Color, textColor: Color) {
+        let tierId = info.tierId.lowercased()
+        let tierName = info.tierDisplayName.lowercased()
+        
+        // Check for Ultra tier (highest priority)
+        if tierId.contains("ultra") || tierName.contains("ultra") {
+            return ("Ultra", Color(red: 1.0, green: 0.95, blue: 0.8), Color(red: 0.52, green: 0.39, blue: 0.02))
         }
+        
+        // Check for Pro tier
+        if tierId.contains("pro") || tierName.contains("pro") {
+            return ("Pro", Color(red: 0.8, green: 0.9, blue: 1.0), Color(red: 0.0, green: 0.25, blue: 0.52))
+        }
+        
+        // Check for Free/Standard tier
+        if tierId.contains("standard") || tierId.contains("free") || 
+           tierName.contains("standard") || tierName.contains("free") {
+            return ("Free", Color(red: 0.91, green: 0.93, blue: 0.94), Color(red: 0.42, green: 0.46, blue: 0.49))
+        }
+        
+        // Fallback: use the display name from API
+        return (info.tierDisplayName, Color(red: 0.91, green: 0.93, blue: 0.94), Color(red: 0.42, green: 0.46, blue: 0.49))
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            HStack(spacing: 12) {
-                // Tier badge
-                HStack(spacing: 6) {
-                    Image(systemName: tierConfig.icon)
-                        .font(.subheadline)
-                    Text(info.tierDisplayName)
-                        .font(.subheadline)
-                        .fontWeight(.semibold)
-                }
-                .foregroundStyle(tierConfig.color)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
-                .background(tierConfig.color.opacity(0.12))
-                .clipShape(Capsule())
-                
-                // Project info
-                if let project = info.cloudaicompanionProject {
-                    HStack(spacing: 4) {
-                        Image(systemName: "folder.fill")
-                            .font(.caption)
-                        Text(project)
-                            .font(.caption)
-                    }
-                    .foregroundStyle(.secondary)
-                    .lineLimit(1)
-                }
-            }
-            
-            // Upgrade prompt
-            if let paidTier = info.paidTier,
-               let upgradeUri = paidTier.upgradeSubscriptionUri,
-               let url = URL(string: upgradeUri) {
-                UpgradePromptView(paidTier: paidTier, url: url)
-            }
-        }
+        Text(tierConfig.name)
+            .font(.caption)
+            .fontWeight(.medium)
+            .foregroundStyle(tierConfig.textColor)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+            .background(tierConfig.bgColor)
+            .clipShape(Capsule())
     }
 }
 
-// MARK: - Upgrade Prompt
-
-private struct UpgradePromptView: View {
-    let paidTier: SubscriptionTier
-    let url: URL
-    
-    private var tierColor: Color {
-        switch paidTier.id {
-        case "g1-pro-tier": return .purple
-        case "g1-ultra-tier": return .orange
-        default: return .purple
-        }
-    }
-    
-    var body: some View {
-        HStack(spacing: 12) {
-            VStack(alignment: .leading, spacing: 4) {
-                HStack(spacing: 4) {
-                    Image(systemName: "sparkles")
-                        .font(.caption)
-                    Text(paidTier.name)
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                }
-                .foregroundStyle(tierColor)
-                
-                if let text = paidTier.upgradeSubscriptionText {
-                    Text(text)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .lineLimit(2)
-                }
-            }
-            
-            Spacer()
-            
-            Link(destination: url) {
-                Text("Upgrade")
-                    .font(.subheadline)
-                    .fontWeight(.medium)
-            }
-            .buttonStyle(.borderedProminent)
-            .tint(tierColor)
-            .controlSize(.small)
-        }
-        .padding(12)
-        .background(tierColor.opacity(0.06))
-        .clipShape(RoundedRectangle(cornerRadius: 10))
-    }
-}
-
-// MARK: - Antigravity Display Group (4 groups)
+// MARK: - Antigravity Display Group
 
 private struct AntigravityDisplayGroup: Identifiable {
     let name: String
@@ -737,26 +773,14 @@ private struct AntigravityDisplayGroup: Identifiable {
     let models: [ModelQuota]
     
     var id: String { name }
-    
-    var formattedResetTime: String {
-        // Use earliest reset time from models
-        models.compactMap { model -> Date? in
-            guard !model.formattedResetTime.isEmpty && model.formattedResetTime != "—" else { return nil }
-            // Return nil since we can't easily parse, use first available
-            return nil
-        }.first.map { _ in "" } ?? models.first?.formattedResetTime ?? "—"
-    }
 }
 
-// MARK: - Expandable Antigravity Group Row
+// MARK: - Antigravity Group Row (non-expandable)
 
-private struct ExpandableAntigravityGroupRow: View {
+private struct AntigravityGroupRow: View {
     let group: AntigravityDisplayGroup
-    let isExpanded: Bool
-    let onToggle: () -> Void
     
-    @State private var settings = MenuBarSettingsManager.shared
-    
+    private var settings: MenuBarSettingsManager { MenuBarSettingsManager.shared }
     private var usedPercent: Double {
         100 - group.percentage
     }
@@ -783,66 +807,55 @@ private struct ExpandableAntigravityGroupRow: View {
         let displayPercent = displayMode == .used ? usedPercent : remainingPercent
         
         VStack(alignment: .leading, spacing: 8) {
-            // Header row (clickable to expand)
-            Button(action: onToggle) {
-                HStack {
-                    // Expand/collapse chevron
-                    Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
+            HStack {
+                // Group icon and name
+                HStack(spacing: 6) {
+                    Image(systemName: groupIcon)
                         .font(.caption)
                         .foregroundStyle(.secondary)
-                        .frame(width: 12)
+                    Text(group.name)
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                }
+                
+                // Model count badge
+                if group.models.count > 1 {
+                    Text("\(group.models.count)")
+                        .font(.caption2)
+                        .fontWeight(.medium)
+                        .foregroundStyle(.secondary)
+                        .padding(.horizontal, 5)
+                        .padding(.vertical, 2)
+                        .background(.quaternary)
+                        .clipShape(Capsule())
+                }
+                
+                Spacer()
+                
+                // Usage info
+                HStack(spacing: 10) {
+                    Text(String(format: "%.0f%% %@", displayPercent, displayMode.suffixKey.localized()))
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(statusColor)
                     
-                    // Group icon and name
-                    HStack(spacing: 6) {
-                        Image(systemName: groupIcon)
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                        Text(group.name)
-                            .font(.subheadline)
-                            .fontWeight(.medium)
-                    }
-                    
-                    // Model count badge
-                    if group.models.count > 1 {
-                        Text("\(group.models.count)")
-                            .font(.caption2)
-                            .fontWeight(.medium)
-                            .foregroundStyle(.secondary)
-                            .padding(.horizontal, 5)
-                            .padding(.vertical, 2)
-                            .background(.quaternary)
-                            .clipShape(Capsule())
-                    }
-                    
-                    Spacer()
-                    
-                    // Usage info
-                    HStack(spacing: 10) {
-                        Text(String(format: "%.0f%% %@", displayPercent, displayMode.suffixKey.localized()))
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-                            .foregroundStyle(statusColor)
-                        
-                        // Reset time from first model
-                        if let firstModel = group.models.first,
-                           firstModel.formattedResetTime != "—" && !firstModel.formattedResetTime.isEmpty {
-                            HStack(spacing: 3) {
-                                Image(systemName: "clock")
-                                    .font(.caption2)
-                                Text(firstModel.formattedResetTime)
-                                    .font(.caption)
-                            }
-                            .foregroundStyle(.secondary)
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 3)
-                            .background(.quaternary)
-                            .clipShape(Capsule())
+                    // Reset time from first model
+                    if let firstModel = group.models.first,
+                       firstModel.formattedResetTime != "—" && !firstModel.formattedResetTime.isEmpty {
+                        HStack(spacing: 3) {
+                            Image(systemName: "clock")
+                                .font(.caption2)
+                            Text(firstModel.formattedResetTime)
+                                .font(.caption)
                         }
+                        .foregroundStyle(.secondary)
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 3)
+                        .background(.quaternary)
+                        .clipShape(Capsule())
                     }
                 }
-                .contentShape(Rectangle())
             }
-            .buttonStyle(.plain)
             
             // Progress bar
             GeometryReader { proxy in
@@ -855,82 +868,139 @@ private struct ExpandableAntigravityGroupRow: View {
                 }
             }
             .frame(height: 8)
-            
-            // Expanded model details
-            if isExpanded {
-                VStack(spacing: 10) {
-                    ForEach(group.models.sorted { $0.name < $1.name }) { model in
-                        ModelDetailRow(model: model)
-                    }
-                }
-                .padding(.leading, 20)
-                .padding(.top, 4)
-            }
         }
     }
 }
 
-// MARK: - Model Detail Row
+// MARK: - Antigravity Models Detail Sheet
 
-private struct ModelDetailRow: View {
+private struct AntigravityModelsDetailSheet: View {
+    let email: String
+    let models: [ModelQuota]
+    
+    @Environment(\.dismiss) private var dismiss
+    
+    private var settings: MenuBarSettingsManager { MenuBarSettingsManager.shared }
+    
+    private var sortedModels: [ModelQuota] {
+        models.sorted { $0.name < $1.name }
+    }
+    
+    private var columns: [GridItem] {
+        [
+            GridItem(.flexible(), spacing: 12),
+            GridItem(.flexible(), spacing: 12)
+        ]
+    }
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            // Header
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("quota.allModels".localized())
+                        .font(.headline)
+                    Text(email)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                
+                Spacer()
+                
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.title2)
+                        .foregroundStyle(.secondary)
+                }
+                .buttonStyle(.plain)
+            }
+            .padding()
+            
+            Divider()
+            
+            // Models Grid
+            ScrollView {
+                LazyVGrid(columns: columns, spacing: 12) {
+                    ForEach(sortedModels) { model in
+                        ModelDetailCard(model: model)
+                    }
+                }
+                .padding()
+            }
+        }
+        .frame(minWidth: 500, minHeight: 400)
+    }
+}
+
+// MARK: - Model Detail Card (for sheet)
+
+private struct ModelDetailCard: View {
     let model: ModelQuota
     
-    @State private var settings = MenuBarSettingsManager.shared
+    private var settings: MenuBarSettingsManager { MenuBarSettingsManager.shared }
     
     private var usedPercent: Double {
         model.usedPercentage
-    }
-    
-    private var statusColor: Color {
-        if usedPercent < 70 { return .green }
-        if usedPercent < 90 { return .yellow }
-        return .red
     }
     
     private var remainingPercent: Double {
         max(0, min(100, model.percentage))
     }
     
+    private var statusColor: Color {
+        if usedPercent >= 90 { return .red }
+        if usedPercent >= 70 { return .yellow }
+        return .green
+    }
+    
     var body: some View {
         let displayMode = settings.quotaDisplayMode
         let displayPercent = displayMode == .used ? usedPercent : remainingPercent
         
-        VStack(alignment: .leading, spacing: 6) {
-            HStack {
-                // Model name
-                Text(model.displayName)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(1)
-                
-                Spacer()
-                
-                // Percentage
-                Text(String(format: "%.0f%% %@", displayPercent, displayMode.suffixKey.localized()))
-                    .font(.caption)
-                    .fontWeight(.medium)
-                    .foregroundStyle(statusColor)
-                
-                // Reset time (if different from group)
-                if model.formattedResetTime != "—" && !model.formattedResetTime.isEmpty {
-                    Text(model.formattedResetTime)
-                        .font(.caption2)
-                        .foregroundStyle(.tertiary)
-                }
-            }
+        VStack(alignment: .leading, spacing: 10) {
+            // Model name (raw name)
+            Text(model.name)
+                .font(.caption)
+                .fontDesign(.monospaced)
+                .lineLimit(1)
             
-            // Smaller progress bar
+            // Progress bar
             GeometryReader { proxy in
                 ZStack(alignment: .leading) {
                     Capsule()
                         .fill(.quaternary)
                     Capsule()
-                        .fill(statusColor.opacity(0.7))
+                        .fill(statusColor.gradient)
                         .frame(width: proxy.size.width * (remainingPercent / 100))
                 }
             }
-            .frame(height: 4)
+            .frame(height: 6)
+            
+            // Footer: Percentage + Reset time
+            HStack {
+                Text(String(format: "%.0f%% %@", displayPercent, displayMode.suffixKey.localized()))
+                    .font(.caption)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(statusColor)
+                
+                Spacer()
+                
+                if model.formattedResetTime != "—" && !model.formattedResetTime.isEmpty {
+                    HStack(spacing: 3) {
+                        Image(systemName: "clock")
+                            .font(.system(size: 9))
+                        Text(model.formattedResetTime)
+                            .font(.caption2)
+                    }
+                    .foregroundStyle(.tertiary)
+                }
+            }
         }
+        .padding(12)
+        .background(.quaternary.opacity(0.5))
+        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
     }
 }
 
@@ -944,7 +1014,7 @@ private struct UsageRowV2: View {
     let limit: Int?
     let resetTime: String
     
-    @State private var settings = MenuBarSettingsManager.shared
+    private var settings: MenuBarSettingsManager { MenuBarSettingsManager.shared }
     
     private var isUnknown: Bool {
         usedPercent < 0 || usedPercent > 100

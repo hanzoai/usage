@@ -68,6 +68,9 @@ final class QuotaViewModel {
     /// Subscription info per account (email -> SubscriptionInfo)
     var subscriptionInfos: [String: SubscriptionInfo] = [:]
     
+    /// Antigravity account switcher (for IDE token injection)
+    let antigravitySwitcher = AntigravityAccountSwitcher.shared
+    
     private var refreshTask: Task<Void, Never>?
     private var lastLogTimestamp: Int?
     
@@ -516,11 +519,66 @@ final class QuotaViewModel {
     }
     
     private func refreshAntigravityQuotasInternal() async {
-        let quotas = await antigravityFetcher.fetchAllAntigravityQuotas()
+        // Fetch both quotas and subscriptions in one call (avoids duplicate API calls)
+        let (quotas, subscriptions) = await antigravityFetcher.fetchAllAntigravityData()
+        
         providerQuotas[.antigravity] = quotas
         
-        let subscriptions = await antigravityFetcher.fetchAllSubscriptionInfo()
-        subscriptionInfos = subscriptions
+        // Merge instead of replace to preserve data if API fails
+        for (email, info) in subscriptions {
+            subscriptionInfos[email] = info
+        }
+        
+        // Detect active account in IDE (reads email directly from database)
+        await antigravitySwitcher.detectActiveAccount()
+    }
+    
+    /// Refresh Antigravity quotas without re-detecting active account
+    /// Used after switching accounts (active account already set by switch operation)
+    private func refreshAntigravityQuotasWithoutDetect() async {
+        let (quotas, subscriptions) = await antigravityFetcher.fetchAllAntigravityData()
+        
+        providerQuotas[.antigravity] = quotas
+        
+        for (email, info) in subscriptions {
+            subscriptionInfos[email] = info
+        }
+        // Note: Don't call detectActiveAccount() here - already set by switch operation
+    }
+    
+    // MARK: - Antigravity Account Switching
+    
+    /// Check if an Antigravity account is currently active in the IDE
+    /// Simply compares email from database with the given email
+    func isAntigravityAccountActive(email: String) -> Bool {
+        return antigravitySwitcher.isActiveAccount(email: email)
+    }
+    
+    /// Switch Antigravity account in the IDE
+    func switchAntigravityAccount(email: String) async {
+        await antigravitySwitcher.executeSwitchForEmail(email)
+        
+        // Refresh to update active account
+        if case .success = antigravitySwitcher.switchState {
+            // Refresh quotas but don't re-detect active account
+            // (already set in executeSwitchForEmail)
+            await refreshAntigravityQuotasWithoutDetect()
+        }
+    }
+    
+    /// Begin the switch confirmation flow
+    func beginAntigravitySwitch(accountId: String, email: String) {
+        antigravitySwitcher.beginSwitch(accountId: accountId, accountEmail: email)
+    }
+    
+    /// Cancel the switch operation
+    func cancelAntigravitySwitch() {
+        antigravitySwitcher.cancelSwitch()
+    }
+    
+    /// Dismiss switch result
+    func dismissAntigravitySwitchResult() {
+        antigravitySwitcher.dismissResult()
     }
     
     private func refreshOpenAIQuotasInternal() async {
