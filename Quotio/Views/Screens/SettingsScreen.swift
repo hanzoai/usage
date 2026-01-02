@@ -139,6 +139,7 @@ struct SettingsScreen: View {
                     Label("settings.proxyServer".localized(), systemImage: "server.rack")
                 } footer: {
                     Text("settings.restartProxy".localized())
+                        .font(.caption)
                 }
                 
                 // Routing Strategy
@@ -154,6 +155,7 @@ struct SettingsScreen: View {
                     Text(routingStrategy == "round-robin"
                          ? "settings.roundRobinDesc".localized()
                          : "settings.fillFirstDesc".localized())
+                        .font(.caption)
                 }
                 
                 // Quota Exceeded Behavior
@@ -164,6 +166,7 @@ struct SettingsScreen: View {
                     Label("settings.quotaExceededBehavior".localized(), systemImage: "exclamationmark.triangle")
                 } footer: {
                     Text("settings.quotaExceededHelp".localized())
+                        .font(.caption)
                 }
                 
                 // Retry Configuration
@@ -173,6 +176,7 @@ struct SettingsScreen: View {
                     Label("settings.retryConfiguration".localized(), systemImage: "arrow.clockwise")
                 } footer: {
                     Text("settings.retryHelp".localized())
+                        .font(.caption)
                 }
                 
                 // Logging
@@ -185,6 +189,7 @@ struct SettingsScreen: View {
                     Label("settings.logging".localized(), systemImage: "doc.text")
                 } footer: {
                     Text("settings.loggingHelp".localized())
+                        .font(.caption)
                 }
             }
             
@@ -491,6 +496,7 @@ struct NotificationSettingsSection: View {
             Label("settings.notifications".localized(), systemImage: "bell")
         } footer: {
             Text("settings.notifications.help".localized())
+                .font(.caption)
         }
     }
 }
@@ -518,6 +524,7 @@ struct QuotaDisplaySettingsSection: View {
             Label("settings.quota.display".localized(), systemImage: "percent")
         } footer: {
             Text("settings.quota.display.help".localized())
+                .font(.caption)
         }
     }
 }
@@ -556,6 +563,7 @@ struct RefreshCadenceSettingsSection: View {
             Label("settings.refresh".localized(), systemImage: "clock.arrow.2.circlepath")
         } footer: {
             Text("settings.refresh.help".localized())
+                .font(.caption)
         }
     }
 }
@@ -727,6 +735,7 @@ struct ProxyUpdateSettingsSection: View {
             Label("settings.proxyUpdate".localized(), systemImage: "shippingbox.and.arrow.backward")
         } footer: {
             Text("settings.proxyUpdate.help".localized())
+                .font(.caption)
         }
         .sheet(isPresented: $showAdvancedSheet) {
             ProxyVersionManagerSheet()
@@ -1223,6 +1232,7 @@ struct MenuBarSettingsSection: View {
             Label("settings.menubar".localized(), systemImage: "menubar.rectangle")
         } footer: {
             Text("settings.menubar.help".localized())
+                .font(.caption)
         }
     }
 }
@@ -1251,6 +1261,7 @@ struct AppearanceSettingsSection: View {
             Label("settings.appearance.title".localized(), systemImage: "paintbrush")
         } footer: {
             Text("settings.appearance.help".localized())
+                .font(.caption)
         }
     }
 }
@@ -1274,6 +1285,7 @@ struct PrivacySettingsSection: View {
             Label("settings.privacy".localized(), systemImage: "eye.slash")
         } footer: {
             Text("settings.privacy.hideSensitiveHelp".localized())
+                .font(.caption)
         }
     }
 }
