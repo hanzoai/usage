@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **ci**: resolve bash regex parsing issue and add manual workflow trigger (651fd46)
+
 ## [0.4.3-beta-1] - 2026-01-03
 
 ## [0.4.2] - 2026-01-02
