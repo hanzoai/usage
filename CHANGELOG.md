@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **proxy**: add buffer to reduce stop/start race condition window (#93)
+
 ### Added
 
 - unified operating mode system with remote management support (#86)
