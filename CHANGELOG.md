@@ -13,9 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.4.4] - 2026-01-03
 
-### Added
+### Fixed
 
-- exclude AGENTS.md from source file names in build settings (5c379f2)
+- **antigravity**: Fix account switch DB lock handling with SQLite3 busy timeout and immediate transactions (#88)
 
 ## [0.4.3] - 2026-01-03
 
