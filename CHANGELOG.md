@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- exclude AGENTS.md from source file names in build settings (5c379f2)
+
 ## [0.4.3] - 2026-01-03
 
 ## [0.4.3-beta-3] - 2026-01-03
