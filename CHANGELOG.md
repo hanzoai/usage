@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **settings**: add restart notice for routing strategy changes (#94)
 
+- **proxy**: prevent hang after extended runtime (#96)
+
 ### Added
 
 - unified operating mode system with remote management support (#86)
@@ -31,6 +33,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **settings**: add restart notice for routing strategy changes (#94)
 
+- **proxy**: prevent hang after extended runtime (#96)
+
 ## [0.4.3] - 2026-01-03
 
 ### Added
@@ -46,6 +50,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **antigravity**: fix Use in IDE hanging on macOS 15.5+ (#81)
 
 - **settings**: add restart notice for routing strategy changes (#94)
+
+- **proxy**: prevent hang after extended runtime (#96)
 
 ## [0.4.2] - 2026-01-02
 
@@ -77,6 +83,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **settings**: add restart notice for routing strategy changes (#94)
 
+- **proxy**: prevent hang after extended runtime (#96)
+
 ## [0.4.1] - 2026-01-02
 
 ### Added
@@ -100,6 +108,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **settings**: add restart notice for routing strategy changes (#94)
 
+- **proxy**: prevent hang after extended runtime (#96)
+
 ## [0.4.0] - 2026-01-01
 
 ### Added
@@ -114,6 +124,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Proxy Idle Hang**: Prevent proxy process from hanging after extended idle periods (Issue #37, #53)
 
 - **settings**: add restart notice for routing strategy changes (#94)
+
+- **proxy**: prevent hang after extended runtime (#96)
 
 ## [0.3.3] - 2025-12-31
 
@@ -134,6 +146,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **settings**: add restart notice for routing strategy changes (#94)
 
+- **proxy**: prevent hang after extended runtime (#96)
+
 ## [0.3.2] - 2025-12-30
 
 ### Added
@@ -147,6 +161,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Sparkle Update Loop**: Sync build number to match released version, preventing false update notifications
 
 - **settings**: add restart notice for routing strategy changes (#94)
+
+- **proxy**: prevent hang after extended runtime (#96)
 
 ## [0.3.1] - 2025-12-30
 
@@ -187,6 +203,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **settings**: add restart notice for routing strategy changes (#94)
 
+- **proxy**: prevent hang after extended runtime (#96)
+
 ## [0.3.0] - 2025-12-29
 
 ### Added
@@ -208,6 +226,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **settings**: add restart notice for routing strategy changes (#94)
 
+- **proxy**: prevent hang after extended runtime (#96)
+
 ## [0.2.3] - 2025-12-28
 
 ### Fixed
@@ -216,6 +236,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Menu Bar Auto-Focus**: Prevent auto-focus on buttons when panel opens (#13)
 
 - **settings**: add restart notice for routing strategy changes (#94)
+
+- **proxy**: prevent hang after extended runtime (#96)
 
 ## [0.2.2] - 2025-12-27
 
@@ -239,6 +261,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **settings**: add restart notice for routing strategy changes (#94)
 
+- **proxy**: prevent hang after extended runtime (#96)
+
 ## [0.2.1] - 2025-12-27
 
 ### Added
@@ -257,6 +281,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Dashboard UI**: Hide +Cursor button for non-manual-auth providers (#5)
 
 - **settings**: add restart notice for routing strategy changes (#94)
+
+- **proxy**: prevent hang after extended runtime (#96)
 
 ## [0.2.0] - 2025-12-27
 
@@ -285,6 +311,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **settings**: add restart notice for routing strategy changes (#94)
 
+- **proxy**: prevent hang after extended runtime (#96)
+
 ## [0.1.3] - 2025-12-27
 
 ### Added
@@ -309,6 +337,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Proxy still running when quitting app from menu bar
 
 - **settings**: add restart notice for routing strategy changes (#94)
+
+- **proxy**: prevent hang after extended runtime (#96)
 
 ## [0.1.0] - 2025-12-26
 
@@ -345,6 +375,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CLI agent configurations matching CLIProxyAPI documentation
 
 - **settings**: add restart notice for routing strategy changes (#94)
+
+- **proxy**: prevent hang after extended runtime (#96)
 
 ## [0.0.1] - 2025-12-20
 
