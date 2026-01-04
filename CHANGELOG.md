@@ -7,25 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Fixed
-
-- **proxy**: add buffer to reduce stop/start race condition window (#93)
-
-- **settings**: add restart notice for routing strategy changes (#94)
-
-- **proxy**: prevent hang after extended runtime (#96)
-
 ### Added
 
 - unified operating mode system with remote management support (#86)
-
 - **settings**: add management API key display and regenerate (#97)
 
 ### Changed
 
 - **changelog**: clean up duplicates and add auto-squash for prereleases (fa1a273)
-
 - Memory optimization - reduce RAM from 150-250MB to <100MB (#100)
+
+### Fixed
+
+- **proxy**: add buffer to reduce stop/start race condition window (#93)
+- **settings**: add restart notice for routing strategy changes (#94)
+- **proxy**: prevent hang after extended runtime (#96)
 
 ## [0.4.4] - 2026-01-03
 
@@ -33,27 +29,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **antigravity**: Fix account switch DB lock handling with SQLite3 busy timeout and immediate transactions (#88)
 
-- **settings**: add restart notice for routing strategy changes (#94)
-
-- **proxy**: prevent hang after extended runtime (#96)
-
 ## [0.4.3] - 2026-01-03
 
 ### Added
 
 - migrate to Swift 6 with strict concurrency (#83)
 
-- **settings**: add management API key display and regenerate (#97)
-
 ### Fixed
 
 - **ci**: resolve bash regex parsing issue and add manual workflow trigger (651fd46)
 - **ci**: merge appcast entries to make beta releases visible to updater (33e28a8)
 - **antigravity**: fix Use in IDE hanging on macOS 15.5+ (#81)
-
-- **settings**: add restart notice for routing strategy changes (#94)
-
-- **proxy**: prevent hang after extended runtime (#96)
 
 ## [0.4.2] - 2026-01-02
 
@@ -65,16 +51,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Add `generate-appcast-ci.sh` for CI-compatible Sparkle appcast generation
   - Add `quick-release.sh` helper for local tag creation
 
-- **settings**: add management API key display and regenerate (#97)
-
 ### Changed
 
 - **String Catalogs Localization**: Migrate from in-code dictionary to `Localizable.xcstrings` with 600+ keys across 4 languages (#74)
   - Dynamic language switching without app restart
   - Modernize `LanguageManager` with `@Observable` pattern
   - Migrate legacy "zh" language code to "zh-Hans"
-
-- Memory optimization - reduce RAM from 150-250MB to <100MB (#100)
 
 ### Fixed
 
@@ -84,10 +66,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **CI Compatibility**: Update Xcode version to 16.2 for macos-14 runner compatibility
 - **Build Scripts**: Improve reliability and error handling
 - **Localization Crash**: Fix duplicate dictionary key causing compiler error and app launch crash
-
-- **settings**: add restart notice for routing strategy changes (#94)
-
-- **proxy**: prevent hang after extended runtime (#96)
 
 ## [0.4.1] - 2026-01-02
 
@@ -101,18 +79,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Reactive provider picker - accounts update immediately when switching providers (no menu close needed)
   - Add `rebuildMenuInPlace()` for proper menu refresh across macOS Desktops
 
-- **settings**: add management API key display and regenerate (#97)
-
 ### Fixed
 
 - **Menu Bar Submenu Hover**: Fix submenu not working after switching macOS Desktops (#66)
 - **Menu Bar Dynamic Height**: Fix incorrect height when switching between providers (#66)
 - **Menu Bar Loading Animation**: Use Timer with `.common` RunLoop mode for animation while menu is open (#66)
 - **Model Display Names**: Consistent naming across QuotaScreen and menu bar (#66)
-
-- **settings**: add restart notice for routing strategy changes (#94)
-
-- **proxy**: prevent hang after extended runtime (#96)
 
 ## [0.4.0] - 2026-01-01
 
@@ -121,15 +93,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Custom AI Providers**: Add and configure your own AI providers with custom API endpoints, headers, and model mappings (#62)
 - **Upstream Proxy Support**: Configure upstream proxy URL in Settings for corporate networks or VPN environments (#63)
 
-- **settings**: add management API key display and regenerate (#97)
-
 ### Fixed
 
 - **Proxy Idle Hang**: Prevent proxy process from hanging after extended idle periods (Issue #37, #53)
-
-- **settings**: add restart notice for routing strategy changes (#94)
-
-- **proxy**: prevent hang after extended runtime (#96)
 
 ## [0.3.3] - 2025-12-31
 
@@ -139,8 +105,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Dynamic App Icon**: App icon automatically switches between production and beta based on update channel (#56)
 - **Privacy Mode**: Option to hide sensitive information (emails, account names) with asterisks across the app (#46)
 
-- **settings**: add management API key display and regenerate (#97)
-
 ### Fixed
 
 - **ProgressView Crash**: Fixed Auto Layout constraint conflicts by replacing ProgressView with custom SmallProgressView component (#56)
@@ -148,25 +112,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **About Screen Icon**: Use observable for real-time icon updates when switching update channels (#56)
 - **Menu Bar Spacing**: Adjusted horizontal padding to match native macOS spacing (#50)
 
-- **settings**: add restart notice for routing strategy changes (#94)
-
-- **proxy**: prevent hang after extended runtime (#96)
-
 ## [0.3.2] - 2025-12-30
 
 ### Added
 
 - **Chinese Localization**: Full Simplified Chinese translation for all UI strings (#39)
 
-- **settings**: add management API key display and regenerate (#97)
-
 ### Fixed
 
 - **Sparkle Update Loop**: Sync build number to match released version, preventing false update notifications
-
-- **settings**: add restart notice for routing strategy changes (#94)
-
-- **proxy**: prevent hang after extended runtime (#96)
 
 ## [0.3.1] - 2025-12-30
 
@@ -186,13 +140,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Chinese README**: Documentation in Simplified Chinese (#35)
 - **MIT License**: Project now licensed under MIT (#24)
 
-- **settings**: add management API key display and regenerate (#97)
-
 ### Changed
 
 - **About Screen Redesign**: Move update settings into About screen with modern card-based UI
-
-- Memory optimization - reduce RAM from 150-250MB to <100MB (#100)
 
 ### Fixed
 
@@ -207,10 +157,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Add version manager support: nvm, fnm, Volta, asdf, mise
 - **ForEach ID Collision**: Fix duplicate ID issue when Cursor and Trae share same email (#33)
 
-- **settings**: add restart notice for routing strategy changes (#94)
-
-- **proxy**: prevent hang after extended runtime (#96)
-
 ## [0.3.0] - 2025-12-29
 
 ### Added
@@ -219,22 +165,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Mode Switcher**: Responsive toggle in sidebar to switch between Full and Quota-Only modes
 - **Trae Provider**: Support for Trae AI coding agent with quota tracking
 
-- **settings**: add management API key display and regenerate (#97)
-
 ### Changed
 
 - **Menu Bar Redesign**: Provider-first layout with improved Liquid Glass compatibility
 - **Menu Bar Animation**: Use Timer-based rotation for reliable refresh animation
 
-- Memory optimization - reduce RAM from 150-250MB to <100MB (#100)
-
 ### Fixed
 
 - **Cursor SQLite**: Use immutable mode to avoid WAL file lock errors
-
-- **settings**: add restart notice for routing strategy changes (#94)
-
-- **proxy**: prevent hang after extended runtime (#96)
 
 ## [0.2.3] - 2025-12-28
 
@@ -243,23 +181,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Menu Bar Full-Screen Support**: Replace NSPopover with custom NSPanel to enable visibility in full-screen applications (#13)
 - **Menu Bar Auto-Focus**: Prevent auto-focus on buttons when panel opens (#13)
 
-- **settings**: add restart notice for routing strategy changes (#94)
-
-- **proxy**: prevent hang after extended runtime (#96)
-
 ## [0.2.2] - 2025-12-27
 
 ### Added
 
 - **Refresh Button**: Manual refresh button for auto-detected providers section to detect logout changes (#11)
 
-- **settings**: add management API key display and regenerate (#97)
-
 ### Changed
 
 - Increase auto-refresh interval from 5s to 15s to reduce connection pressure (#11)
-
-- Memory optimization - reduce RAM from 150-250MB to <100MB (#100)
 
 ### Fixed
 
@@ -269,32 +199,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **ForEach Duplicate ID**: Add uniqueId field combining provider+email to prevent duplicate ID warnings (#11)
 - **Race Condition**: Avoid race condition in stopProxy by capturing client reference before invalidation (#11)
 
-- **settings**: add restart notice for routing strategy changes (#94)
-
-- **proxy**: prevent hang after extended runtime (#96)
-
 ## [0.2.1] - 2025-12-27
 
 ### Added
 
 - **Appearance Settings**: New theme settings with System, Light, and Dark mode options
 
-- **settings**: add management API key display and regenerate (#97)
-
 ### Changed
 
 - Updated and optimized app screenshots
-
-- Memory optimization - reduce RAM from 150-250MB to <100MB (#100)
 
 ### Fixed
 
 - **Claude Code Reconfigure**: Preserve existing settings.json configuration when reconfiguring Claude Code (#3)
 - **Dashboard UI**: Hide +Cursor button for non-manual-auth providers (#5)
-
-- **settings**: add restart notice for routing strategy changes (#94)
-
-- **proxy**: prevent hang after extended runtime (#96)
 
 ## [0.2.0] - 2025-12-27
 
@@ -306,8 +224,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Direct Provider Authentication**: Read quota from provider auth files (Claude Code, Gemini CLI, Codex CLI)
 - Mode picker onboarding for first-time setup
 
-- **settings**: add management API key display and regenerate (#97)
-
 ### Changed
 
 - **Redesigned Quota UI**: New segmented provider control with improved layout
@@ -315,17 +231,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Better Status Section**: Improved sidebar layout and port display formatting
 - **Improved Mode Picker**: Fixed UI freeze when switching app modes
 
-- Memory optimization - reduce RAM from 150-250MB to <100MB (#100)
-
 ### Fixed
 
 - UI freeze when switching between Proxy and Quota-Only modes
 - Cursor excluded from manual add options (quota tracking only)
 - Appcast generation with DMG files
-
-- **settings**: add restart notice for routing strategy changes (#94)
-
-- **proxy**: prevent hang after extended runtime (#96)
 
 ## [0.1.3] - 2025-12-27
 
@@ -337,24 +247,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Claude Code configuration storage option (global vs project-local)
 - Dev build distinction with separate app icon
 
-- **settings**: add management API key display and regenerate (#97)
-
 ### Changed
 
 - Menu bar now persists when main window is closed (app runs in background)
 - Improved build configuration with xcconfig support for dev/prod separation
-
-- Memory optimization - reduce RAM from 150-250MB to <100MB (#100)
 
 ### Fixed
 
 - Proxy process not terminating after running for a while
 - Orphan proxy processes remaining after app quit
 - Proxy still running when quitting app from menu bar
-
-- **settings**: add restart notice for routing strategy changes (#94)
-
-- **proxy**: prevent hang after extended runtime (#96)
 
 ## [0.1.0] - 2025-12-26
 
@@ -382,17 +284,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Sparkle Auto-Update**: Automatic update checking and installation
 - **Bilingual Support**: English and Vietnamese localization
 
-- **settings**: add management API key display and regenerate (#97)
-
 ### Fixed
 
 - Sheet state not resetting when reopening
 - Agent configurations persisting correctly on navigation
 - CLI agent configurations matching CLIProxyAPI documentation
-
-- **settings**: add restart notice for routing strategy changes (#94)
-
-- **proxy**: prevent hang after extended runtime (#96)
 
 ## [0.0.1] - 2025-12-20
 
@@ -402,4 +298,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Basic proxy management
 - Provider authentication via OAuth
 - Simple quota display
-- **settings**: add management API key display and regenerate (#97)
