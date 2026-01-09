@@ -2,7 +2,7 @@
 
 [← Back to INDEX](../../INDEX.md)
 
-**Type:** implicit | **Files:** 22
+**Type:** implicit | **Files:** 23
 
 ## Files
 
@@ -15,6 +15,7 @@
 | `Quotio/Views/Components/AgentConfigSheet.swift` | 791 | 📊 |
 | `Quotio/Views/Components/CurrentModeBadge.swift` | 122 |  |
 | `Quotio/Views/Components/CustomProviderSheet.swift` | 482 |  |
+| `Quotio/Views/Components/ExperimentalBadge.swift` | 40 |  |
 | `Quotio/Views/Components/FallbackSheets.swift` | 271 |  |
 | `Quotio/Views/Components/GLMAPIKeySheet.swift` | 233 |  |
 | `Quotio/Views/Components/IDEScanSheet.swift` | 320 |  |
