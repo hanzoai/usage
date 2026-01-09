@@ -12,6 +12,7 @@
   <img src="https://img.shields.io/badge/platform-macOS-lightgrey.svg?style=flat" alt="Platform macOS" />
   <img src="https://img.shields.io/badge/language-Swift-orange.svg?style=flat" alt="Language Swift" />
   <img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat" alt="License MIT" />
+  <a href="https://discord.gg/dFzeZ7qS"><img src="https://img.shields.io/badge/Discord-Join%20us-5865F2.svg?style=flat&logo=discord&logoColor=white" alt="Discord" /></a>
   <a href="README.vi.md"><img src="https://img.shields.io/badge/lang-Tiếng%20Việt-red.svg?style=flat" alt="Vietnamese" /></a>
   <a href="README.zh.md"><img src="https://img.shields.io/badge/lang-zh--CN-green.svg?style=flat" alt="Chinese" /></a>
   <a href="README.fr.md"><img src="https://img.shields.io/badge/lang-Français-blue.svg?style=flat" alt="French" /></a>
@@ -174,6 +175,14 @@ Go to **Agents** tab → Select an installed agent → Click **Configure** → C
 3. Commit your Changes (`git commit -m 'Add amazing feature'`)
 4. Push to the Branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
+
+## 💬 Community
+
+Join our Discord community to get help, share feedback, and connect with other users:
+
+<a href="https://discord.gg/dFzeZ7qS">
+  <img src="https://img.shields.io/badge/Discord-Join%20our%20community-5865F2.svg?style=for-the-badge&logo=discord&logoColor=white" alt="Join Discord" />
+</a>
 
 ## ⭐ Star History
 
