@@ -115,7 +115,7 @@ actor ManagementAPIClient {
         self.sessionDelegate = SessionDelegate(clientId: clientId, verifySSL: verifySSL)
         self.session = URLSession(configuration: config, delegate: sessionDelegate, delegateQueue: nil)
         
-        Self.log("[\\(clientId)] Remote client created, timeout=\\(Int(timeoutConfig.requestTimeout))/\\(Int(timeoutConfig.resourceTimeout))s, verifySSL=\\(verifySSL)")
+        Self.log("[\(clientId)] Remote client created, timeout=\(Int(timeoutConfig.requestTimeout))/\(Int(timeoutConfig.resourceTimeout))s, verifySSL=\(verifySSL)")
         
         if !verifySSL {
             print("[SECURITY WARNING] SSL verification disabled for \(baseURL). Connection is vulnerable to MITM attacks.")
