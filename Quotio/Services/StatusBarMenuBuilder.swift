@@ -19,7 +19,7 @@ import SwiftUI
 final class StatusBarMenuBuilder {
     
     private let viewModel: QuotaViewModel
-    private let modeManager = AppModeManager.shared
+    private let modeManager = OperatingModeManager.shared
     private let menuWidth: CGFloat = 300
     
     // Selected provider from UserDefaults
@@ -39,8 +39,8 @@ final class StatusBarMenuBuilder {
         menu.addItem(buildHeaderItem())
         menu.addItem(NSMenuItem.separator())
         
-        // 2. Proxy info (Full Mode only)
-        if modeManager.isFullMode {
+        // 2. Proxy info (Local Proxy Mode only)
+        if modeManager.isLocalProxyMode {
             menu.addItem(buildProxyInfoItem())
             menu.addItem(NSMenuItem.separator())
         }
@@ -277,9 +277,24 @@ final class MenuActionHandler: NSObject {
     }
     
     @objc func openApp() {
+        // In .accessory mode, menu closes automatically when window becomes key
+        // In .regular mode, we need to close it manually
+        let showInDock = UserDefaults.standard.bool(forKey: "showInDock")
+        if showInDock {
+            StatusBarManager.shared.closeMenu()
+        }
+
+        // Activation policy is managed by showInDock setting, no need to change here
         NSApplication.shared.activate(ignoringOtherApps: true)
+
         if let window = NSApplication.shared.windows.first(where: { $0.title == "Quotio" }) {
             window.makeKeyAndOrderFront(nil)
+
+            if window.isMiniaturized {
+                window.deminiaturize(nil)
+            }
+
+            window.orderFrontRegardless()
         }
     }
     
@@ -674,24 +689,35 @@ private struct ModelBadgeData: Identifiable {
 
 private struct ModelGridBadge: View {
     let data: ModelBadgeData
-    
+
+    private var settings: MenuBarSettingsManager { MenuBarSettingsManager.shared }
+
     private var remainingPercent: Double {
         data.percentage
     }
-    
+
+    private var usedPercent: Double {
+        100 - data.percentage
+    }
+
+    private var displayPercent: Double {
+        settings.quotaDisplayMode == .used ? usedPercent : remainingPercent
+    }
+
     private var tintColor: Color {
+        // Color is always based on remaining percentage (resource health)
         if remainingPercent > 50 { return .green }
         if remainingPercent > 20 { return .orange }
         return .red
     }
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(data.name)
                 .font(.system(size: 9))
                 .foregroundStyle(.secondary)
                 .lineLimit(1)
-            
+
             HStack(spacing: 4) {
                 GeometryReader { proxy in
                     ZStack(alignment: .leading) {
@@ -703,8 +729,8 @@ private struct ModelGridBadge: View {
                     }
                 }
                 .frame(height: 4)
-                
-                Text(verbatim: "\(Int(remainingPercent))%")
+
+                Text(verbatim: "\(Int(displayPercent.rounded()))%")
                     .font(.system(size: 9, weight: .semibold))
                     .foregroundStyle(tintColor)
                     .frame(width: 28, alignment: .trailing)
@@ -822,9 +848,24 @@ private struct MenuActionsView: View {
                 icon: "macwindow",
                 title: "action.openApp".localized()
             ) {
+                // In .accessory mode, menu closes automatically when window becomes key
+                // In .regular mode, we need to close it manually
+                let showInDock = UserDefaults.standard.bool(forKey: "showInDock")
+                if showInDock {
+                    StatusBarManager.shared.closeMenu()
+                }
+
+                // Activation policy is managed by showInDock setting, no need to change here
                 NSApplication.shared.activate(ignoringOtherApps: true)
+
                 if let window = NSApplication.shared.windows.first(where: { $0.title == "Quotio" }) {
                     window.makeKeyAndOrderFront(nil)
+
+                    if window.isMiniaturized {
+                        window.deminiaturize(nil)
+                    }
+
+                    window.orderFrontRegardless()
                 }
             }
             
