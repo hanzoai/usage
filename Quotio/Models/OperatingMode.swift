@@ -58,7 +58,7 @@ enum OperatingMode: String, Codable, CaseIterable, Identifiable, Sendable {
         switch self {
         case .monitor: return "onboarding.mode.badge.default".localizedStatic()
         case .localProxy: return nil
-        case .remoteProxy: return "onboarding.mode.badge.advanced".localizedStatic()
+        case .remoteProxy: return "badge.experimental".localizedStatic()
         }
     }
     

@@ -316,8 +316,11 @@ struct ContentView: View {
                         
                         // Proxy mode only (local or remote)
                         if modeManager.isProxyMode {
-                            Label("nav.fallback".localized(), systemImage: "arrow.triangle.branch")
-                                .tag(NavigationPage.fallback)
+                            HStack(spacing: 6) {
+                                Label("nav.fallback".localized(), systemImage: "arrow.triangle.branch")
+                                ExperimentalBadge()
+                            }
+                            .tag(NavigationPage.fallback)
 
                             if modeManager.currentMode.supportsAgentConfig {
                                 Label("nav.agents".localized(), systemImage: "terminal")

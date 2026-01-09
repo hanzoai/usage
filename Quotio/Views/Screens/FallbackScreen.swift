@@ -150,8 +150,11 @@ struct FallbackScreen: View {
                 }
             )) {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("fallback.enableFallback".localized())
-                        .fontWeight(.medium)
+                    HStack(spacing: 8) {
+                        Text("fallback.enableFallback".localized())
+                            .fontWeight(.medium)
+                        ExperimentalBadge()
+                    }
                     Text("fallback.enableDescription".localized())
                         .font(.caption)
                         .foregroundStyle(.secondary)

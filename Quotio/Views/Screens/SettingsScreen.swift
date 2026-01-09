@@ -214,7 +214,10 @@ struct RemoteServerSection: View {
             // Connection status
             connectionStatusRow
         } header: {
-            Label("settings.remoteServer.title".localized(), systemImage: "network")
+            HStack(spacing: 8) {
+                Label("settings.remoteServer.title".localized(), systemImage: "network")
+                ExperimentalBadge()
+            }
         } footer: {
             Text("settings.remoteServer.help".localized())
                 .font(.caption)
