@@ -30,7 +30,7 @@
 | `Quotio/Services/RequestTracker.swift` | 185 |  |
 | `Quotio/Services/ShellProfileManager.swift` | 117 |  |
 | `Quotio/Services/StatusBarManager.swift` | 238 |  |
-| `Quotio/Services/StatusBarMenuBuilder.swift` | 995 | 📊 |
+| `Quotio/Services/StatusBarMenuBuilder.swift` | 1359 | 📊 |
 | `Quotio/Services/Tunnel/CloudflaredService.swift` | 266 |  |
 | `Quotio/Services/Tunnel/TunnelManager.swift` | 152 |  |
 | `Quotio/Services/UpdaterService.swift` | 168 |  |

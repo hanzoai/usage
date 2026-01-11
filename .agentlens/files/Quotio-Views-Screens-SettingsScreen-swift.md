@@ -4,7 +4,7 @@
 
 ## Overview
 
-- **Lines:** 2733
+- **Lines:** 2747
 - **Language:** Swift
 - **Symbols:** 58
 - **Public symbols:** 0
@@ -36,39 +36,39 @@
 | 744 | struct | PathLabel | (internal) | `struct PathLabel` |
 | 768 | struct | NotificationSettingsSection | (internal) | `struct NotificationSettingsSection` |
 | 838 | struct | QuotaDisplaySettingsSection | (internal) | `struct QuotaDisplaySettingsSection` |
-| 866 | struct | RefreshCadenceSettingsSection | (internal) | `struct RefreshCadenceSettingsSection` |
-| 905 | struct | UpdateSettingsSection | (internal) | `struct UpdateSettingsSection` |
-| 947 | struct | ProxyUpdateSettingsSection | (internal) | `struct ProxyUpdateSettingsSection` |
-| 1077 | fn | checkForUpdate | (private) | `private func checkForUpdate()` |
-| 1087 | fn | performUpgrade | (private) | `private func performUpgrade(to version: ProxyVe...` |
-| 1106 | struct | ProxyVersionManagerSheet | (internal) | `struct ProxyVersionManagerSheet` |
-| 1265 | fn | sectionHeader | (private) | `@ViewBuilder   private func sectionHeader(_ tit...` |
-| 1280 | fn | isVersionInstalled | (private) | `private func isVersionInstalled(_ version: Stri...` |
-| 1284 | fn | refreshInstalledVersions | (private) | `private func refreshInstalledVersions()` |
-| 1288 | fn | loadReleases | (private) | `private func loadReleases() async` |
-| 1302 | fn | installVersion | (private) | `private func installVersion(_ release: GitHubRe...` |
-| 1320 | fn | performInstall | (private) | `private func performInstall(_ release: GitHubRe...` |
-| 1341 | fn | activateVersion | (private) | `private func activateVersion(_ version: String)` |
-| 1359 | fn | deleteVersion | (private) | `private func deleteVersion(_ version: String)` |
-| 1372 | struct | InstalledVersionRow | (private) | `struct InstalledVersionRow` |
-| 1430 | struct | AvailableVersionRow | (private) | `struct AvailableVersionRow` |
-| 1516 | fn | formatDate | (private) | `private func formatDate(_ isoString: String) ->...` |
-| 1534 | struct | MenuBarSettingsSection | (internal) | `struct MenuBarSettingsSection` |
-| 1616 | struct | AppearanceSettingsSection | (internal) | `struct AppearanceSettingsSection` |
-| 1645 | struct | PrivacySettingsSection | (internal) | `struct PrivacySettingsSection` |
-| 1667 | struct | GeneralSettingsTab | (internal) | `struct GeneralSettingsTab` |
-| 1706 | struct | AboutTab | (internal) | `struct AboutTab` |
-| 1733 | struct | AboutScreen | (internal) | `struct AboutScreen` |
-| 1948 | struct | AboutUpdateSection | (internal) | `struct AboutUpdateSection` |
-| 2004 | struct | AboutProxyUpdateSection | (internal) | `struct AboutProxyUpdateSection` |
-| 2140 | fn | checkForUpdate | (private) | `private func checkForUpdate()` |
-| 2150 | fn | performUpgrade | (private) | `private func performUpgrade(to version: ProxyVe...` |
-| 2169 | struct | VersionBadge | (internal) | `struct VersionBadge` |
-| 2221 | struct | AboutUpdateCard | (internal) | `struct AboutUpdateCard` |
-| 2312 | struct | AboutProxyUpdateCard | (internal) | `struct AboutProxyUpdateCard` |
-| 2469 | fn | checkForUpdate | (private) | `private func checkForUpdate()` |
-| 2479 | fn | performUpgrade | (private) | `private func performUpgrade(to version: ProxyVe...` |
-| 2498 | struct | LinkCard | (internal) | `struct LinkCard` |
-| 2585 | struct | ManagementKeyRow | (internal) | `struct ManagementKeyRow` |
-| 2679 | struct | LaunchAtLoginToggle | (internal) | `struct LaunchAtLoginToggle` |
+| 880 | struct | RefreshCadenceSettingsSection | (internal) | `struct RefreshCadenceSettingsSection` |
+| 919 | struct | UpdateSettingsSection | (internal) | `struct UpdateSettingsSection` |
+| 961 | struct | ProxyUpdateSettingsSection | (internal) | `struct ProxyUpdateSettingsSection` |
+| 1091 | fn | checkForUpdate | (private) | `private func checkForUpdate()` |
+| 1101 | fn | performUpgrade | (private) | `private func performUpgrade(to version: ProxyVe...` |
+| 1120 | struct | ProxyVersionManagerSheet | (internal) | `struct ProxyVersionManagerSheet` |
+| 1279 | fn | sectionHeader | (private) | `@ViewBuilder   private func sectionHeader(_ tit...` |
+| 1294 | fn | isVersionInstalled | (private) | `private func isVersionInstalled(_ version: Stri...` |
+| 1298 | fn | refreshInstalledVersions | (private) | `private func refreshInstalledVersions()` |
+| 1302 | fn | loadReleases | (private) | `private func loadReleases() async` |
+| 1316 | fn | installVersion | (private) | `private func installVersion(_ release: GitHubRe...` |
+| 1334 | fn | performInstall | (private) | `private func performInstall(_ release: GitHubRe...` |
+| 1355 | fn | activateVersion | (private) | `private func activateVersion(_ version: String)` |
+| 1373 | fn | deleteVersion | (private) | `private func deleteVersion(_ version: String)` |
+| 1386 | struct | InstalledVersionRow | (private) | `struct InstalledVersionRow` |
+| 1444 | struct | AvailableVersionRow | (private) | `struct AvailableVersionRow` |
+| 1530 | fn | formatDate | (private) | `private func formatDate(_ isoString: String) ->...` |
+| 1548 | struct | MenuBarSettingsSection | (internal) | `struct MenuBarSettingsSection` |
+| 1630 | struct | AppearanceSettingsSection | (internal) | `struct AppearanceSettingsSection` |
+| 1659 | struct | PrivacySettingsSection | (internal) | `struct PrivacySettingsSection` |
+| 1681 | struct | GeneralSettingsTab | (internal) | `struct GeneralSettingsTab` |
+| 1720 | struct | AboutTab | (internal) | `struct AboutTab` |
+| 1747 | struct | AboutScreen | (internal) | `struct AboutScreen` |
+| 1962 | struct | AboutUpdateSection | (internal) | `struct AboutUpdateSection` |
+| 2018 | struct | AboutProxyUpdateSection | (internal) | `struct AboutProxyUpdateSection` |
+| 2154 | fn | checkForUpdate | (private) | `private func checkForUpdate()` |
+| 2164 | fn | performUpgrade | (private) | `private func performUpgrade(to version: ProxyVe...` |
+| 2183 | struct | VersionBadge | (internal) | `struct VersionBadge` |
+| 2235 | struct | AboutUpdateCard | (internal) | `struct AboutUpdateCard` |
+| 2326 | struct | AboutProxyUpdateCard | (internal) | `struct AboutProxyUpdateCard` |
+| 2483 | fn | checkForUpdate | (private) | `private func checkForUpdate()` |
+| 2493 | fn | performUpgrade | (private) | `private func performUpgrade(to version: ProxyVe...` |
+| 2512 | struct | LinkCard | (internal) | `struct LinkCard` |
+| 2599 | struct | ManagementKeyRow | (internal) | `struct ManagementKeyRow` |
+| 2693 | struct | LaunchAtLoginToggle | (internal) | `struct LaunchAtLoginToggle` |
 
