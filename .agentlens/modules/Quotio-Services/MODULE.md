@@ -17,7 +17,7 @@
 | `Quotio/Services/DirectAuthFileService.swift` | 384 |  |
 | `Quotio/Services/FallbackSettingsManager.swift` | 306 |  |
 | `Quotio/Services/GLMQuotaFetcher.swift` | 180 |  |
-| `Quotio/Services/ImageCacheService.swift` | 129 |  |
+| `Quotio/Services/ImageCacheService.swift` | 135 |  |
 | `Quotio/Services/KeychainHelper.swift` | 74 |  |
 | `Quotio/Services/LanguageManager.swift` | 115 |  |
 | `Quotio/Services/LaunchAtLoginManager.swift` | 189 |  |

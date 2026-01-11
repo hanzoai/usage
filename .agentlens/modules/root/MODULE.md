@@ -9,14 +9,14 @@
 | File | Lines | Large |
 | ---- | ----- | ----- |
 | `Quotio/QuotioApp.swift` | 550 | 📊 |
-| `Quotio/Services/Proxy/CLIProxyManager.swift` | 1807 | 📊 |
-| `Quotio/Services/Proxy/ProxyBridge.swift` | 900 | 📊 |
+| `Quotio/Services/Proxy/CLIProxyManager.swift` | 1860 | 📊 |
+| `Quotio/Services/Proxy/ProxyBridge.swift` | 902 | 📊 |
 | `Quotio/Services/Proxy/ProxyStorageManager.swift` | 400 |  |
 | `Quotio/Services/Tunnel/CloudflaredService.swift` | 266 |  |
-| `Quotio/Services/Tunnel/TunnelManager.swift` | 152 |  |
+| `Quotio/Services/Tunnel/TunnelManager.swift` | 183 |  |
 | `Quotio/ViewModels/AgentSetupViewModel.swift` | 355 |  |
 | `Quotio/ViewModels/LogsViewModel.swift` | 82 |  |
-| `Quotio/ViewModels/QuotaViewModel.swift` | 1736 | 📊 |
+| `Quotio/ViewModels/QuotaViewModel.swift` | 1757 | 📊 |
 | `scripts/capture-screenshots.ts` | 763 | 📊 |
 
 ## Documentation
