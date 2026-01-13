@@ -21,7 +21,7 @@
 | `Quotio/Services/KeychainHelper.swift` | 74 |  |
 | `Quotio/Services/LanguageManager.swift` | 115 |  |
 | `Quotio/Services/LaunchAtLoginManager.swift` | 189 |  |
-| `Quotio/Services/ManagementAPIClient.swift` | 675 | 📊 |
+| `Quotio/Services/ManagementAPIClient.swift` | 718 | 📊 |
 | `Quotio/Services/NotificationManager.swift` | 326 |  |
 | `Quotio/Services/ProxyConfigurationService.swift` | 96 |  |
 | `Quotio/Services/RequestTracker.swift` | 187 |  |
