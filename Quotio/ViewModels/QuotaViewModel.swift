@@ -467,7 +467,7 @@ final class QuotaViewModel {
                 let quota = try await warpFetcher.fetchQuota(apiKey: entry.token)
                 results[entry.name] = quota
             } catch {
-                print("[Warp] Failed to fetch quota for \(entry.name): \(error)")
+                Log.quota("Failed to fetch Warp quota for \(entry.name): \(error)")
             }
         }
         
@@ -1026,16 +1026,16 @@ final class QuotaViewModel {
                 
                 if errorMessage != nil {
                     consecutiveFailures += 1
-                    print("[QuotaVM] Refresh failed, consecutive failures: \(consecutiveFailures)")
+                    Log.quota("Refresh failed, consecutive failures: \(consecutiveFailures)")
                     
                     if consecutiveFailures >= maxFailuresBeforeRecovery {
-                        print("[QuotaVM] Attempting proxy recovery...")
+                        Log.quota("Attempting proxy recovery...")
                         await attemptProxyRecovery()
                         consecutiveFailures = 0
                     }
                 } else {
                     if consecutiveFailures > 0 {
-                        print("[QuotaVM] Refresh succeeded, resetting failure count")
+                        Log.quota("Refresh succeeded, resetting failure count")
                     }
                     consecutiveFailures = 0
                 }
@@ -1089,8 +1089,12 @@ final class QuotaViewModel {
             // Prune menu bar items for accounts that no longer exist
             pruneMenuBarItems()
             
-            let shouldRefreshQuotas = lastQuotaRefresh == nil || 
-                Date().timeIntervalSince(lastQuotaRefresh!) >= quotaRefreshInterval
+            let shouldRefreshQuotas: Bool
+            if let lastRefresh = lastQuotaRefresh {
+                shouldRefreshQuotas = Date().timeIntervalSince(lastRefresh) >= quotaRefreshInterval
+            } else {
+                shouldRefreshQuotas = true
+            }
             
             if shouldRefreshQuotas && !isLoadingQuotas {
                 Task {
@@ -1730,7 +1734,7 @@ final class QuotaViewModel {
             let encoded = try JSONEncoder().encode(dataToSave)
             UserDefaults.standard.set(encoded, forKey: Self.ideQuotasKey)
         } catch {
-            print("Failed to save IDE quotas: \(error)")
+            Log.error("Failed to save IDE quotas: \(error)")
         }
     }
     
@@ -1748,7 +1752,7 @@ final class QuotaViewModel {
                 }
             }
         } catch {
-            print("Failed to load IDE quotas: \(error)")
+            Log.error("Failed to load IDE quotas: \(error)")
             // Clear corrupted data
             UserDefaults.standard.removeObject(forKey: Self.ideQuotasKey)
         }

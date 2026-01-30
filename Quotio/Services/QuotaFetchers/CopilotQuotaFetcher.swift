@@ -230,7 +230,7 @@ actor CopilotQuotaFetcher {
             let entitlement = try await fetchEntitlement(accessToken: authFile.accessToken)
             return convertToQuotaData(entitlement: entitlement)
         } catch {
-            print("CopilotQuotaFetcher error: \(error)")
+            Log.quota("Copilot quota fetch error: \(error)")
             return nil
         }
     }
@@ -399,7 +399,7 @@ actor CopilotQuotaFetcher {
 
             return models
         } catch {
-            print("CopilotQuotaFetcher fetchAvailableModels error: \(error)")
+            Log.quota("Copilot fetchAvailableModels error: \(error)")
             return []
         }
     }

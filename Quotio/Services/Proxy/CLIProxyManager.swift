@@ -180,7 +180,9 @@ final class CLIProxyManager {
     }
     
     init() {
-        let appSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+        guard let appSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
+            fatalError("Application Support directory not found")
+        }
         let quotioDir = appSupport.appendingPathComponent("Quotio")
         let homeDir = FileManager.default.homeDirectoryForCurrentUser
         
@@ -190,13 +192,16 @@ final class CLIProxyManager {
         self.configPath = quotioDir.appendingPathComponent("config.yaml").path
         self.authDir = homeDir.appendingPathComponent(".cli-proxy-api").path
         
-        // Always use key from UserDefaults, generate new if not exists
+        // Always use key from Keychain, generate new if not exists
         // Never read from config because CLIProxyAPI hashes the key on startup
-        if let savedKey = UserDefaults.standard.string(forKey: "managementKey"), !savedKey.hasPrefix("$2a$") {
+        if let savedKey = KeychainHelper.getLocalManagementKey(), !savedKey.hasPrefix("$2a$") {
             self.managementKey = savedKey
         } else {
-            self.managementKey = UUID().uuidString
-            UserDefaults.standard.set(managementKey, forKey: "managementKey")
+            let newKey = UUID().uuidString
+            self.managementKey = newKey
+            if !KeychainHelper.saveLocalManagementKey(newKey) {
+                Log.keychain("Failed to persist local management key, using in-memory value")
+            }
         }
         
         let savedPort = UserDefaults.standard.integer(forKey: "proxyPort")
@@ -383,7 +388,9 @@ final class CLIProxyManager {
         syncSecretKeyInConfig()
         
         guard proxyStatus.running else {
-            UserDefaults.standard.set(newKey, forKey: "managementKey")
+            if !KeychainHelper.saveLocalManagementKey(newKey) {
+                Log.keychain("Failed to persist regenerated management key while stopped")
+            }
             return
         }
         
@@ -391,7 +398,9 @@ final class CLIProxyManager {
             stop()
             try await Task.sleep(for: .milliseconds(500))
             try await start()
-            UserDefaults.standard.set(newKey, forKey: "managementKey")
+            if !KeychainHelper.saveLocalManagementKey(newKey) {
+                Log.keychain("Failed to persist regenerated management key after restart")
+            }
         } catch {
             managementKey = previousKey
             syncSecretKeyInConfig()
@@ -419,7 +428,7 @@ final class CLIProxyManager {
             try CustomProviderService.shared.syncToConfigFile(configPath: configPath)
         } catch {
             // Silent failure - custom providers are optional
-            print("Failed to sync custom providers to config: \(error)")
+            Log.proxy("Failed to sync custom providers to config: \\(error)")
         }
     }
     

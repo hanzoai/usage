@@ -128,13 +128,23 @@ final class AtomFeedUpdateService {
             )
 
             // Compare versions
-            let isNewer = currentVersion == nil || isNewerVersion(latest.version, than: currentVersion!)
+            let isNewer: Bool
+            if let current = currentVersion {
+                isNewer = isNewerVersion(latest.version, than: current)
+            } else {
+                isNewer = true
+            }
             return (latest.version, isNewer)
 
         case .notModified:
             // Feed hasn't changed, check cached version
             if let cached = loadCacheState(cacheKey: Self.cliProxyCacheKey) {
-                let isNewer = currentVersion == nil || isNewerVersion(cached.latestVersion, than: currentVersion!)
+                let isNewer: Bool
+                if let current = currentVersion {
+                    isNewer = isNewerVersion(cached.latestVersion, than: current)
+                } else {
+                    isNewer = true
+                }
                 return (cached.latestVersion, isNewer)
             }
             return (nil, false)
@@ -165,12 +175,22 @@ final class AtomFeedUpdateService {
                 latestVersion: latest.version
             )
 
-            let isNewer = currentVersion == nil || isNewerVersion(latest.version, than: currentVersion!)
+            let isNewer: Bool
+            if let current = currentVersion {
+                isNewer = isNewerVersion(latest.version, than: current)
+            } else {
+                isNewer = true
+            }
             return (latest.version, isNewer)
 
         case .notModified:
             if let cached = loadCacheState(cacheKey: Self.quotioCacheKey) {
-                let isNewer = currentVersion == nil || isNewerVersion(cached.latestVersion, than: currentVersion!)
+                let isNewer: Bool
+                if let current = currentVersion {
+                    isNewer = isNewerVersion(cached.latestVersion, than: current)
+                } else {
+                    isNewer = true
+                }
                 return (cached.latestVersion, isNewer)
             }
             return (nil, false)
@@ -245,8 +265,10 @@ final class AtomFeedUpdateService {
                 UserDefaults.standard.set(latestVersion, forKey: notifiedKey)
 
                 // Send system notification
-                NotificationManager.shared.notifyUpgradeAvailable(version: latestVersion!)
-                NSLog("[AtomFeedUpdateService] New CLIProxyAPI version available: \(latestVersion!)")
+                if let version = latestVersion {
+                    NotificationManager.shared.notifyUpgradeAvailable(version: version)
+                    NSLog("[AtomFeedUpdateService] New CLIProxyAPI version available: \(version)")
+                }
             }
         } else {
             cliProxyUpdateAvailable = false
