@@ -2818,7 +2818,7 @@ struct ManagementKeyRow: View {
                         .font(.caption)
                         .frame(width: 14, height: 14)
                         .foregroundStyle(showCopyConfirmation ? .green : .primary)
-                        .contentTransition(.symbolEffect(.replace))
+                        .modifier(SymbolEffectTransitionModifier())
                 }
                 .buttonStyle(.borderless)
                 .help("action.copy".localized())
