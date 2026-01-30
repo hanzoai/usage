@@ -7,7 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **i18n**: Localize "Hide accounts" menu bar label (#250)
+  - Add translations for zh-Hans, vi, fr
+- **proxy**: Parse detailed error messages from proxy responses (#251)
+  - Extract and display actionable error messages from CLIProxyAPI
+
+### Fixed
+
+- **compatibility**: Wrap macOS 15+ symbolEffect API for macOS 14 compatibility
+  - Add `@available` check for `.contentTransition(.symbolEffect)` usage
+  - Fixes crash on macOS 14 due to missing API (Issue #45)
+- **kiro**: Use case-insensitive authMethod comparison for token refresh (#252)
+  - Fix token refresh failures when importing from Kiro IDE
+  - CLIProxyAPI uses "idc" (lowercase) vs Kiro IDE uses "IdC" (mixed case)
+- **proxy**: Use effectiveBinaryPath for auth commands and Finder reveal (#254)
+  - Fix "CLIProxyAPI does not exist" error when using versioned storage
+  - Auth commands and Finder reveal now use correct binary path
+- **models**: Remove model list caching to always fetch fresh data (#255)
+  - Fix stale model lists after CLIProxyAPI configuration changes
+
 ## [0.7.9] - 2026-01-29
+
+### Fixed
+
+- **compatibility**: Lower MACOSX_DEPLOYMENT_TARGET from 14.6 to 14.0
+  - Fixes build compatibility for macOS 14.0-14.5 users
 
 ## [0.7.8] - 2026-01-29
 
