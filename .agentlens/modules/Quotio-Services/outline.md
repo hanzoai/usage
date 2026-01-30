@@ -4,7 +4,7 @@
 
 Symbol maps for 4 large files in this module.
 
-## Quotio/Services/AgentConfigurationService.swift (1385 lines)
+## Quotio/Services/AgentConfigurationService.swift (1394 lines)
 
 | Line | Kind | Name | Visibility |
 | ---- | ---- | ---- | ---------- |

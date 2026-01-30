@@ -8,14 +8,14 @@
 
 | File | Lines | Large |
 | ---- | ----- | ----- |
-| `Quotio/Services/AgentConfigurationService.swift` | 1385 | 📊 |
+| `Quotio/Services/AgentConfigurationService.swift` | 1394 | 📊 |
 | `Quotio/Services/AgentDetectionService.swift` | 252 |  |
 | `Quotio/Services/AtomFeedUpdateService.swift` | 511 | 📊 |
 | `Quotio/Services/CLIExecutor.swift` | 430 |  |
 | `Quotio/Services/ChecksumVerifier.swift` | 78 |  |
 | `Quotio/Services/CompatibilityChecker.swift` | 123 |  |
 | `Quotio/Services/CustomProviderService.swift` | 334 |  |
-| `Quotio/Services/DirectAuthFileService.swift` | 486 |  |
+| `Quotio/Services/DirectAuthFileService.swift` | 487 |  |
 | `Quotio/Services/FallbackSettingsManager.swift` | 338 |  |
 | `Quotio/Services/GLMQuotaFetcher.swift` | 180 |  |
 | `Quotio/Services/ImageCacheService.swift` | 135 |  |
