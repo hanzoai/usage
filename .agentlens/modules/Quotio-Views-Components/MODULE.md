@@ -21,7 +21,7 @@
 | `Quotio/Views/Components/IDEScanSheet.swift` | 320 |  |
 | `Quotio/Views/Components/ProviderAccountsGroup.swift` | 227 |  |
 | `Quotio/Views/Components/ProviderDisclosureGroup.swift` | 129 |  |
-| `Quotio/Views/Components/ProviderIcon.swift` | 69 |  |
+| `Quotio/Views/Components/ProviderIcon.swift` | 83 |  |
 | `Quotio/Views/Components/ProxyRequiredView.swift` | 103 |  |
 | `Quotio/Views/Components/QuotaCard.swift` | 382 |  |
 | `Quotio/Views/Components/QuotaProgressBar.swift` | 45 |  |

@@ -2,7 +2,7 @@
 
 [← Back to MODULE](MODULE.md) | [← Back to INDEX](../../INDEX.md)
 
-Symbol maps for 3 large files in this module.
+Symbol maps for 4 large files in this module.
 
 ## Quotio/Services/AgentConfigurationService.swift (1385 lines)
 
@@ -15,20 +15,20 @@ Symbol maps for 3 large files in this module.
 | 111 | fn | readClaudeCodeConfig | (private) |
 | 147 | fn | readCodexConfig | (private) |
 | 190 | fn | readGeminiCLIConfig | (private) |
-| 229 | fn | readAmpConfig | (private) |
-| 252 | fn | readOpenCodeConfig | (private) |
-| 289 | fn | readFactoryDroidConfig | (private) |
-| 326 | fn | extractTOMLValue | (private) |
-| 337 | fn | extractExportValue | (private) |
-| 349 | fn | generateConfiguration | (internal) |
-| 388 | fn | generateDefaultConfiguration | (private) |
-| 404 | fn | generateClaudeCodeDefaultConfig | (private) |
-| 489 | fn | generateCodexDefaultConfig | (private) |
-| 554 | fn | generateGeminiCLIDefaultConfig | (private) |
-| 582 | fn | generateAmpDefaultConfig | (private) |
-| 628 | fn | generateOpenCodeDefaultConfig | (private) |
-| 677 | fn | generateFactoryDroidDefaultConfig | (private) |
-| 742 | fn | generateClaudeCodeConfig | (private) |
+| 228 | fn | readAmpConfig | (private) |
+| 251 | fn | readOpenCodeConfig | (private) |
+| 288 | fn | readFactoryDroidConfig | (private) |
+| 325 | fn | extractTOMLValue | (private) |
+| 336 | fn | extractExportValue | (private) |
+| 348 | fn | generateConfiguration | (internal) |
+| 387 | fn | generateDefaultConfiguration | (private) |
+| 403 | fn | generateClaudeCodeDefaultConfig | (private) |
+| 488 | fn | generateCodexDefaultConfig | (private) |
+| 553 | fn | generateGeminiCLIDefaultConfig | (private) |
+| 581 | fn | generateAmpDefaultConfig | (private) |
+| 627 | fn | generateOpenCodeDefaultConfig | (private) |
+| 676 | fn | generateFactoryDroidDefaultConfig | (private) |
+| 741 | fn | generateClaudeCodeConfig | (private) |
 | 863 | fn | generateCodexConfig | (private) |
 | 941 | fn | generateGeminiCLIConfig | (private) |
 | 984 | fn | generateAmpConfig | (private) |
@@ -37,6 +37,36 @@ Symbol maps for 3 large files in this module.
 | 1194 | fn | generateFactoryDroidConfig | (private) |
 | 1264 | fn | fetchAvailableModels | (internal) |
 | 1319 | fn | testConnection | (internal) |
+
+## Quotio/Services/AtomFeedUpdateService.swift (511 lines)
+
+| Line | Kind | Name | Visibility |
+| ---- | ---- | ---- | ---------- |
+| 14 | struct | AtomFeedEntry | (internal) |
+| 24 | enum | AtomFeedResult | (internal) |
+| 35 | struct | CachedFeedState | (internal) |
+| 44 | class | AtomFeedUpdateService | (internal) |
+| 111 | fn | checkForCLIProxyUpdate | (internal) |
+| 150 | fn | checkForQuotioUpdate | (internal) |
+| 185 | fn | forceCheckForCLIProxyUpdate | (internal) |
+| 196 | fn | startPolling | (internal) |
+| 218 | fn | stopPolling | (internal) |
+| 228 | fn | performPollingCheck | (private) |
+| 258 | fn | manualCheckForCLIProxyUpdate | (internal) |
+| 276 | fn | resetNotificationState | (internal) |
+| 282 | fn | fetchAtomFeed | (private) |
+| 328 | fn | parseAtomFeed | (private) |
+| 333 | fn | saveCacheState | (private) |
+| 346 | fn | loadCacheState | (private) |
+| 357 | fn | isNewerVersion | (private) |
+| 358 | fn | parseVersion | (internal) |
+| 396 | class | AtomFeedParser | (private) |
+| 416 | method | init | (internal) |
+| 421 | fn | parse | (internal) |
+| 428 | fn | parser | (internal) |
+| 444 | fn | parser | (internal) |
+| 448 | fn | parser | (internal) |
+| 493 | enum | AtomFeedError | (internal) |
 
 ## Quotio/Services/ManagementAPIClient.swift (718 lines)
 

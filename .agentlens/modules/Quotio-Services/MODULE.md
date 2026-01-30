@@ -2,7 +2,7 @@
 
 [← Back to INDEX](../../INDEX.md)
 
-**Type:** implicit | **Files:** 23
+**Type:** implicit | **Files:** 24
 
 ## Files
 
@@ -10,6 +10,7 @@
 | ---- | ----- | ----- |
 | `Quotio/Services/AgentConfigurationService.swift` | 1385 | 📊 |
 | `Quotio/Services/AgentDetectionService.swift` | 252 |  |
+| `Quotio/Services/AtomFeedUpdateService.swift` | 511 | 📊 |
 | `Quotio/Services/CLIExecutor.swift` | 430 |  |
 | `Quotio/Services/ChecksumVerifier.swift` | 78 |  |
 | `Quotio/Services/CompatibilityChecker.swift` | 123 |  |
