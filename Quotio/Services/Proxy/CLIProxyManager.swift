@@ -422,27 +422,6 @@ final class CLIProxyManager {
         restartProxyIfRunning()
     }
 
-    /// Restart the proxy if it is currently running.
-    /// This is used to apply configuration changes that require a restart.
-    private func restartProxyIfRunning() {
-        guard proxyStatus.running else { return }
-
-        Task {
-            NSLog("[CLIProxyManager] Restarting proxy to apply configuration changes...")
-            stop()
-            // Wait 0.5s for ports to clear
-            try? await Task.sleep(nanoseconds: 500_000_000)
-
-            do {
-                try await start()
-                NSLog("[CLIProxyManager] Proxy restarted successfully")
-            } catch {
-                NSLog("[CLIProxyManager] Failed to restart proxy: \(error)")
-                lastError = "Failed to restart: \(error.localizedDescription)"
-            }
-        }
-    }
-
     private func ensureConfigExists() {
         guard !FileManager.default.fileExists(atPath: configPath) else { return }
 
