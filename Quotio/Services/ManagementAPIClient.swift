@@ -55,8 +55,7 @@ actor ManagementAPIClient {
     
     private static func log(_ message: String) {
         guard enableDiagnosticLogging else { return }
-        let timestamp = ISO8601DateFormatter().string(from: Date())
-        Log.api("[\\(timestamp)] \\(message)")
+        Log.api("\(message)")
     }
     
     private static func incrementActiveRequests() -> Int {
@@ -119,7 +118,7 @@ actor ManagementAPIClient {
         Self.log("[\(clientId)] Remote client created, timeout=\(Int(timeoutConfig.requestTimeout))/\(Int(timeoutConfig.resourceTimeout))s, verifySSL=\(verifySSL)")
         
         if !verifySSL {
-            Log.warning("SSL verification disabled for \\(baseURL). Connection is vulnerable to MITM attacks.")
+            Log.warning("SSL verification disabled for \(baseURL). Connection is vulnerable to MITM attacks.")
         }
     }
     
@@ -191,7 +190,8 @@ actor ManagementAPIClient {
             // Exponential backoff: 0.5s, 1s, 2s, 3s (total ~6.5s wait for proxy restart)
             if retryCount < timeoutConfig.maxRetries && (error.code == .timedOut || error.code == .networkConnectionLost || error.code == .cannotConnectToHost) {
                 let backoffSeconds = min(pow(2.0, Double(retryCount)) * 0.5, 3.0)  // Cap at 3 seconds
-                Self.log("[\(clientId)][\(requestId)] RETRYING after \(String(format: \"%.1f\", backoffSeconds))s (attempt \(retryCount + 1)/\(timeoutConfig.maxRetries))...")
+                let backoffStr = String(format: "%.1f", backoffSeconds)
+                Self.log("[\(clientId)][\(requestId)] RETRYING after \(backoffStr)s (attempt \(retryCount + 1)/\(timeoutConfig.maxRetries))...")
                 
                 // Exponential backoff delay
                 try? await Task.sleep(nanoseconds: UInt64(backoffSeconds * 1_000_000_000))
@@ -513,16 +513,17 @@ private final class SessionDelegate: NSObject, URLSessionDelegate, URLSessionTas
     
     func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
         let errorMsg = error?.localizedDescription ?? "none"
-        Log.api("[\\(clientId)] Session invalidated, error=\\(errorMsg)")
+        Log.api("[\(clientId)] Session invalidated, error=\(errorMsg)")
     }
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didFinishCollecting metrics: URLSessionTaskMetrics) {
         guard ManagementAPIClient.enableDiagnosticLogging else { return }
         
         for metric in metrics.transactionMetrics {
-            let reused = metric.isReusedConnection ? "reused" : "new"
-            let duration = metric.responseEndDate?.timeIntervalSince(metric.requestStartDate ?? Date()) ?? 0
-            Log.api("[\\(clientId)] Connection: \\(reused), duration=\\(String(format: \"%.3f\", duration))s")
+            let connectionType = metric.isReusedConnection ? "reused" : "new"
+            let durationSec = metric.responseEndDate?.timeIntervalSince(metric.requestStartDate ?? Date()) ?? 0
+            let durationStr = String(format: "%.3f", durationSec)
+            Log.api("[\(clientId)] Connection: \(connectionType), duration=\(durationStr)s")
         }
     }
     

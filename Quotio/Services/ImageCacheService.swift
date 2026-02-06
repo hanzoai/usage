@@ -116,16 +116,16 @@ final class ImageCacheService: @unchecked Sendable {
             forName: NSApplication.didResignActiveNotification,
             object: nil,
             queue: .main
-        ) { [cache] _ in
-            cache.countLimit = 20
+        ) { [weak self] _ in
+            self?.cache.countLimit = 20
         }
         
         NotificationCenter.default.addObserver(
             forName: NSApplication.didBecomeActiveNotification,
             object: nil,
             queue: .main
-        ) { [cache] _ in
-            cache.countLimit = 50
+        ) { [weak self] _ in
+            self?.cache.countLimit = 50
         }
     }
 }

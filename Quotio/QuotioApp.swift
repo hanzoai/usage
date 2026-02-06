@@ -240,6 +240,7 @@ struct QuotioApp: App {
     }
 }
 
+@MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private nonisolated(unsafe) var windowWillCloseObserver: NSObjectProtocol?
     private nonisolated(unsafe) var windowDidBecomeKeyObserver: NSObjectProtocol?
@@ -282,7 +283,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             object: nil,
             queue: .main
         ) { [weak self] _ in
-            Task { @MainActor in
+            MainActor.assumeIsolated {
                 self?.handleWindowWillClose()
             }
         }
@@ -292,7 +293,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             object: nil,
             queue: .main
         ) { [weak self] _ in
-            Task { @MainActor in
+            MainActor.assumeIsolated {
                 self?.handleWindowDidBecomeKey()
             }
         }

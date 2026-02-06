@@ -492,7 +492,7 @@ actor AgentConfigurationService {
         
         if mode == .automatic && fileManager.fileExists(atPath: configPath) {
             do {
-                var content = try String(contentsOfFile: configPath, encoding: .utf8)
+                let content = try String(contentsOfFile: configPath, encoding: .utf8)
                 
                 // Create backup
                 let backupPath = "\(configPath).backup.\(Int(Date().timeIntervalSince1970))"
