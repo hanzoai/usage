@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.13.0] - 2026-02-15
+
 ### Added
 
 - **oauth**: Add copy URL option for OAuth login flow (#325)
