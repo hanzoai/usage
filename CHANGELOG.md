@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **agent-config**: Preserve Codex config when applying proxy setup (#334)
+  - Fix configuration loss when Codex is already configured
+  - Use TOML-aware merging to preserve custom Codex settings
+- **oauth**: Don't auto-open browser during OAuth flow (#330)
+  - User clicks 'Open Link' button instead of browser opening automatically
+
 ## [0.13.0] - 2026-02-15
 
 ### Added
