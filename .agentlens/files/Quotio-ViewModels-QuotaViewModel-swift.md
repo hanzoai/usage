@@ -4,7 +4,7 @@
 
 ## Overview
 
-- **Lines:** 1917
+- **Lines:** 1913
 - **Language:** Swift
 - **Symbols:** 92
 - **Public symbols:** 0
@@ -84,27 +84,27 @@
 | 1310 | fn | refreshQuotaForProvider | (internal) | `func refreshQuotaForProvider(_ provider: AIProv...` |
 | 1345 | fn | refreshAutoDetectedProviders | (internal) | `func refreshAutoDetectedProviders() async` |
 | 1352 | fn | startOAuth | (internal) | `func startOAuth(for provider: AIProvider, proje...` |
-| 1395 | fn | startCopilotAuth | (private) | `private func startCopilotAuth() async` |
-| 1412 | fn | startKiroAuth | (private) | `private func startKiroAuth(method: AuthCommand)...` |
-| 1446 | fn | pollCopilotAuthCompletion | (private) | `private func pollCopilotAuthCompletion() async` |
-| 1463 | fn | pollKiroAuthCompletion | (private) | `private func pollKiroAuthCompletion() async` |
-| 1481 | fn | pollOAuthStatus | (private) | `private func pollOAuthStatus(state: String, pro...` |
-| 1509 | fn | cancelOAuth | (internal) | `func cancelOAuth()` |
-| 1513 | fn | deleteAuthFile | (internal) | `func deleteAuthFile(_ file: AuthFile) async` |
-| 1549 | fn | toggleAuthFileDisabled | (internal) | `func toggleAuthFileDisabled(_ file: AuthFile) a...` |
-| 1580 | fn | pruneMenuBarItems | (private) | `private func pruneMenuBarItems()` |
-| 1616 | fn | importVertexServiceAccount | (internal) | `func importVertexServiceAccount(url: URL) async` |
-| 1640 | fn | fetchAPIKeys | (internal) | `func fetchAPIKeys() async` |
-| 1650 | fn | addAPIKey | (internal) | `func addAPIKey(_ key: String) async` |
-| 1662 | fn | updateAPIKey | (internal) | `func updateAPIKey(old: String, new: String) async` |
-| 1674 | fn | deleteAPIKey | (internal) | `func deleteAPIKey(_ key: String) async` |
-| 1687 | fn | checkAccountStatusChanges | (private) | `private func checkAccountStatusChanges()` |
-| 1708 | fn | checkQuotaNotifications | (internal) | `func checkQuotaNotifications()` |
-| 1740 | fn | scanIDEsWithConsent | (internal) | `func scanIDEsWithConsent(options: IDEScanOption...` |
-| 1810 | fn | savePersistedIDEQuotas | (private) | `private func savePersistedIDEQuotas()` |
-| 1833 | fn | loadPersistedIDEQuotas | (private) | `private func loadPersistedIDEQuotas()` |
-| 1895 | fn | shortenAccountKey | (private) | `private func shortenAccountKey(_ key: String) -...` |
-| 1907 | struct | OAuthState | (internal) | `struct OAuthState` |
+| 1391 | fn | startCopilotAuth | (private) | `private func startCopilotAuth() async` |
+| 1408 | fn | startKiroAuth | (private) | `private func startKiroAuth(method: AuthCommand)...` |
+| 1442 | fn | pollCopilotAuthCompletion | (private) | `private func pollCopilotAuthCompletion() async` |
+| 1459 | fn | pollKiroAuthCompletion | (private) | `private func pollKiroAuthCompletion() async` |
+| 1477 | fn | pollOAuthStatus | (private) | `private func pollOAuthStatus(state: String, pro...` |
+| 1505 | fn | cancelOAuth | (internal) | `func cancelOAuth()` |
+| 1509 | fn | deleteAuthFile | (internal) | `func deleteAuthFile(_ file: AuthFile) async` |
+| 1545 | fn | toggleAuthFileDisabled | (internal) | `func toggleAuthFileDisabled(_ file: AuthFile) a...` |
+| 1576 | fn | pruneMenuBarItems | (private) | `private func pruneMenuBarItems()` |
+| 1612 | fn | importVertexServiceAccount | (internal) | `func importVertexServiceAccount(url: URL) async` |
+| 1636 | fn | fetchAPIKeys | (internal) | `func fetchAPIKeys() async` |
+| 1646 | fn | addAPIKey | (internal) | `func addAPIKey(_ key: String) async` |
+| 1658 | fn | updateAPIKey | (internal) | `func updateAPIKey(old: String, new: String) async` |
+| 1670 | fn | deleteAPIKey | (internal) | `func deleteAPIKey(_ key: String) async` |
+| 1683 | fn | checkAccountStatusChanges | (private) | `private func checkAccountStatusChanges()` |
+| 1704 | fn | checkQuotaNotifications | (internal) | `func checkQuotaNotifications()` |
+| 1736 | fn | scanIDEsWithConsent | (internal) | `func scanIDEsWithConsent(options: IDEScanOption...` |
+| 1806 | fn | savePersistedIDEQuotas | (private) | `private func savePersistedIDEQuotas()` |
+| 1829 | fn | loadPersistedIDEQuotas | (private) | `private func loadPersistedIDEQuotas()` |
+| 1891 | fn | shortenAccountKey | (private) | `private func shortenAccountKey(_ key: String) -...` |
+| 1903 | struct | OAuthState | (internal) | `struct OAuthState` |
 
 ## Memory Markers
 

@@ -30,7 +30,7 @@ Symbol maps for 9 large files in this module.
 | 574 | struct | ProxyStatusRow | (internal) |
 | 605 | struct | QuotaRefreshStatusRow | (internal) |
 
-## Quotio/Services/AgentConfigurationService.swift (1410 lines)
+## Quotio/Services/AgentConfigurationService.swift (1609 lines)
 
 | Line | Kind | Name | Visibility |
 | ---- | ---- | ---- | ---------- |
@@ -46,23 +46,32 @@ Symbol maps for 9 large files in this module.
 | 288 | fn | readFactoryDroidConfig | (private) |
 | 325 | fn | extractTOMLValue | (private) |
 | 336 | fn | extractExportValue | (private) |
-| 348 | fn | generateConfiguration | (internal) |
-| 387 | fn | generateDefaultConfiguration | (private) |
-| 403 | fn | generateClaudeCodeDefaultConfig | (private) |
-| 488 | fn | generateCodexDefaultConfig | (private) |
-| 553 | fn | generateGeminiCLIDefaultConfig | (private) |
-| 581 | fn | generateAmpDefaultConfig | (private) |
-| 627 | fn | generateOpenCodeDefaultConfig | (private) |
-| 676 | fn | generateFactoryDroidDefaultConfig | (private) |
-| 741 | fn | generateClaudeCodeConfig | (private) |
-| 863 | fn | generateCodexConfig | (private) |
-| 941 | fn | generateGeminiCLIConfig | (private) |
-| 984 | fn | generateAmpConfig | (private) |
-| 1067 | fn | generateOpenCodeConfig | (private) |
-| 1158 | fn | buildOpenCodeModelConfig | (private) |
-| 1210 | fn | generateFactoryDroidConfig | (private) |
-| 1280 | fn | fetchAvailableModels | (internal) |
-| 1335 | fn | testConnection | (internal) |
+| 351 | fn | escapeTOMLString | (private) |
+| 379 | fn | buildManagedCodexTOML | (private) |
+| 396 | fn | parseTOMLSectionName | (private) |
+| 414 | fn | isCodexManagedTopLevelKey | (private) |
+| 423 | fn | splitManagedCodexConfig | (private) |
+| 431 | fn | extractManagedCodexBanner | (private) |
+| 440 | fn | filterExistingCodexLines | (private) |
+| 481 | fn | composeMergedCodexConfig | (private) |
+| 552 | fn | mergeCodexConfig | (private) |
+| 559 | fn | generateConfiguration | (internal) |
+| 598 | fn | generateDefaultConfiguration | (private) |
+| 614 | fn | generateClaudeCodeDefaultConfig | (private) |
+| 699 | fn | generateCodexDefaultConfig | (private) |
+| 746 | fn | generateGeminiCLIDefaultConfig | (private) |
+| 774 | fn | generateAmpDefaultConfig | (private) |
+| 820 | fn | generateOpenCodeDefaultConfig | (private) |
+| 869 | fn | generateFactoryDroidDefaultConfig | (private) |
+| 934 | fn | generateClaudeCodeConfig | (private) |
+| 1056 | fn | generateCodexConfig | (private) |
+| 1140 | fn | generateGeminiCLIConfig | (private) |
+| 1183 | fn | generateAmpConfig | (private) |
+| 1266 | fn | generateOpenCodeConfig | (private) |
+| 1357 | fn | buildOpenCodeModelConfig | (private) |
+| 1409 | fn | generateFactoryDroidConfig | (private) |
+| 1479 | fn | fetchAvailableModels | (internal) |
+| 1534 | fn | testConnection | (internal) |
 
 ## Quotio/Services/AtomFeedUpdateService.swift (533 lines)
 
@@ -291,7 +300,7 @@ Symbol maps for 9 large files in this module.
 | 1398 | struct | MenuActionsView | (private) |
 | 1436 | struct | MenuBarActionButton | (private) |
 
-## Quotio/ViewModels/QuotaViewModel.swift (1917 lines)
+## Quotio/ViewModels/QuotaViewModel.swift (1913 lines)
 
 | Line | Kind | Name | Visibility |
 | ---- | ---- | ---- | ---------- |
@@ -366,27 +375,27 @@ Symbol maps for 9 large files in this module.
 | 1310 | fn | refreshQuotaForProvider | (internal) |
 | 1345 | fn | refreshAutoDetectedProviders | (internal) |
 | 1352 | fn | startOAuth | (internal) |
-| 1395 | fn | startCopilotAuth | (private) |
-| 1412 | fn | startKiroAuth | (private) |
-| 1446 | fn | pollCopilotAuthCompletion | (private) |
-| 1463 | fn | pollKiroAuthCompletion | (private) |
-| 1481 | fn | pollOAuthStatus | (private) |
-| 1509 | fn | cancelOAuth | (internal) |
-| 1513 | fn | deleteAuthFile | (internal) |
-| 1549 | fn | toggleAuthFileDisabled | (internal) |
-| 1580 | fn | pruneMenuBarItems | (private) |
-| 1616 | fn | importVertexServiceAccount | (internal) |
-| 1640 | fn | fetchAPIKeys | (internal) |
-| 1650 | fn | addAPIKey | (internal) |
-| 1662 | fn | updateAPIKey | (internal) |
-| 1674 | fn | deleteAPIKey | (internal) |
-| 1687 | fn | checkAccountStatusChanges | (private) |
-| 1708 | fn | checkQuotaNotifications | (internal) |
-| 1740 | fn | scanIDEsWithConsent | (internal) |
-| 1810 | fn | savePersistedIDEQuotas | (private) |
-| 1833 | fn | loadPersistedIDEQuotas | (private) |
-| 1895 | fn | shortenAccountKey | (private) |
-| 1907 | struct | OAuthState | (internal) |
+| 1391 | fn | startCopilotAuth | (private) |
+| 1408 | fn | startKiroAuth | (private) |
+| 1442 | fn | pollCopilotAuthCompletion | (private) |
+| 1459 | fn | pollKiroAuthCompletion | (private) |
+| 1477 | fn | pollOAuthStatus | (private) |
+| 1505 | fn | cancelOAuth | (internal) |
+| 1509 | fn | deleteAuthFile | (internal) |
+| 1545 | fn | toggleAuthFileDisabled | (internal) |
+| 1576 | fn | pruneMenuBarItems | (private) |
+| 1612 | fn | importVertexServiceAccount | (internal) |
+| 1636 | fn | fetchAPIKeys | (internal) |
+| 1646 | fn | addAPIKey | (internal) |
+| 1658 | fn | updateAPIKey | (internal) |
+| 1670 | fn | deleteAPIKey | (internal) |
+| 1683 | fn | checkAccountStatusChanges | (private) |
+| 1704 | fn | checkQuotaNotifications | (internal) |
+| 1736 | fn | scanIDEsWithConsent | (internal) |
+| 1806 | fn | savePersistedIDEQuotas | (private) |
+| 1829 | fn | loadPersistedIDEQuotas | (private) |
+| 1891 | fn | shortenAccountKey | (private) |
+| 1903 | struct | OAuthState | (internal) |
 
 ## scripts/capture-screenshots.ts (763 lines)
 
