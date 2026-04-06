@@ -235,7 +235,7 @@ Symbol maps for 9 large files in this module.
 | 1941 | fn | findPreviousVersion | (private) |
 | 1954 | fn | migrateToVersionedStorage | (internal) |
 
-## Quotio/Services/Proxy/ProxyBridge.swift (1091 lines)
+## Quotio/Services/Proxy/ProxyBridge.swift (1093 lines)
 
 | Line | Kind | Name | Visibility |
 | ---- | ---- | ---- | ---------- |
