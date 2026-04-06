@@ -5,9 +5,31 @@
 ## Summary
 
 | High 🔴 | Medium 🟡 | Low 🟢 |
-| 0 | 0 | 11 |
+| 1 | 0 | 15 |
+
+## 🔴 High Priority
+
+### `WARNING` (Quotio/Services/LaunchAtLoginManager.swift:97)
+
+> if app is not in /Applications (registration may fail or be non-persistent)
 
 ## 🟢 Low Priority
+
+### `NOTE` (Quotio/Services/AgentDetectionService.swift:16)
+
+> Only checks file existence (metadata), does NOT read file content
+
+### `NOTE` (Quotio/Services/AgentDetectionService.swift:92)
+
+> May not work in GUI apps due to limited PATH inheritance
+
+### `NOTE` (Quotio/Services/AgentDetectionService.swift:98)
+
+> Only checks file existence (metadata), does NOT read file content
+
+### `NOTE` (Quotio/Services/CLIExecutor.swift:33)
+
+> Only checks file existence (metadata), does NOT read file content
 
 ### `NOTE` (Quotio/Services/Proxy/CLIProxyManager.swift:224)
 
@@ -37,19 +59,19 @@
 
 > Cursor and Trae removed from auto-refresh to address privacy concerns (issue #29)
 
-### `NOTE` (Quotio/ViewModels/QuotaViewModel.swift:1183)
+### `NOTE` (Quotio/ViewModels/QuotaViewModel.swift:1181)
 
 > Cursor and Trae removed from auto-refresh (issue #29)
 
-### `NOTE` (Quotio/ViewModels/QuotaViewModel.swift:1208)
+### `NOTE` (Quotio/ViewModels/QuotaViewModel.swift:1206)
 
 > Cursor and Trae require explicit user scan (issue #29)
 
-### `NOTE` (Quotio/ViewModels/QuotaViewModel.swift:1218)
+### `NOTE` (Quotio/ViewModels/QuotaViewModel.swift:1216)
 
 > Cursor and Trae removed - require explicit scan (issue #29)
 
-### `NOTE` (Quotio/ViewModels/QuotaViewModel.swift:1273)
+### `NOTE` (Quotio/ViewModels/QuotaViewModel.swift:1271)
 
 > Don't call detectActiveAccount() here - already set by switch operation
 
