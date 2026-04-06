@@ -30,7 +30,7 @@ Symbol maps for 9 large files in this module.
 | 574 | struct | ProxyStatusRow | (internal) |
 | 605 | struct | QuotaRefreshStatusRow | (internal) |
 
-## Quotio/Services/AgentConfigurationService.swift (1609 lines)
+## Quotio/Services/AgentConfigurationService.swift (1610 lines)
 
 | Line | Kind | Name | Visibility |
 | ---- | ---- | ---- | ---------- |
@@ -68,10 +68,10 @@ Symbol maps for 9 large files in this module.
 | 1140 | fn | generateGeminiCLIConfig | (private) |
 | 1183 | fn | generateAmpConfig | (private) |
 | 1266 | fn | generateOpenCodeConfig | (private) |
-| 1357 | fn | buildOpenCodeModelConfig | (private) |
-| 1409 | fn | generateFactoryDroidConfig | (private) |
-| 1479 | fn | fetchAvailableModels | (internal) |
-| 1534 | fn | testConnection | (internal) |
+| 1358 | fn | buildOpenCodeModelConfig | (private) |
+| 1410 | fn | generateFactoryDroidConfig | (private) |
+| 1480 | fn | fetchAvailableModels | (internal) |
+| 1535 | fn | testConnection | (internal) |
 
 ## Quotio/Services/AtomFeedUpdateService.swift (533 lines)
 
