@@ -4,7 +4,7 @@
 
 Symbol maps for 9 large files in this module.
 
-## Quotio/QuotioApp.swift (633 lines)
+## Quotio/QuotioApp.swift (818 lines)
 
 | Line | Kind | Name | Visibility |
 | ---- | ---- | ---- | ---------- |
@@ -19,16 +19,26 @@ Symbol maps for 9 large files in this module.
 | 163 | fn | extractEmail | (private) |
 | 172 | struct | QuotioApp | (internal) |
 | 273 | class | AppDelegate | (internal) |
-| 277 | fn | applicationDidFinishLaunching | (internal) |
-| 331 | fn | applicationShouldTerminateAfterLastWindowClosed | (internal) |
-| 335 | fn | applicationShouldHandleReopen | (internal) |
-| 353 | fn | applicationWillTerminate | (internal) |
-| 377 | fn | handleWindowDidBecomeKey | (private) |
-| 381 | fn | handleWindowWillClose | (private) |
-| 398 | struct | ContentView | (internal) |
-| 531 | struct | RemoteStatusRow | (internal) |
-| 574 | struct | ProxyStatusRow | (internal) |
-| 605 | struct | QuotaRefreshStatusRow | (internal) |
+| 283 | fn | applicationDidFinishLaunching | (internal) |
+| 359 | fn | applicationShouldTerminateAfterLastWindowClosed | (internal) |
+| 363 | fn | applicationShouldHandleReopen | (internal) |
+| 372 | fn | ensureRegularPolicyForMainWindowForeground | (private) |
+| 386 | fn | promoteToRegularPolicyIfNeeded | (private) |
+| 397 | fn | promoteToRegularPolicyWithRetry | (private) |
+| 413 | fn | restoreAccessoryPolicyIfNeeded | (private) |
+| 425 | fn | bringMainWindowToFront | (private) |
+| 458 | fn | mainWindow | (private) |
+| 469 | fn | isDashboardWindowCandidate | (private) |
+| 474 | fn | applicationWillTerminate | (internal) |
+| 498 | fn | applicationDidBecomeActive | (internal) |
+| 517 | fn | handleWindowDidBecomeMain | (private) |
+| 524 | fn | handleApplicationDidResignActive | (private) |
+| 540 | fn | handleWindowDidBecomeKey | (private) |
+| 554 | fn | handleWindowWillClose | (private) |
+| 583 | struct | ContentView | (internal) |
+| 716 | struct | RemoteStatusRow | (internal) |
+| 759 | struct | ProxyStatusRow | (internal) |
+| 790 | struct | QuotaRefreshStatusRow | (internal) |
 
 ## Quotio/Services/AgentConfigurationService.swift (1610 lines)
 
