@@ -4,9 +4,9 @@
 
 ## Overview
 
-- **Lines:** 2180
+- **Lines:** 2204
 - **Language:** Swift
-- **Symbols:** 75
+- **Symbols:** 76
 - **Public symbols:** 0
 
 ## Symbol Table
@@ -88,6 +88,7 @@
 | 2114 | fn | defaultBinarySource | (private) | `private func defaultBinarySource() -> ProxyBina...` |
 | 2121 | fn | migrateLegacyVersionedStorageIfNeeded | (private) | `private func migrateLegacyVersionedStorageIfNee...` |
 | 2149 | fn | resolveBundledPlusBinaryPath | (private) | `private func resolveBundledPlusBinaryPath() -> ...` |
+| 2154 | fn | firstExistingRegularFile | (internal) | `func firstExistingRegularFile(in candidates: [U...` |
 
 ## Memory Markers
 

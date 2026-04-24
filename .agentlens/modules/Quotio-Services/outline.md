@@ -4,7 +4,7 @@
 
 Symbol maps for 4 large files in this module.
 
-## Quotio/Services/AgentConfigurationService.swift (1609 lines)
+## Quotio/Services/AgentConfigurationService.swift (1610 lines)
 
 | Line | Kind | Name | Visibility |
 | ---- | ---- | ---- | ---------- |
@@ -42,12 +42,12 @@ Symbol maps for 4 large files in this module.
 | 1140 | fn | generateGeminiCLIConfig | (private) |
 | 1183 | fn | generateAmpConfig | (private) |
 | 1266 | fn | generateOpenCodeConfig | (private) |
-| 1357 | fn | buildOpenCodeModelConfig | (private) |
-| 1409 | fn | generateFactoryDroidConfig | (private) |
-| 1479 | fn | fetchAvailableModels | (internal) |
-| 1534 | fn | testConnection | (internal) |
+| 1358 | fn | buildOpenCodeModelConfig | (private) |
+| 1410 | fn | generateFactoryDroidConfig | (private) |
+| 1480 | fn | fetchAvailableModels | (internal) |
+| 1535 | fn | testConnection | (internal) |
 
-## Quotio/Services/AtomFeedUpdateService.swift (533 lines)
+## Quotio/Services/AtomFeedUpdateService.swift (557 lines)
 
 | Line | Kind | Name | Visibility |
 | ---- | ---- | ---- | ---------- |
@@ -55,27 +55,28 @@ Symbol maps for 4 large files in this module.
 | 24 | enum | AtomFeedResult | (internal) |
 | 35 | struct | CachedFeedState | (internal) |
 | 44 | class | AtomFeedUpdateService | (internal) |
-| 111 | fn | checkForCLIProxyUpdate | (internal) |
-| 160 | fn | checkForQuotioUpdate | (internal) |
-| 205 | fn | forceCheckForCLIProxyUpdate | (internal) |
-| 216 | fn | startPolling | (internal) |
-| 238 | fn | stopPolling | (internal) |
-| 248 | fn | performPollingCheck | (private) |
-| 280 | fn | manualCheckForCLIProxyUpdate | (internal) |
-| 298 | fn | resetNotificationState | (internal) |
-| 304 | fn | fetchAtomFeed | (private) |
-| 350 | fn | parseAtomFeed | (private) |
-| 355 | fn | saveCacheState | (private) |
-| 368 | fn | loadCacheState | (private) |
-| 379 | fn | isNewerVersion | (private) |
-| 380 | fn | parseVersion | (internal) |
-| 418 | class | AtomFeedParser | (private) |
-| 438 | method | init | (internal) |
-| 443 | fn | parse | (internal) |
-| 450 | fn | parser | (internal) |
-| 466 | fn | parser | (internal) |
-| 470 | fn | parser | (internal) |
-| 515 | enum | AtomFeedError | (internal) |
+| 110 | fn | checkForCLIProxyUpdate | (internal) |
+| 163 | fn | checkForQuotioUpdate | (internal) |
+| 208 | fn | forceCheckForCLIProxyUpdate | (internal) |
+| 223 | fn | startPolling | (internal) |
+| 245 | fn | stopPolling | (internal) |
+| 255 | fn | performPollingCheck | (private) |
+| 293 | fn | manualCheckForCLIProxyUpdate | (internal) |
+| 318 | fn | resetNotificationState | (internal) |
+| 324 | fn | fetchAtomFeed | (private) |
+| 370 | fn | parseAtomFeed | (private) |
+| 375 | fn | saveCacheState | (private) |
+| 388 | fn | cacheKey | (private) |
+| 392 | fn | loadCacheState | (private) |
+| 403 | fn | isNewerVersion | (private) |
+| 404 | fn | parseVersion | (internal) |
+| 442 | class | AtomFeedParser | (private) |
+| 462 | method | init | (internal) |
+| 467 | fn | parse | (internal) |
+| 474 | fn | parser | (internal) |
+| 490 | fn | parser | (internal) |
+| 494 | fn | parser | (internal) |
+| 539 | enum | AtomFeedError | (internal) |
 
 ## Quotio/Services/ManagementAPIClient.swift (732 lines)
 
