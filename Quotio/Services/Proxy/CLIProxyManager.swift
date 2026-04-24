@@ -2148,30 +2148,54 @@ extension CLIProxyManager {
     }
 
     private func resolveBundledPlusBinaryPath() -> String? {
+        let fileManager = FileManager.default
         let binaryName = ProxyBinarySource.plusLocalBinaryName
         let resourceSubdirectory = ProxyBinarySource.plusLocalResourceSubdirectory
+
+        func firstExistingRegularFile(in candidates: [URL?]) -> String? {
+            for candidate in candidates.compactMap({ $0 }) {
+                guard fileManager.fileExists(atPath: candidate.path) else {
+                    continue
+                }
+
+                let values = try? candidate.resourceValues(forKeys: [.isRegularFileKey, .isSymbolicLinkKey])
+                if values?.isRegularFile == true,
+                   values?.isSymbolicLink != true {
+                    return candidate.path
+                }
+            }
+            return nil
+        }
 
         let bundleCandidates: [URL?] = [
             Bundle.main.url(forResource: binaryName, withExtension: nil, subdirectory: resourceSubdirectory),
             Bundle.main.resourceURL?
                 .appendingPathComponent(resourceSubdirectory, isDirectory: true)
                 .appendingPathComponent(binaryName, isDirectory: false),
+            Bundle.main.url(forResource: binaryName, withExtension: nil),
+            Bundle.main.resourceURL?
+                .appendingPathComponent(binaryName, isDirectory: false),
         ]
 
-        for candidate in bundleCandidates.compactMap({ $0 })
-        where FileManager.default.isExecutableFile(atPath: candidate.path) {
-            return candidate.path
+        if let bundledPath = firstExistingRegularFile(in: bundleCandidates) {
+            return bundledPath
         }
 
-        let repoCandidate = URL(fileURLWithPath: #filePath)
+        let repoResourcesRoot = URL(fileURLWithPath: #filePath)
+            .deletingLastPathComponent()
             .deletingLastPathComponent()
             .deletingLastPathComponent()
             .appendingPathComponent("Resources", isDirectory: true)
-            .appendingPathComponent(resourceSubdirectory, isDirectory: true)
-            .appendingPathComponent(binaryName, isDirectory: false)
+        let repoCandidates: [URL?] = [
+            repoResourcesRoot
+                .appendingPathComponent(resourceSubdirectory, isDirectory: true)
+                .appendingPathComponent(binaryName, isDirectory: false),
+            repoResourcesRoot
+                .appendingPathComponent(binaryName, isDirectory: false),
+        ]
 
-        if FileManager.default.isExecutableFile(atPath: repoCandidate.path) {
-            return repoCandidate.path
+        if let repoPath = firstExistingRegularFile(in: repoCandidates) {
+            return repoPath
         }
 
         Log.proxy("Bundled CLIProxyAPIPlus binary not found in app resources or repo resources")

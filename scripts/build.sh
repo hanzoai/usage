@@ -20,7 +20,7 @@ rm -rf "${BUILD_DIR}"
 mkdir -p "${BUILD_DIR}"
 mkdir -p "${RELEASE_DIR}"
 
-print_step 1 3 "Creating Archive"
+print_step 1 4 "Creating Archive"
 start_step_timer "archive"
 
 xcodebuild archive \
@@ -57,7 +57,7 @@ if [ ! -d "${ARCHIVE_PATH}" ]; then
 fi
 log_success "Archive created (${ARCHIVE_DURATION})"
 
-print_step 2 3 "Extracting App"
+print_step 2 4 "Extracting App"
 start_step_timer "extract"
 
 cp -R "${ARCHIVE_PATH}/Products/Applications/${PROJECT_NAME}.app" "${APP_PATH}"
@@ -68,7 +68,13 @@ if [ ! -d "${APP_PATH}" ]; then
 fi
 log_success "App extracted ($(get_step_duration "extract"))"
 
-print_step 3 3 "Ad-hoc Signing"
+print_step 3 4 "Verifying Bundled Proxy"
+start_step_timer "verify-proxy"
+
+bash "${SCRIPT_DIR}/verify-bundled-proxy.sh" "${APP_PATH}"
+log_success "Bundled proxy verified ($(get_step_duration "verify-proxy"))"
+
+print_step 4 4 "Ad-hoc Signing"
 start_step_timer "sign"
 
 codesign --force --deep --sign - "${APP_PATH}" 2>/dev/null || true
