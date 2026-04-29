@@ -23,7 +23,7 @@ Symbol maps for 2 large files in this module.
 | 907 | struct | FilePathRow | (private) |
 | 933 | struct | RawConfigView | (private) |
 
-## Quotio/Views/Components/CustomProviderSheet.swift (993 lines)
+## Quotio/Views/Components/CustomProviderSheet.swift (1035 lines)
 
 | Line | Kind | Name | Visibility |
 | ---- | ---- | ---- | ---------- |
@@ -33,12 +33,16 @@ Symbol maps for 2 large files in this module.
 | 529 | fn | modelMappingRow | (private) |
 | 616 | fn | customHeaderRow | (private) |
 | 696 | fn | loadProviderData | (private) |
-| 713 | fn | fetchModelsFromAPI | (private) |
-| 795 | fn | saveProvider | (private) |
-| 862 | fn | testConnection | (private) |
-| 927 | enum | CustomProviderTestError | (internal) |
-| 955 | struct | ModelsListResponse | (private) |
-| 964 | struct | ModelData | (private) |
-| 973 | fn | toAvailableModel | (internal) |
-| 981 | mod | extension Array | (private) |
+| 713 | fn | normalizedBaseURL | (private) |
+| 735 | fn | makeModelsURL | (private) |
+| 743 | fn | baseURLIncludesVersion | (private) |
+| 748 | fn | isVersionPathSegment | (private) |
+| 759 | fn | fetchModelsFromAPI | (private) |
+| 839 | fn | saveProvider | (private) |
+| 906 | fn | testConnection | (private) |
+| 969 | enum | CustomProviderTestError | (internal) |
+| 997 | struct | ModelsListResponse | (private) |
+| 1006 | struct | ModelData | (private) |
+| 1015 | fn | toAvailableModel | (internal) |
+| 1023 | mod | extension Array | (private) |
 
