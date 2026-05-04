@@ -17,7 +17,7 @@
 | `Quotio/Models/FallbackModels.swift` | 190 |  |
 | `Quotio/Models/IDEScanSettings.swift` | 168 |  |
 | `Quotio/Models/MenuBarSettings.swift` | 632 | 📊 |
-| `Quotio/Models/Models.swift` | 640 | 📊 |
+| `Quotio/Models/Models.swift` | 658 | 📊 |
 | `Quotio/Models/OperatingMode.swift` | 370 |  |
 | `Quotio/Models/ProxyVersionModels.swift` | 339 |  |
 | `Quotio/Models/RequestLog.swift` | 433 |  |

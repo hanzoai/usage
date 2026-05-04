@@ -4,7 +4,7 @@
 
 ## Overview
 
-- **Lines:** 1627
+- **Lines:** 1644
 - **Language:** Swift
 - **Symbols:** 29
 - **Public symbols:** 0
@@ -22,24 +22,24 @@
 | 240 | struct | ProviderSegmentButton | (private) | `struct ProviderSegmentButton` |
 | 318 | struct | QuotaStatusDot | (private) | `struct QuotaStatusDot` |
 | 337 | struct | ProviderQuotaView | (private) | `struct ProviderQuotaView` |
-| 419 | struct | AccountInfo | (private) | `struct AccountInfo` |
-| 431 | struct | AccountQuotaCardV2 | (private) | `struct AccountQuotaCardV2` |
-| 843 | fn | standardContentByStyle | (private) | `@ViewBuilder   private func standardContentBySt...` |
-| 871 | struct | PlanBadgeV2Compact | (private) | `struct PlanBadgeV2Compact` |
-| 925 | struct | PlanBadgeV2 | (private) | `struct PlanBadgeV2` |
-| 980 | struct | SubscriptionBadgeV2 | (private) | `struct SubscriptionBadgeV2` |
-| 1021 | struct | AntigravityDisplayGroup | (private) | `struct AntigravityDisplayGroup` |
-| 1031 | struct | AntigravityGroupRow | (private) | `struct AntigravityGroupRow` |
-| 1108 | struct | AntigravityLowestBarLayout | (private) | `struct AntigravityLowestBarLayout` |
-| 1127 | fn | displayPercent | (private) | `private func displayPercent(for remainingPercen...` |
-| 1189 | struct | AntigravityRingLayout | (private) | `struct AntigravityRingLayout` |
-| 1201 | fn | displayPercent | (private) | `private func displayPercent(for remainingPercen...` |
-| 1230 | struct | StandardLowestBarLayout | (private) | `struct StandardLowestBarLayout` |
-| 1249 | fn | displayPercent | (private) | `private func displayPercent(for remainingPercen...` |
-| 1322 | struct | StandardRingLayout | (private) | `struct StandardRingLayout` |
-| 1334 | fn | displayPercent | (private) | `private func displayPercent(for remainingPercen...` |
-| 1369 | struct | AntigravityModelsDetailSheet | (private) | `struct AntigravityModelsDetailSheet` |
-| 1438 | struct | ModelDetailCard | (private) | `struct ModelDetailCard` |
-| 1505 | struct | UsageRowV2 | (private) | `struct UsageRowV2` |
-| 1593 | struct | QuotaLoadingView | (private) | `struct QuotaLoadingView` |
+| 436 | struct | AccountInfo | (private) | `struct AccountInfo` |
+| 448 | struct | AccountQuotaCardV2 | (private) | `struct AccountQuotaCardV2` |
+| 860 | fn | standardContentByStyle | (private) | `@ViewBuilder   private func standardContentBySt...` |
+| 888 | struct | PlanBadgeV2Compact | (private) | `struct PlanBadgeV2Compact` |
+| 942 | struct | PlanBadgeV2 | (private) | `struct PlanBadgeV2` |
+| 997 | struct | SubscriptionBadgeV2 | (private) | `struct SubscriptionBadgeV2` |
+| 1038 | struct | AntigravityDisplayGroup | (private) | `struct AntigravityDisplayGroup` |
+| 1048 | struct | AntigravityGroupRow | (private) | `struct AntigravityGroupRow` |
+| 1125 | struct | AntigravityLowestBarLayout | (private) | `struct AntigravityLowestBarLayout` |
+| 1144 | fn | displayPercent | (private) | `private func displayPercent(for remainingPercen...` |
+| 1206 | struct | AntigravityRingLayout | (private) | `struct AntigravityRingLayout` |
+| 1218 | fn | displayPercent | (private) | `private func displayPercent(for remainingPercen...` |
+| 1247 | struct | StandardLowestBarLayout | (private) | `struct StandardLowestBarLayout` |
+| 1266 | fn | displayPercent | (private) | `private func displayPercent(for remainingPercen...` |
+| 1339 | struct | StandardRingLayout | (private) | `struct StandardRingLayout` |
+| 1351 | fn | displayPercent | (private) | `private func displayPercent(for remainingPercen...` |
+| 1386 | struct | AntigravityModelsDetailSheet | (private) | `struct AntigravityModelsDetailSheet` |
+| 1455 | struct | ModelDetailCard | (private) | `struct ModelDetailCard` |
+| 1522 | struct | UsageRowV2 | (private) | `struct UsageRowV2` |
+| 1610 | struct | QuotaLoadingView | (private) | `struct QuotaLoadingView` |
 
