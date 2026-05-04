@@ -177,7 +177,7 @@ Symbol maps for 9 large files in this module.
 | 708 | method | init | (internal) |
 | 722 | fn | encode | (internal) |
 
-## Quotio/Services/Proxy/CLIProxyManager.swift (2204 lines)
+## Quotio/Services/Proxy/CLIProxyManager.swift (2198 lines)
 
 | Line | Kind | Name | Visibility |
 | ---- | ---- | ---- | ---------- |
@@ -202,61 +202,61 @@ Symbol maps for 9 large files in this module.
 | 568 | fn | downloadAndInstallBinary | (internal) |
 | 626 | fn | fetchLatestRelease | (private) |
 | 651 | fn | findCompatibleAsset | (private) |
-| 676 | fn | downloadAsset | (private) |
-| 695 | fn | extractAndInstall | (private) |
-| 757 | fn | findBinaryInDirectory | (private) |
-| 790 | fn | start | (internal) |
-| 922 | fn | stop | (internal) |
-| 974 | fn | startHealthMonitor | (private) |
-| 988 | fn | stopHealthMonitor | (private) |
-| 993 | fn | performHealthCheck | (private) |
-| 1056 | fn | cleanupOrphanProcesses | (private) |
-| 1119 | fn | terminateAuthProcess | (internal) |
-| 1125 | fn | toggle | (internal) |
-| 1133 | fn | copyEndpointToClipboard | (internal) |
-| 1138 | fn | revealInFinder | (internal) |
-| 1145 | enum | ProxyError | (internal) |
-| 1178 | enum | AuthCommand | (internal) |
-| 1216 | struct | AuthCommandResult | (internal) |
-| 1222 | mod | extension CLIProxyManager | (internal) |
-| 1223 | fn | runAuthCommand | (internal) |
-| 1255 | fn | appendOutput | (internal) |
-| 1259 | fn | tryResume | (internal) |
-| 1270 | fn | safeResume | (internal) |
-| 1370 | mod | extension CLIProxyManager | (internal) |
-| 1403 | fn | isLegacyAuthWarningNeeded | (internal) |
-| 1408 | fn | sourceInstallHint | (internal) |
-| 1412 | fn | confirmBinarySourceSelection | (internal) |
-| 1422 | fn | isSourceInstalled | (internal) |
-| 1466 | fn | checkForUpgrade | (internal) |
-| 1523 | fn | saveInstalledVersion | (private) |
-| 1528 | fn | fetchAvailableVersions | (internal) |
-| 1540 | fn | fetchAvailableUpstreamVersions | (private) |
-| 1567 | fn | versionInfo | (internal) |
-| 1573 | fn | fetchGitHubRelease | (private) |
-| 1599 | fn | findCompatibleAsset | (private) |
-| 1632 | fn | performManagedUpgrade | (internal) |
-| 1694 | fn | downloadAndInstallVersion | (private) |
-| 1750 | fn | startDryRun | (private) |
-| 1821 | fn | promote | (private) |
-| 1856 | fn | rollback | (internal) |
-| 1889 | fn | stopTestProxy | (private) |
-| 1918 | fn | stopTestProxySync | (private) |
-| 1944 | fn | findUnusedPort | (private) |
-| 1954 | fn | isPortInUse | (private) |
-| 1973 | fn | createTestConfig | (private) |
-| 2001 | fn | cleanupTestConfig | (private) |
-| 2009 | fn | isNewerVersion | (private) |
-| 2012 | fn | parseVersion | (internal) |
-| 2044 | fn | plusLocalVersionInfo | (private) |
-| 2058 | fn | installLocalPlusBinary | (private) |
-| 2065 | fn | findPreviousVersion | (private) |
-| 2078 | fn | migrateToVersionedStorage | (internal) |
-| 2104 | fn | initializeSelectedBinarySourceIfNeeded | (private) |
-| 2114 | fn | defaultBinarySource | (private) |
-| 2121 | fn | migrateLegacyVersionedStorageIfNeeded | (private) |
-| 2149 | fn | resolveBundledPlusBinaryPath | (private) |
-| 2154 | fn | firstExistingRegularFile | (internal) |
+| 673 | fn | downloadAsset | (private) |
+| 692 | fn | extractAndInstall | (private) |
+| 754 | fn | findBinaryInDirectory | (private) |
+| 787 | fn | start | (internal) |
+| 919 | fn | stop | (internal) |
+| 971 | fn | startHealthMonitor | (private) |
+| 985 | fn | stopHealthMonitor | (private) |
+| 990 | fn | performHealthCheck | (private) |
+| 1053 | fn | cleanupOrphanProcesses | (private) |
+| 1116 | fn | terminateAuthProcess | (internal) |
+| 1122 | fn | toggle | (internal) |
+| 1130 | fn | copyEndpointToClipboard | (internal) |
+| 1135 | fn | revealInFinder | (internal) |
+| 1142 | enum | ProxyError | (internal) |
+| 1175 | enum | AuthCommand | (internal) |
+| 1213 | struct | AuthCommandResult | (internal) |
+| 1219 | mod | extension CLIProxyManager | (internal) |
+| 1220 | fn | runAuthCommand | (internal) |
+| 1252 | fn | appendOutput | (internal) |
+| 1256 | fn | tryResume | (internal) |
+| 1267 | fn | safeResume | (internal) |
+| 1367 | mod | extension CLIProxyManager | (internal) |
+| 1400 | fn | isLegacyAuthWarningNeeded | (internal) |
+| 1405 | fn | sourceInstallHint | (internal) |
+| 1409 | fn | confirmBinarySourceSelection | (internal) |
+| 1419 | fn | isSourceInstalled | (internal) |
+| 1463 | fn | checkForUpgrade | (internal) |
+| 1520 | fn | saveInstalledVersion | (private) |
+| 1525 | fn | fetchAvailableVersions | (internal) |
+| 1537 | fn | fetchAvailableUpstreamVersions | (private) |
+| 1564 | fn | versionInfo | (internal) |
+| 1570 | fn | fetchGitHubRelease | (private) |
+| 1596 | fn | findCompatibleAsset | (private) |
+| 1626 | fn | performManagedUpgrade | (internal) |
+| 1688 | fn | downloadAndInstallVersion | (private) |
+| 1744 | fn | startDryRun | (private) |
+| 1815 | fn | promote | (private) |
+| 1850 | fn | rollback | (internal) |
+| 1883 | fn | stopTestProxy | (private) |
+| 1912 | fn | stopTestProxySync | (private) |
+| 1938 | fn | findUnusedPort | (private) |
+| 1948 | fn | isPortInUse | (private) |
+| 1967 | fn | createTestConfig | (private) |
+| 1995 | fn | cleanupTestConfig | (private) |
+| 2003 | fn | isNewerVersion | (private) |
+| 2006 | fn | parseVersion | (internal) |
+| 2038 | fn | plusLocalVersionInfo | (private) |
+| 2052 | fn | installLocalPlusBinary | (private) |
+| 2059 | fn | findPreviousVersion | (private) |
+| 2072 | fn | migrateToVersionedStorage | (internal) |
+| 2098 | fn | initializeSelectedBinarySourceIfNeeded | (private) |
+| 2108 | fn | defaultBinarySource | (private) |
+| 2115 | fn | migrateLegacyVersionedStorageIfNeeded | (private) |
+| 2143 | fn | resolveBundledPlusBinaryPath | (private) |
+| 2148 | fn | firstExistingRegularFile | (internal) |
 
 ## Quotio/Services/Proxy/ProxyBridge.swift (1093 lines)
 

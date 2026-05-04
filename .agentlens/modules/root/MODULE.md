@@ -26,7 +26,7 @@
 | `Quotio/Services/Logger.swift` | 124 |  |
 | `Quotio/Services/ManagementAPIClient.swift` | 732 | 📊 |
 | `Quotio/Services/NotificationManager.swift` | 334 |  |
-| `Quotio/Services/Proxy/CLIProxyManager.swift` | 2204 | 📊 |
+| `Quotio/Services/Proxy/CLIProxyManager.swift` | 2198 | 📊 |
 | `Quotio/Services/Proxy/FallbackFormatConverter.swift` | 109 |  |
 | `Quotio/Services/Proxy/ProxyBridge.swift` | 1093 | 📊 |
 | `Quotio/Services/Proxy/ProxyStorageManager.swift` | 424 |  |
