@@ -177,7 +177,7 @@ Symbol maps for 9 large files in this module.
 | 708 | method | init | (internal) |
 | 722 | fn | encode | (internal) |
 
-## Quotio/Services/Proxy/CLIProxyManager.swift (2308 lines)
+## Quotio/Services/Proxy/CLIProxyManager.swift (2351 lines)
 
 | Line | Kind | Name | Visibility |
 | ---- | ---- | ---- | ---------- |
@@ -207,59 +207,60 @@ Symbol maps for 9 large files in this module.
 | 775 | fn | findBinaryInDirectory | (private) |
 | 808 | fn | start | (internal) |
 | 957 | fn | stop | (internal) |
-| 1011 | fn | startHealthMonitor | (private) |
-| 1025 | fn | stopHealthMonitor | (private) |
-| 1030 | fn | markExpectedTermination | (private) |
-| 1035 | fn | cancelCrashRestart | (private) |
-| 1040 | fn | scheduleCrashRestart | (private) |
-| 1088 | fn | performHealthCheck | (private) |
-| 1155 | fn | cleanupOrphanProcesses | (private) |
-| 1218 | fn | terminateAuthProcess | (internal) |
-| 1224 | fn | toggle | (internal) |
-| 1232 | fn | copyEndpointToClipboard | (internal) |
-| 1237 | fn | revealInFinder | (internal) |
-| 1244 | enum | ProxyError | (internal) |
-| 1277 | enum | AuthCommand | (internal) |
-| 1315 | struct | AuthCommandResult | (internal) |
-| 1321 | mod | extension CLIProxyManager | (internal) |
-| 1322 | fn | runAuthCommand | (internal) |
-| 1354 | fn | appendOutput | (internal) |
-| 1358 | fn | tryResume | (internal) |
-| 1369 | fn | safeResume | (internal) |
-| 1469 | mod | extension CLIProxyManager | (internal) |
-| 1502 | fn | isLegacyAuthWarningNeeded | (internal) |
-| 1507 | fn | sourceInstallHint | (internal) |
-| 1511 | fn | confirmBinarySourceSelection | (internal) |
-| 1521 | fn | isSourceInstalled | (internal) |
-| 1565 | fn | checkForUpgrade | (internal) |
-| 1622 | fn | saveInstalledVersion | (private) |
-| 1627 | fn | fetchAvailableVersions | (internal) |
-| 1639 | fn | fetchAvailableUpstreamVersions | (private) |
-| 1666 | fn | versionInfo | (internal) |
-| 1672 | fn | fetchGitHubRelease | (private) |
-| 1698 | fn | findCompatibleAsset | (private) |
-| 1728 | fn | performManagedUpgrade | (internal) |
-| 1790 | fn | downloadAndInstallVersion | (private) |
-| 1846 | fn | startDryRun | (private) |
-| 1920 | fn | promote | (private) |
-| 1956 | fn | rollback | (internal) |
-| 1989 | fn | stopTestProxy | (private) |
-| 2020 | fn | stopTestProxySync | (private) |
-| 2048 | fn | findUnusedPort | (private) |
-| 2058 | fn | isPortInUse | (private) |
-| 2077 | fn | createTestConfig | (private) |
-| 2105 | fn | cleanupTestConfig | (private) |
-| 2113 | fn | isNewerVersion | (private) |
-| 2116 | fn | parseVersion | (internal) |
-| 2148 | fn | plusLocalVersionInfo | (private) |
-| 2162 | fn | installLocalPlusBinary | (private) |
-| 2169 | fn | findPreviousVersion | (private) |
-| 2182 | fn | migrateToVersionedStorage | (internal) |
-| 2208 | fn | initializeSelectedBinarySourceIfNeeded | (private) |
-| 2218 | fn | defaultBinarySource | (private) |
-| 2225 | fn | migrateLegacyVersionedStorageIfNeeded | (private) |
-| 2253 | fn | resolveBundledPlusBinaryPath | (private) |
-| 2258 | fn | firstExistingRegularFile | (internal) |
+| 1011 | fn | stopAndWait | (internal) |
+| 1054 | fn | startHealthMonitor | (private) |
+| 1068 | fn | stopHealthMonitor | (private) |
+| 1073 | fn | markExpectedTermination | (private) |
+| 1078 | fn | cancelCrashRestart | (private) |
+| 1083 | fn | scheduleCrashRestart | (private) |
+| 1131 | fn | performHealthCheck | (private) |
+| 1198 | fn | cleanupOrphanProcesses | (private) |
+| 1261 | fn | terminateAuthProcess | (internal) |
+| 1267 | fn | toggle | (internal) |
+| 1275 | fn | copyEndpointToClipboard | (internal) |
+| 1280 | fn | revealInFinder | (internal) |
+| 1287 | enum | ProxyError | (internal) |
+| 1320 | enum | AuthCommand | (internal) |
+| 1358 | struct | AuthCommandResult | (internal) |
+| 1364 | mod | extension CLIProxyManager | (internal) |
+| 1365 | fn | runAuthCommand | (internal) |
+| 1397 | fn | appendOutput | (internal) |
+| 1401 | fn | tryResume | (internal) |
+| 1412 | fn | safeResume | (internal) |
+| 1512 | mod | extension CLIProxyManager | (internal) |
+| 1545 | fn | isLegacyAuthWarningNeeded | (internal) |
+| 1550 | fn | sourceInstallHint | (internal) |
+| 1554 | fn | confirmBinarySourceSelection | (internal) |
+| 1564 | fn | isSourceInstalled | (internal) |
+| 1608 | fn | checkForUpgrade | (internal) |
+| 1665 | fn | saveInstalledVersion | (private) |
+| 1670 | fn | fetchAvailableVersions | (internal) |
+| 1682 | fn | fetchAvailableUpstreamVersions | (private) |
+| 1709 | fn | versionInfo | (internal) |
+| 1715 | fn | fetchGitHubRelease | (private) |
+| 1741 | fn | findCompatibleAsset | (private) |
+| 1771 | fn | performManagedUpgrade | (internal) |
+| 1833 | fn | downloadAndInstallVersion | (private) |
+| 1889 | fn | startDryRun | (private) |
+| 1963 | fn | promote | (private) |
+| 1999 | fn | rollback | (internal) |
+| 2032 | fn | stopTestProxy | (private) |
+| 2063 | fn | stopTestProxySync | (private) |
+| 2091 | fn | findUnusedPort | (private) |
+| 2101 | fn | isPortInUse | (private) |
+| 2120 | fn | createTestConfig | (private) |
+| 2148 | fn | cleanupTestConfig | (private) |
+| 2156 | fn | isNewerVersion | (private) |
+| 2159 | fn | parseVersion | (internal) |
+| 2191 | fn | plusLocalVersionInfo | (private) |
+| 2205 | fn | installLocalPlusBinary | (private) |
+| 2212 | fn | findPreviousVersion | (private) |
+| 2225 | fn | migrateToVersionedStorage | (internal) |
+| 2251 | fn | initializeSelectedBinarySourceIfNeeded | (private) |
+| 2261 | fn | defaultBinarySource | (private) |
+| 2268 | fn | migrateLegacyVersionedStorageIfNeeded | (private) |
+| 2296 | fn | resolveBundledPlusBinaryPath | (private) |
+| 2301 | fn | firstExistingRegularFile | (internal) |
 
 ## Quotio/Services/Proxy/ProxyBridge.swift (1093 lines)
 
@@ -326,7 +327,7 @@ Symbol maps for 9 large files in this module.
 | 1398 | struct | MenuActionsView | (private) |
 | 1436 | struct | MenuBarActionButton | (private) |
 
-## Quotio/ViewModels/QuotaViewModel.swift (1936 lines)
+## Quotio/ViewModels/QuotaViewModel.swift (1948 lines)
 
 | Line | Kind | Name | Visibility |
 | ---- | ---- | ---- | ---------- |
@@ -385,43 +386,43 @@ Symbol maps for 9 large files in this module.
 | 1053 | fn | setupAPIClient | (private) |
 | 1060 | fn | startAutoRefresh | (private) |
 | 1097 | fn | attemptProxyRecovery | (private) |
-| 1113 | fn | refreshData | (internal) |
-| 1160 | fn | manualRefresh | (internal) |
-| 1171 | fn | refreshAllQuotas | (internal) |
-| 1207 | fn | refreshQuotasUnified | (internal) |
-| 1241 | fn | refreshAntigravityQuotasInternal | (private) |
-| 1261 | fn | refreshAntigravityQuotasWithoutDetect | (private) |
-| 1278 | fn | isAntigravityAccountActive | (internal) |
-| 1283 | fn | switchAntigravityAccount | (internal) |
-| 1293 | fn | beginAntigravitySwitch | (internal) |
-| 1298 | fn | cancelAntigravitySwitch | (internal) |
-| 1303 | fn | dismissAntigravitySwitchResult | (internal) |
-| 1306 | fn | refreshOpenAIQuotasInternal | (private) |
-| 1311 | fn | refreshCopilotQuotasInternal | (private) |
-| 1316 | fn | refreshQuotaForProvider | (internal) |
-| 1351 | fn | refreshAutoDetectedProviders | (internal) |
-| 1358 | fn | startOAuth | (internal) |
-| 1403 | fn | startCopilotAuth | (private) |
-| 1420 | fn | startKiroAuth | (private) |
-| 1460 | fn | pollCopilotAuthCompletion | (private) |
-| 1477 | fn | pollKiroAuthCompletion | (private) |
-| 1500 | fn | pollOAuthStatus | (private) |
-| 1528 | fn | cancelOAuth | (internal) |
-| 1532 | fn | deleteAuthFile | (internal) |
-| 1568 | fn | toggleAuthFileDisabled | (internal) |
-| 1599 | fn | pruneMenuBarItems | (private) |
-| 1635 | fn | importVertexServiceAccount | (internal) |
-| 1659 | fn | fetchAPIKeys | (internal) |
-| 1669 | fn | addAPIKey | (internal) |
-| 1681 | fn | updateAPIKey | (internal) |
-| 1693 | fn | deleteAPIKey | (internal) |
-| 1706 | fn | checkAccountStatusChanges | (private) |
-| 1727 | fn | checkQuotaNotifications | (internal) |
-| 1759 | fn | scanIDEsWithConsent | (internal) |
-| 1829 | fn | savePersistedIDEQuotas | (private) |
-| 1852 | fn | loadPersistedIDEQuotas | (private) |
-| 1914 | fn | shortenAccountKey | (private) |
-| 1926 | struct | OAuthState | (internal) |
+| 1119 | fn | refreshData | (internal) |
+| 1172 | fn | manualRefresh | (internal) |
+| 1183 | fn | refreshAllQuotas | (internal) |
+| 1219 | fn | refreshQuotasUnified | (internal) |
+| 1253 | fn | refreshAntigravityQuotasInternal | (private) |
+| 1273 | fn | refreshAntigravityQuotasWithoutDetect | (private) |
+| 1290 | fn | isAntigravityAccountActive | (internal) |
+| 1295 | fn | switchAntigravityAccount | (internal) |
+| 1305 | fn | beginAntigravitySwitch | (internal) |
+| 1310 | fn | cancelAntigravitySwitch | (internal) |
+| 1315 | fn | dismissAntigravitySwitchResult | (internal) |
+| 1318 | fn | refreshOpenAIQuotasInternal | (private) |
+| 1323 | fn | refreshCopilotQuotasInternal | (private) |
+| 1328 | fn | refreshQuotaForProvider | (internal) |
+| 1363 | fn | refreshAutoDetectedProviders | (internal) |
+| 1370 | fn | startOAuth | (internal) |
+| 1415 | fn | startCopilotAuth | (private) |
+| 1432 | fn | startKiroAuth | (private) |
+| 1472 | fn | pollCopilotAuthCompletion | (private) |
+| 1489 | fn | pollKiroAuthCompletion | (private) |
+| 1512 | fn | pollOAuthStatus | (private) |
+| 1540 | fn | cancelOAuth | (internal) |
+| 1544 | fn | deleteAuthFile | (internal) |
+| 1580 | fn | toggleAuthFileDisabled | (internal) |
+| 1611 | fn | pruneMenuBarItems | (private) |
+| 1647 | fn | importVertexServiceAccount | (internal) |
+| 1671 | fn | fetchAPIKeys | (internal) |
+| 1681 | fn | addAPIKey | (internal) |
+| 1693 | fn | updateAPIKey | (internal) |
+| 1705 | fn | deleteAPIKey | (internal) |
+| 1718 | fn | checkAccountStatusChanges | (private) |
+| 1739 | fn | checkQuotaNotifications | (internal) |
+| 1771 | fn | scanIDEsWithConsent | (internal) |
+| 1841 | fn | savePersistedIDEQuotas | (private) |
+| 1864 | fn | loadPersistedIDEQuotas | (private) |
+| 1926 | fn | shortenAccountKey | (private) |
+| 1938 | struct | OAuthState | (internal) |
 
 ## scripts/capture-screenshots.ts (763 lines)
 

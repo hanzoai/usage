@@ -26,7 +26,7 @@
 | `Quotio/Services/Logger.swift` | 124 |  |
 | `Quotio/Services/ManagementAPIClient.swift` | 732 | 📊 |
 | `Quotio/Services/NotificationManager.swift` | 334 |  |
-| `Quotio/Services/Proxy/CLIProxyManager.swift` | 2308 | 📊 |
+| `Quotio/Services/Proxy/CLIProxyManager.swift` | 2351 | 📊 |
 | `Quotio/Services/Proxy/FallbackFormatConverter.swift` | 109 |  |
 | `Quotio/Services/Proxy/ProxyBridge.swift` | 1093 | 📊 |
 | `Quotio/Services/Proxy/ProxyStorageManager.swift` | 424 |  |
@@ -42,7 +42,7 @@
 | `Quotio/Services/WarpService.swift` | 83 |  |
 | `Quotio/ViewModels/AgentSetupViewModel.swift` | 456 |  |
 | `Quotio/ViewModels/LogsViewModel.swift` | 82 |  |
-| `Quotio/ViewModels/QuotaViewModel.swift` | 1936 | 📊 |
+| `Quotio/ViewModels/QuotaViewModel.swift` | 1948 | 📊 |
 | `scripts/capture-screenshots.ts` | 763 | 📊 |
 
 ## Documentation
