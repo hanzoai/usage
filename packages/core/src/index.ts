@@ -20,3 +20,4 @@ export const providerRegistry: Record<string, ProviderDescriptor> = {
 }
 
 export const allProviders: ProviderDescriptor[] = Object.values(providerRegistry)
+export * from './catalog.js'
