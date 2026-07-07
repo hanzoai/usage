@@ -10,18 +10,13 @@ your AI provider accounts once, see unified usage everywhere, and (optionally)
 route inference through Hanzo Cloud for org-wide sharing, verification, and
 analytics.
 
-This repository is a fork of [CodexBar](https://github.com/steipete/CodexBar)
-by Peter Steinberger (MIT). The Swift menu-bar app is inherited from upstream;
-everything under `packages/` is new work © 2026 Hanzo AI Inc (MIT). See
-`NOTICE`.
-
 ## Layout
 
 | Path | What |
 |------|------|
-| `Sources/` | macOS menu-bar app + `codexbar` CLI (Swift, upstream) |
-| `packages/core` | **`@hanzo/usage`** — headless TypeScript port of the provider engine. Runs in Node, Next.js, and Tauri. |
-| `docs/` | Per-provider auth + endpoint documentation (upstream, still authoritative) |
+| `Sources/` | macOS menu-bar app + `usage` CLI (Swift) |
+| `packages/core` | **`@hanzo/usage`** — headless TypeScript provider engine. Runs in Node, Next.js, and Tauri. |
+| `docs/` | Per-provider auth + endpoint documentation |
 
 ## `@hanzo/usage` — the TypeScript core
 
@@ -66,16 +61,15 @@ pnpm test    # vitest
 pnpm build   # tsc → dist/
 ```
 
-## macOS menu-bar app (upstream)
+## macOS menu-bar app
 
 ```sh
 make build   # SwiftPM; see Package.swift
 ```
 
-See upstream docs in `docs/` for the full 57-provider matrix, widgets,
-and refresh-loop internals.
+See `docs/` for the full 57-provider matrix, widgets, and refresh-loop
+internals.
 
 ## License
 
-MIT. Original work © 2026 Peter Steinberger (CodexBar); modifications and all
-new work © 2026 Hanzo AI Inc. See `LICENSE` and `NOTICE`.
+MIT © 2026 Hanzo AI Inc. Third-party notices: see `NOTICE`.
