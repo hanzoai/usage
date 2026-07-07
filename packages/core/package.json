@@ -1,7 +1,7 @@
 {
   "name": "@hanzo/usage",
-  "version": "0.1.0",
-  "description": "Track AI provider usage, rate limits, and spend across Hanzo products. Headless core (fork of CodexBar, ported to TypeScript).",
+  "version": "0.1.1",
+  "description": "Track AI provider usage, rate limits, and spend across every Hanzo surface. Headless provider engine + full provider catalog.",
   "license": "MIT",
   "author": "Hanzo AI Inc",
   "homepage": "https://github.com/hanzoai/usage",
@@ -29,11 +29,13 @@
     "./tauri": {
       "types": "./dist/hosts/tauri.d.ts",
       "default": "./dist/hosts/tauri.js"
-    }
+    },
+    "./assets/*": "./assets/*"
   },
   "files": [
     "dist",
-    "src"
+    "src",
+    "assets"
   ],
   "sideEffects": false,
   "scripts": {
