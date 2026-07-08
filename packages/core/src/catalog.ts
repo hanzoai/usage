@@ -14,6 +14,7 @@ export interface ProviderCatalogEntry {
 
 export const providerCatalog: ProviderCatalogEntry[] = [
   { id: 'hanzo', name: 'Hanzo', color: '#ff2d55' },
+  { id: 'byo', name: 'BYO endpoint', color: '#64748b' },
   { id: 'abacus', name: 'Abacus AI', icon: 'providers/abacus.svg' },
   { id: 'alibaba', name: 'Alibaba', icon: 'providers/alibaba.svg' },
   { id: 'alibabatokenplan', name: 'Alibaba Token Plan' },
