@@ -22,8 +22,15 @@ export const nodeHost: UsageHost = {
     }
   },
   async writeTextFile(path, contents) {
-    await mkdir(dirname(path), { recursive: true })
-    await writeFile(path, contents, 'utf8')
+    // History persistence is best-effort: a non-directory parent (e.g. when
+    // ~/.config/hanzo is a file) makes mkdir throw ENOTDIR — never let that
+    // break usage tracking, which works fine from memory.
+    try {
+      await mkdir(dirname(path), { recursive: true })
+      await writeFile(path, contents, 'utf8')
+    } catch {
+      /* best-effort — sparkline history is optional */
+    }
   },
   async http(req: HttpRequest): Promise<HttpResponse> {
     const controller = new AbortController()
