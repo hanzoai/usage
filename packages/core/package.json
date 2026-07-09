@@ -1,6 +1,6 @@
 {
   "name": "@hanzo/usage",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Track AI provider usage, rate limits, and spend across every Hanzo surface. Headless provider engine + full provider catalog.",
   "license": "MIT",
   "author": "Hanzo AI Inc",
