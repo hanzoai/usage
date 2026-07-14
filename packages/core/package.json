@@ -1,6 +1,6 @@
 {
   "name": "@hanzo/usage",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Track AI provider usage, rate limits, and spend across every Hanzo surface. Headless provider engine + full provider catalog.",
   "license": "MIT",
   "author": "Hanzo AI Inc",
@@ -22,6 +22,10 @@
       "types": "./dist/react.d.ts",
       "default": "./dist/react.js"
     },
+    "./panel": {
+      "types": "./src/panel.tsx",
+      "default": "./src/panel.tsx"
+    },
     "./node": {
       "types": "./dist/hosts/node.d.ts",
       "default": "./dist/hosts/node.js"
@@ -40,18 +44,32 @@
   "sideEffects": false,
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "check": "tsc -p tsconfig.check.json",
     "test": "vitest run",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build && npm run check"
   },
   "peerDependencies": {
+    "@hanzo/gui": ">=7.2.2",
+    "@hanzogui/lucide-icons-2": ">=7.2.2",
     "react": ">=18"
   },
   "peerDependenciesMeta": {
+    "@hanzo/gui": {
+      "optional": true
+    },
+    "@hanzogui/lucide-icons-2": {
+      "optional": true
+    },
     "react": {
       "optional": true
     }
   },
   "devDependencies": {
+    "@hanzo/gui": "7.3.0",
+    "@hanzogui/config": "7.3.0",
+    "@hanzogui/core": "7.3.0",
+    "@hanzogui/lucide-icons-2": "7.3.0",
+    "@hanzogui/web": "7.3.0",
     "@types/node": "^24.0.0",
     "@types/react": "^19.0.0",
     "react": "^19.0.0",
