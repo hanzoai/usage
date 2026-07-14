@@ -1,8 +1,8 @@
 // Copyright (c) 2026 Hanzo AI Inc. MIT License.
-// React binding — one hook, no extra state library.
+// React entry — the `useUsage` store hook plus the canonical <UsagePanel>.
 
 import { useSyncExternalStore } from 'react'
-import type { UsageStore, UsageStoreState } from './store.js'
+import type { UsageStore, UsageStoreState } from './store'
 
 export const useUsage = (store: UsageStore): UsageStoreState =>
   useSyncExternalStore(
@@ -10,3 +10,6 @@ export const useUsage = (store: UsageStore): UsageStoreState =>
     () => store.getState(),
     () => store.getState(),
   )
+
+// <UsagePanel> + sub-parts (UsageOverview / UsageChart / UsageBreakdown / UsageActivity).
+export * from './panel'

@@ -1,0 +1,17 @@
+{
+  "//": "Type-checks the React entry (react.ts + panel.tsx) against the REAL @hanzo/gui config — the shorthand style props (bg/p/items/rounded/…) and tokens resolve exactly as they do in the consuming app (console). noEmit + Bundler resolution mirrors @hanzo/ui: gui components are shipped as source and compiled by the consumer, so this is the check, `build` emits only the headless core.",
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "noEmit": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "types": ["react", "node"]
+  },
+  "include": ["src"]
+}

@@ -19,8 +19,8 @@
       "default": "./dist/index.js"
     },
     "./react": {
-      "types": "./dist/react.d.ts",
-      "default": "./dist/react.js"
+      "types": "./src/react.ts",
+      "default": "./src/react.ts"
     },
     "./node": {
       "types": "./dist/hosts/node.d.ts",
@@ -40,18 +40,32 @@
   "sideEffects": false,
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "check": "tsc -p tsconfig.check.json",
     "test": "vitest run",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build && npm run check"
   },
   "peerDependencies": {
+    "@hanzo/gui": ">=7.2.2",
+    "@hanzogui/lucide-icons-2": ">=7.2.2",
     "react": ">=18"
   },
   "peerDependenciesMeta": {
+    "@hanzo/gui": {
+      "optional": true
+    },
+    "@hanzogui/lucide-icons-2": {
+      "optional": true
+    },
     "react": {
       "optional": true
     }
   },
   "devDependencies": {
+    "@hanzo/gui": "7.3.0",
+    "@hanzogui/config": "7.3.0",
+    "@hanzogui/core": "7.3.0",
+    "@hanzogui/lucide-icons-2": "7.3.0",
+    "@hanzogui/web": "7.3.0",
     "@types/node": "^24.0.0",
     "@types/react": "^19.0.0",
     "react": "^19.0.0",

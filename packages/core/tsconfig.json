@@ -12,5 +12,7 @@
     "skipLibCheck": true,
     "verbatimModuleSyntax": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "//": "The React entry (react.ts + panel.tsx) ships as SOURCE for the consumer's bundler to compile with its @hanzo/gui config — the same pattern @hanzo/ui uses for Tamagui components (tsc-emit of gui components is not portable, TS2742). It is type-checked by `tsconfig.check.json`, not emitted here. gui.config.ts/gui.d.ts register the gui config for that check only.",
+  "exclude": ["src/react.ts", "src/panel.tsx", "src/gui.config.ts", "src/gui.d.ts"]
 }
