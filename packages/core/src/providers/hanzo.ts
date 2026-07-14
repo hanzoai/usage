@@ -18,6 +18,14 @@ import type { RateWindow, UsageSnapshot } from '../types.js'
 import { expandHome } from '../host.js'
 
 // ---- cloud (commerce ledger) ----
+//
+// Two orthogonal reads of the Hanzo cloud lane, kept unbraided:
+//   • cloudStrategy (below) — the FLAT rate-limit/spend snapshot (`UsageSnapshot`)
+//     the multi-provider store/menubar renders, from `GET /v1/billing/usage`.
+//   • fetchCloudUsage (`../cloud-usage.js`) — the RICH server-shaped dashboard
+//     overview (`CloudUsageOverview`) `<UsagePanel>` renders, from the canonical
+//     `GET /v1/get-cloud-usages`. Different value, different read — not folded into
+//     the provider pipeline's `ProviderFetchResult`.
 
 const num = (v: unknown): number => (typeof v === 'number' && Number.isFinite(v) ? v : 0)
 

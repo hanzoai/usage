@@ -1,5 +1,7 @@
 // Copyright (c) 2026 Hanzo AI Inc. MIT License.
 export * from './types.js'
+export * from './cloud-usage.js'
+export * from './format.js'
 export * from './host.js'
 export * from './provider.js'
 export * from './store.js'
