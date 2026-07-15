@@ -1,6 +1,6 @@
 {
   "name": "@hanzo/usage",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Track AI provider usage, rate limits, and spend across every Hanzo surface. Headless provider engine + full provider catalog.",
   "license": "MIT",
   "author": "Hanzo AI Inc",
@@ -25,6 +25,10 @@
     "./panel": {
       "types": "./src/panel.tsx",
       "default": "./src/panel.tsx"
+    },
+    "./connected": {
+      "types": "./src/connected.tsx",
+      "default": "./src/connected.tsx"
     },
     "./node": {
       "types": "./dist/hosts/node.d.ts",
