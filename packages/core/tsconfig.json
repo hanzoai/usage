@@ -18,5 +18,5 @@
   },
   "include": ["src"],
   "//": "Core headless engine + the DOM <UsageDashboard> (./react) emit to dist. The gui/Tamagui <UsagePanel> (./panel) ships as SOURCE for the consumer's bundler to compile with its own @hanzo/gui config — tsc-emit of gui components is not portable (TS2742), the same pattern @hanzo/ui uses. panel.tsx is type-checked by tsconfig.check.json, not emitted here; gui.config.ts/gui.d.ts register the gui config for that check only.",
-  "exclude": ["src/panel.tsx", "src/gui.config.ts", "src/gui.d.ts"]
+  "exclude": ["src/panel.tsx", "src/connected.tsx", "src/marks.tsx", "src/gui.config.ts", "src/gui.d.ts"]
 }

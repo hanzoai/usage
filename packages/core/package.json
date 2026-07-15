@@ -26,6 +26,10 @@
       "types": "./src/panel.tsx",
       "default": "./src/panel.tsx"
     },
+    "./connected": {
+      "types": "./src/connected.tsx",
+      "default": "./src/connected.tsx"
+    },
     "./node": {
       "types": "./dist/hosts/node.d.ts",
       "default": "./dist/hosts/node.js"
