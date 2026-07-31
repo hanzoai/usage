@@ -73,7 +73,7 @@ Uploads not handled automatically—commit/publish appcast + zip to the feed loc
 CodexBar ships a Homebrew **Cask** in `../homebrew-tap`. When installed via Homebrew, CodexBar disables Sparkle and the app
 must be updated via `brew`.
 
-After publishing the GitHub release, `.github/workflows/release-cli.yml` builds the macOS, glibc Linux, and static musl Linux CLI tarballs for arm64 and x86_64, uploads them plus checksums, then dispatches the Homebrew tap update for both the CLI formula and app cask. Homebrew continues to use the glibc Linux assets. If the final dispatch is rate-limited, the tarballs and app zip may still be present; rerun or manually update the tap formula/cask from the published assets.
+Building and uploading the CLI tarballs is **manual**. `release-cli.yml` used to do it on the release event, but it built four of its six targets on `macos-15`, `macos-15-intel` and `ubuntu-24.04-arm`, which no runner on our forge carries, and it dispatched `steipete/homebrew-tap` — the upstream author's tap, not ours. It never ran once here. Build the macOS, glibc Linux and static musl Linux tarballs for arm64 and x86_64 by hand, upload them plus checksums, and update the tap formula and cask from the published assets. Homebrew continues to use the glibc Linux assets. Automating this again needs a macOS runner and an arm64 runner we do not own.
 
 ## Checklist (quick)
 - [ ] Read both this file and `~/Projects/agent-scripts/docs/RELEASING-MAC.md`; resolve any conflicts toward CodexBar’s specifics.

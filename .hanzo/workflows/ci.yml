@@ -1,0 +1,163 @@
+name: CI
+
+# The repo's gates, on the native runners (git.hanzo.ai → git-runner).
+#
+# This replaces .github/workflows/ci.yml. The Swift lint and the Linux CLI
+# build+test came across unchanged; what did not come across is stated below
+# rather than left to be discovered.
+#
+# WHAT IS GONE, AND WHY. The old file ran `swift-test-macos` on `macos-15-intel`
+# in a four-way shard, and built the Linux CLI on both `ubuntu-24.04` and
+# `ubuntu-24.04-arm`. No runner on this forge carries any of those labels, and
+# an unclaimable job does not fail — it waits, until the 24h timeout, while the
+# next push queues another. That is how a pool with ten amd64 runners ends up
+# holding a day-deep backlog. So:
+#
+#   * macOS Swift tests: NO COVERAGE until we own a macOS runner. This is the
+#     real loss — the menu-bar app is the larger half of this repo and its
+#     suites are the ones that exercised it. `Scripts/ci_macos_test_gate.sh`
+#     and `Scripts/ci_verify_test_jobs.sh` are left in place: they encode which
+#     changed paths require those tests, and they are what a macOS job would be
+#     wired back to.
+#   * linux-arm64 CLI: no coverage. The CLI is built and tested on amd64 only.
+#
+#   * The `changes` job existed only to decide whether to run the macOS shards,
+#     and `lint-build-test` existed only to aggregate `changes` + `lint` +
+#     `swift-test-macos` into one required check. With the macOS job gone both
+#     are gates over nothing, so `lint` and `cli` are the checks directly.
+#
+# Cross-platform coverage is a question of owning runners for those platforms,
+# not of naming them in a matrix and waiting for one.
+#
+# Action refs are the fleet's `@v4` rather than the upstream fork's sha-pinned
+# v6/v7 tags: this forge resolves actions through its own proxy, and the whole
+# fleet is on v4.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A newer commit makes the older run irrelevant. Without this the queue grows
+# faster than the fleet drains it.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  SWIFT_VERSION: 6.3.3
+  SWIFTLY_VERSION: 1.1.3
+  SWIFTLY_SIGNING_FINGERPRINT: E813C892820A6FA13755B268F167DF1ACF9CE069
+
+jobs:
+  lint:
+    runs-on: [hanzo-build-linux-amd64]
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      # Downloads a pinned, SHA256-verified swiftlint into .build/lint-tools —
+      # no toolchain and no package manager, so this gate holds on a bare node
+      # even when the CLI job below cannot install Swift.
+      - name: Install lint tools
+        run: ./Scripts/install_lint_tools.sh swiftlint
+
+      - name: Lint
+        run: ./Scripts/lint.sh lint-linux
+
+  cli:
+    runs-on: [hanzo-build-linux-amd64]
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Runner info
+        run: |
+          set -euo pipefail
+          uname -a
+          uname -m
+
+      - name: Restore Swift toolchain cache
+        id: swift-toolchain-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/swiftly
+          key: swift-${{ runner.os }}-${{ runner.arch }}-${{ env.SWIFT_VERSION }}-swiftly-${{ env.SWIFTLY_VERSION }}
+
+      - name: Install Swift ${{ env.SWIFT_VERSION }} via swiftly
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          missing_packages=()
+          for package in ca-certificates gpg libcurl4-openssl-dev; do
+            if ! dpkg-query -W -f='${Status}' "$package" 2>/dev/null | grep -q "install ok installed"; then
+              missing_packages+=("$package")
+            fi
+          done
+          if [[ "${#missing_packages[@]}" -gt 0 ]]; then
+            sudo apt-get update
+            sudo apt-get install -y "${missing_packages[@]}"
+          fi
+
+          SWIFTLY_ARCH="$(uname -m)"
+          SWIFTLY_ARCHIVE="$RUNNER_TEMP/swiftly-${SWIFTLY_VERSION}-${SWIFTLY_ARCH}.tar.gz"
+          SWIFTLY_SIGNATURE="${SWIFTLY_ARCHIVE}.sig"
+          SWIFTLY_HOME_DIR="$HOME/.local/share/swiftly"
+          SWIFTLY_BIN_DIR="$HOME/.local/bin"
+          SWIFT_GNUPGHOME="$(mktemp -d)"
+          SWIFT_KEYS="$RUNNER_TEMP/swift-signing-keys.asc"
+          POST_INSTALL_SCRIPT="$(mktemp)"
+
+          mkdir -p "$SWIFTLY_BIN_DIR"
+          chmod 700 "$SWIFT_GNUPGHOME"
+          echo "Swift toolchain cache hit: ${{ steps.swift-toolchain-cache.outputs.cache-hit }}"
+          curl -fsSL "https://download.swift.org/swiftly/linux/swiftly-${SWIFTLY_VERSION}-${SWIFTLY_ARCH}.tar.gz" -o "$SWIFTLY_ARCHIVE"
+          curl -fsSL "https://download.swift.org/swiftly/linux/swiftly-${SWIFTLY_VERSION}-${SWIFTLY_ARCH}.tar.gz.sig" -o "$SWIFTLY_SIGNATURE"
+          curl -fsSL --compressed "https://www.swift.org/keys/all-keys.asc" -o "$SWIFT_KEYS"
+          GNUPGHOME="$SWIFT_GNUPGHOME" gpg --batch --import "$SWIFT_KEYS"
+          SIGNATURE_STATUS="$(GNUPGHOME="$SWIFT_GNUPGHOME" gpg --batch --status-fd=1 \
+            --verify "$SWIFTLY_SIGNATURE" "$SWIFTLY_ARCHIVE" 2>&1)"
+          printf '%s\n' "$SIGNATURE_STATUS"
+          grep -Fq "[GNUPG:] VALIDSIG ${SWIFTLY_SIGNING_FINGERPRINT} " <<< "$SIGNATURE_STATUS"
+          tar -xzf "$SWIFTLY_ARCHIVE" -C /tmp
+          /tmp/swiftly init --assume-yes --skip-install
+
+          . "$SWIFTLY_HOME_DIR/env.sh"
+          echo "$SWIFTLY_BIN_DIR" >> "$GITHUB_PATH"
+          echo "SWIFTLY_HOME_DIR=$SWIFTLY_HOME_DIR" >> "$GITHUB_ENV"
+          echo "SWIFTLY_BIN_DIR=$SWIFTLY_BIN_DIR" >> "$GITHUB_ENV"
+
+          swiftly install "$SWIFT_VERSION" --use --assume-yes --verify --post-install-file "$POST_INSTALL_SCRIPT"
+          if [[ -s "$POST_INSTALL_SCRIPT" ]]; then
+            sudo apt-get update
+            sudo bash "$POST_INSTALL_SCRIPT"
+          fi
+
+          hash -r
+          swift --version
+
+      - name: Build CodexBarCLI (release, static Swift stdlib)
+        run: swift build -c release --product CodexBarCLI --static-swift-stdlib
+
+      - name: Swift Test (Linux only)
+        run: swift test --parallel
+
+      - name: Smoke test CodexBarCLI
+        shell: bash
+        run: |
+          set -euo pipefail
+          BIN_DIR="$(swift build -c release --product CodexBarCLI --static-swift-stdlib --show-bin-path)"
+          BIN="$BIN_DIR/CodexBarCLI"
+          "$BIN" --help >/dev/null
+          "$BIN" --version >/dev/null
+          if "$BIN" usage --provider codex --web >/dev/null 2>&1; then
+            echo "Expected --web to fail on Linux"
+            exit 1
+          fi
+          "$BIN" usage --provider codex --web 2>&1 | tee /tmp/codexbarcli-stderr.txt >/dev/null || true
+          grep -q "macOS" /tmp/codexbarcli-stderr.txt

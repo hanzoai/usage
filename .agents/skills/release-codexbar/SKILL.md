@@ -57,7 +57,7 @@ Paths:
 - Homebrew tap: `~/Projects/homebrew-tap`
 - cask: `~/Projects/homebrew-tap/Casks/codexbar.rb`
 - formula: `~/Projects/homebrew-tap/Formula/codexbar.rb`
-- CLI release workflow: `.github/workflows/release-cli.yml`
+- CLI release: manual (no workflow — see `docs/RELEASING.md`)
 
 Normal release:
 
@@ -70,7 +70,7 @@ If notarization fails with `401 Unauthenticated`, rerun using all three App Stor
 
 If widget metadata generation times out, `CODEXBAR_WIDGET_METADATA_TIMEOUT_SECONDS=600` is a known-good floor.
 
-CodexBar CLI tarballs are not produced by `Scripts/release.sh` itself. The GitHub release event triggers `.github/workflows/release-cli.yml`, which builds and uploads:
+CodexBar CLI tarballs are not produced by `Scripts/release.sh` itself, and no longer by a workflow either — `release-cli.yml` needed macOS and arm64 runners we do not own. Build and upload these by hand:
 
 - `CodexBarCLI-v<version>-macos-arm64.tar.gz`
 - `CodexBarCLI-v<version>-macos-x86_64.tar.gz`

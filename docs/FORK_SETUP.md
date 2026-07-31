@@ -272,10 +272,9 @@ git push origin upstream-pr/fix-cursor-bonus
 
 ### GitHub Actions Setup
 
-The workflow `.github/workflows/upstream-monitor.yml` will:
-- Run Monday and Thursday at 9 AM UTC
-- Check for new commits in both upstreams
-- Create/update GitHub issue with summary
+There is no upstream-monitor workflow. `upstream-monitor.yml` polled `steipete/CodexBar` and `quotio` twice a week and opened a GitHub issue with the diff; it was removed with the rest of the inherited upstream automation. Check the upstreams by hand:
+- `./Scripts/review_upstream.sh upstream`
+- `./Scripts/analyze_quotio.sh`
 - Provide links to review changes
 
 **To enable:**
