@@ -6,6 +6,7 @@
   --page-muted: #a1a1aa;
   --page-subtle: #71717a;
   --page-faint: #52525b;
+  --page-dim: #3f3f46;
   --page-line: rgba(255, 255, 255, 0.08);
   --control-bg: rgba(255, 255, 255, 0.04);
   --control-border: rgba(255, 255, 255, 0.1);
@@ -101,6 +102,7 @@
   --page-muted: #52525b;
   --page-subtle: #71717a;
   --page-faint: #a1a1aa;
+  --page-dim: #a1a1aa;
   --page-line: rgba(0, 0, 0, 0.1);
   --control-bg: rgba(0, 0, 0, 0.035);
   --control-border: rgba(0, 0, 0, 0.11);
