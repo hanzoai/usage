@@ -1,9 +1,10 @@
 // Copyright (c) 2026 Hanzo AI Inc. MIT License.
 //
-// Shared, dependency-free chart marks + chrome for every usage surface — the ONE place
-// the palette, sparkline/bar/meter SVG, the card chrome, and the metric tile live, so
-// the native <UsagePanel> (cloud usage) and <ConnectedUsage> (imported third-party
-// usage) render with the exact same visual language. Built only on @hanzo/gui
+// Shared chart marks + chrome for every usage surface — the ONE place the
+// sparkline/bar/meter SVG, the card chrome, the metric tile, the section header and
+// the error card live, so the native <UsagePanel> (cloud usage) and <ConnectedUsage>
+// (imported third-party usage) render with the exact same visual language. Colours
+// come from palette.ts, which the DOM dashboard shares. Built only on @hanzo/gui
 // primitives so they theme to the shell and work web + native + desktop.
 'use client'
 
