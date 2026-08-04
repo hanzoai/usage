@@ -20,9 +20,9 @@
 // typed error with retry — NEVER fabricated spend, tokens, or trend.
 'use client'
 
-import { useEffect, useRef, useState, type ReactElement, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactElement } from 'react'
 import { Button, Text, XStack, YStack } from '@hanzo/gui'
-import { Activity, Boxes, Coins, DollarSign, Layers, RefreshCw } from '@hanzogui/lucide-icons-2'
+import { Activity, Boxes, Coins, DollarSign, Layers } from '@hanzogui/lucide-icons-2'
 
 import type {
   CloudUsageActivityRow,
@@ -34,8 +34,9 @@ import type {
 import { fetchCloudUsage } from './cloud-usage'
 import { formatBucket, formatCents, formatCount } from './format'
 // The palette + chart marks + chrome are shared with <ConnectedUsage> (one visual
-// language for native + imported usage). See marks.tsx.
-import { BarSeries, colorAt, DOWN, MeterBar, MetricTile, Panel, SERIES, UP } from './marks'
+// language for native + imported usage). See palette.ts / marks.tsx.
+import { colorAt, DOWN, UP } from './palette'
+import { BarSeries, ErrorCard, Header, MeterBar, MetricTile, Panel } from './marks'
 
 // ── sub-parts (each renders one region of the overview) ──────────────────────────
 
@@ -256,41 +257,7 @@ function Sections({ data, sections }: { data: CloudUsageOverview; sections?: Usa
   )
 }
 
-function Header({ title, subtitle, right }: { title: string; subtitle?: string; right?: ReactNode }) {
-  return (
-    <XStack items="flex-start" justify="space-between" gap="$3" flexWrap="wrap">
-      <YStack gap="$1">
-        <Text fontSize="$6" fontWeight="900" color="$color12">
-          {title}
-        </Text>
-        {subtitle ? (
-          <Text fontSize="$2" color="$color10">
-            {subtitle}
-          </Text>
-        ) : null}
-      </YStack>
-      {right}
-    </XStack>
-  )
-}
-
-function ErrorCard({ message, onRetry }: { message: string; onRetry?: () => void }) {
-  return (
-    <YStack p="$5" gap="$3" borderWidth={1} borderColor="$borderColor" rounded="$4" bg="$color1" items="center">
-      <Text fontSize="$4" fontWeight="700" color="$color12">
-        Usage is unavailable
-      </Text>
-      <Text fontSize="$2" color="$color10" style={{ textAlign: 'center' }}>
-        {message}
-      </Text>
-      {onRetry ? (
-        <Button size="$2" icon={<RefreshCw size={15} />} onPress={onRetry}>
-          Retry
-        </Button>
-      ) : null}
-    </YStack>
-  )
-}
+const UNAVAILABLE = 'Usage is unavailable'
 
 type FetchState = { phase: 'loading' } | { phase: 'error'; message: string } | { phase: 'ready'; data: CloudUsageOverview }
 
@@ -308,7 +275,7 @@ export function UsagePanel(props: UsagePanelProps): ReactElement {
       <YStack gap="$4">
         <Header title={title} subtitle={props.subtitle} right={right} />
         {props.error ? (
-          <ErrorCard message={props.error} onRetry={props.onRetry} />
+          <ErrorCard title={UNAVAILABLE} message={props.error} onRetry={props.onRetry} />
         ) : props.loading || !props.data ? (
           <Text fontSize="$3" color="$color10">
             Loading usage…
@@ -356,7 +323,7 @@ function FetchingUsagePanel(props: UsagePanelFetchProps & { title: string }): Re
     <YStack gap="$4">
       <Header title={props.title} subtitle={props.subtitle} right={<RangeTabs value={range} onChange={onRange} />} />
       {state.phase === 'error' ? (
-        <ErrorCard message={state.message} onRetry={() => setNonce((n) => n + 1)} />
+        <ErrorCard title={UNAVAILABLE} message={state.message} onRetry={() => setNonce((n) => n + 1)} />
       ) : state.phase === 'loading' ? (
         <Text fontSize="$3" color="$color10">
           Loading usage…

@@ -8,15 +8,10 @@
 'use client'
 
 import { type ReactElement, type ReactNode } from 'react'
-import { Text, XStack, YStack } from '@hanzo/gui'
+import { Button, Text, XStack, YStack } from '@hanzo/gui'
+import { RefreshCw } from '@hanzogui/lucide-icons-2'
 import { deltaDirection, formatDeltaPct } from './format'
-
-// ── palette (categorical, dark+light legible — the console SERIES set) ────────────────
-export const SERIES = ['#6ea8fe', '#7ee787', '#f0a868', '#c792ea', '#56d4c4', '#e879a6', '#d6c15a', '#8b9bb4'] as const
-export const TRACK = 'rgba(128,128,128,0.18)'
-export const UP = '#7ee787'
-export const DOWN = '#e5534b'
-export const colorAt = (i: number): string => SERIES[i % SERIES.length] as string
+import { SERIES, TRACK, UP, DOWN } from './palette'
 
 /** A single-series sparkline over real points; nothing for <2 points. */
 export function Sparkline({ points, width = 120, height = 34, color = SERIES[0] }: { points: number[]; width?: number; height?: number; color?: string }): ReactElement | null {
@@ -108,6 +103,44 @@ export function MetricTile({ icon, label, value, deltaPct, spark, sparkColor }: 
         ) : null}
       </XStack>
       {spark && spark.filter((v) => Number.isFinite(v)).length >= 2 ? <Sparkline points={spark} color={sparkColor ?? (SERIES[0] as string)} /> : null}
+    </YStack>
+  )
+}
+
+/** Section chrome: title + optional subtitle, with a right-aligned affordance. */
+export function Header({ title, subtitle, right }: { title: string; subtitle?: string; right?: ReactNode }): ReactElement {
+  return (
+    <XStack items="flex-start" justify="space-between" gap="$3" flexWrap="wrap">
+      <YStack gap="$1">
+        <Text fontSize="$6" fontWeight="900" color="$color12">
+          {title}
+        </Text>
+        {subtitle ? (
+          <Text fontSize="$2" color="$color10">
+            {subtitle}
+          </Text>
+        ) : null}
+      </YStack>
+      {right}
+    </XStack>
+  )
+}
+
+/** The honest failed-read state: what broke, plus retry when the caller can. */
+export function ErrorCard({ title, message, onRetry }: { title: string; message: string; onRetry?: () => void }): ReactElement {
+  return (
+    <YStack p="$5" gap="$3" borderWidth={1} borderColor="$borderColor" rounded="$4" bg="$color1" items="center">
+      <Text fontSize="$4" fontWeight="700" color="$color12">
+        {title}
+      </Text>
+      <Text fontSize="$2" color="$color10" style={{ textAlign: 'center' }}>
+        {message}
+      </Text>
+      {onRetry ? (
+        <Button size="$2" icon={<RefreshCw size={15} />} onPress={onRetry}>
+          Retry
+        </Button>
+      ) : null}
     </YStack>
   )
 }
