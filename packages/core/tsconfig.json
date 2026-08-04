@@ -14,7 +14,8 @@
     "noUncheckedIndexedAccess": true,
     "skipLibCheck": true,
     "verbatimModuleSyntax": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "types": ["node", "react"]
   },
   "include": ["src"],
   "//": "EVERYTHING emits, the gui panel included. A gui component's style props are named by the gui CONFIG, and a package that ships .tsx makes the consumer compile it against whatever config the consumer registered — so the same source is correct in one app and 14 errors in the next. Emitting declarations settles the names here, once, against the config in gui.config.ts, and a consumer reads a .d.ts like any other package."

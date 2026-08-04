@@ -15,12 +15,14 @@
 'use client'
 
 import { type ReactElement, type ReactNode } from 'react'
-import { Button, Text, XStack, YStack } from '@hanzo/gui'
-import { Activity, Coins, DollarSign, RefreshCw } from '@hanzogui/lucide-icons-2'
+import { Text, XStack, YStack } from '@hanzo/gui'
+import { Activity, Coins, DollarSign } from '@hanzogui/lucide-icons-2'
 
 import type { ProviderUsage, ProviderUsageModelSpend } from './provider-usage.js'
 import { formatBucket, formatCents, formatCount } from './format.js'
-import { BarSeries, colorAt, DOWN, MeterBar, SERIES, UP } from './marks.js'
+import { colorAt, SERIES, UP } from './palette.js'
+import { BarSeries, ErrorCard, Header, MeterBar } from './marks.js'
+
 
 // ── provider display meta (label + brand accent) ─────────────────────────────────────
 
@@ -158,41 +160,7 @@ export function ProviderUsageCard({ usage }: { usage: ProviderUsage }): ReactEle
 
 // ── the section ────────────────────────────────────────────────────────────────────
 
-function Header({ title, subtitle, right }: { title: string; subtitle?: string; right?: ReactNode }) {
-  return (
-    <XStack items="flex-start" justify="space-between" gap="$3" flexWrap="wrap">
-      <YStack gap="$1">
-        <Text fontSize="$6" fontWeight="900" color="$color12">
-          {title}
-        </Text>
-        {subtitle ? (
-          <Text fontSize="$2" color="$color10">
-            {subtitle}
-          </Text>
-        ) : null}
-      </YStack>
-      {right}
-    </XStack>
-  )
-}
-
-function ErrorCard({ message, onRetry }: { message: string; onRetry?: () => void }) {
-  return (
-    <YStack p="$5" gap="$3" borderWidth={1} borderColor="$borderColor" rounded="$4" bg="$color1" items="center">
-      <Text fontSize="$4" fontWeight="700" color={DOWN as never}>
-        Connected usage is unavailable
-      </Text>
-      <Text fontSize="$2" color="$color10" style={{ textAlign: 'center' }}>
-        {message}
-      </Text>
-      {onRetry ? (
-        <Button size="$2" icon={<RefreshCw size={15} />} onPress={onRetry}>
-          Retry
-        </Button>
-      ) : null}
-    </YStack>
-  )
-}
+const UNAVAILABLE = 'Connected usage is unavailable'
 
 export interface ConnectedUsageProps {
   /** The imported per-provider usage values the caller fetched (native panel's data mode). */
@@ -218,7 +186,7 @@ export function ConnectedUsage(props: ConnectedUsageProps): ReactElement {
     <YStack gap="$4">
       <Header title={title} subtitle={props.subtitle} right={props.headerAction} />
       {props.error ? (
-        <ErrorCard message={props.error} onRetry={props.onRetry} />
+        <ErrorCard title={UNAVAILABLE} message={props.error} onRetry={props.onRetry} />
       ) : props.loading && items.length === 0 ? (
         <Text fontSize="$3" color="$color10">
           Loading connected usage…
