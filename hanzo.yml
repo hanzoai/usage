@@ -1,0 +1,13 @@
+# Two products live here and only one of them can run on this fleet.
+#
+# The macOS menu-bar app (SwiftPM, `platforms: [.macOS(.v14)]`) is gated by
+# Scripts/ci_macos_test_gate.sh on a mac; git-runner is linux-amd64 with no
+# Swift toolchain, so nothing here pretends to build it.
+#
+# `packages/core` is the other product: @hanzo/usage, the published headless
+# provider engine + provider catalog. It has a lockfile, a strict typecheck and
+# six vitest suites, and it is what every other Hanzo surface imports — so it is
+# gated, fully, and a break in the provider engine is red on this run.
+test:
+  - name: core
+    run: cd packages/core && pnpm install --frozen-lockfile && pnpm run check && pnpm test
