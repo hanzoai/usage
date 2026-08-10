@@ -1,0 +1,11 @@
+# esbuild's install script is what puts its platform binary in place, and vitest
+# runs on esbuild — a dependency that resolves but cannot transform is no use.
+#
+# pnpm 11 refuses to run a dependency's install script unless it is allowed here,
+# and refuses fatally: strictDepBuilds defaults to true, so an unapproved build is
+# ERR_PNPM_IGNORED_BUILDS and the install exits non-zero.
+#
+# `allowBuilds`, not `onlyBuiltDependencies`: v11 removed the older build settings,
+# and it stopped reading the "pnpm" field in package.json where they used to sit.
+allowBuilds:
+  esbuild: true
