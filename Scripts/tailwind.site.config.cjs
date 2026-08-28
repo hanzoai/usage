@@ -6,7 +6,7 @@ module.exports = {
         tablet: "769px",
       },
       fontFamily: {
-        sans: ["Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"],
+        sans: ["Zen", "ui-sans-serif", "system-ui", "sans-serif"],
         mono: ["SFMono-Regular", "SF Mono", "Menlo", "monospace"],
       },
     },
