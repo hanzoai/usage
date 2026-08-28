@@ -47,7 +47,7 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && tsc -p tsconfig.components.json",
     "check": "tsc -p tsconfig.check.json",
     "test": "vitest run",
     "prepublishOnly": "npm run build && npm run check"

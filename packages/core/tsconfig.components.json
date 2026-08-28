@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "moduleResolution": "Bundler",
+    "module": "ESNext",
+    "outDir": "dist",
+    "declaration": true,
+    "noEmit": false
+  },
+  "//": "The gui/Tamagui components emit to dist under Bundler resolution, which avoids the TS2742 that NodeNext hits on inferred gui types. Paired with the core build so panel/connected ship built, not as source — the package works whether or not a consumer transpiles.",
+  "include": ["src/panel.tsx", "src/connected.tsx", "src/marks.tsx", "src/gui.config.ts", "src/gui.d.ts"],
+  "exclude": []
+}
