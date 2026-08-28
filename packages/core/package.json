@@ -1,6 +1,6 @@
 {
   "name": "@hanzo/usage",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Track AI provider usage, rate limits, and spend across every Hanzo surface. Headless provider engine + full provider catalog.",
   "license": "MIT",
   "author": "Hanzo AI Inc",
@@ -23,12 +23,12 @@
       "default": "./dist/react.js"
     },
     "./panel": {
-      "types": "./src/panel.tsx",
-      "default": "./src/panel.tsx"
+      "types": "./dist/panel.d.ts",
+      "default": "./dist/panel.js"
     },
     "./connected": {
-      "types": "./src/connected.tsx",
-      "default": "./src/connected.tsx"
+      "types": "./dist/connected.d.ts",
+      "default": "./dist/connected.js"
     },
     "./node": {
       "types": "./dist/hosts/node.d.ts",
@@ -47,7 +47,7 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && tsc -p tsconfig.components.json",
     "check": "tsc -p tsconfig.check.json",
     "test": "vitest run",
     "prepublishOnly": "npm run build && npm run check"
