@@ -228,7 +228,7 @@ html.bg-black { background-color: var(--page-bg) !important; }
   transform: translate(var(--hud-menu-nudge-x), var(--hud-menu-nudge-y)) scale(var(--menubar-scale));
   transform-origin: top right;
   color: rgba(245, 245, 245, 0.94);
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Zen", sans-serif;
   font-size: clamp(0.48rem, 0.52cqw, 0.75rem);
   font-weight: 650;
   letter-spacing: -0.045em;
