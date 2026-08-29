@@ -32,6 +32,7 @@ import type {
   UsageRange,
 } from './cloud-usage.js'
 import { fetchCloudUsage } from './cloud-usage.js'
+import { fetchUsageSummary, type UsageSummary } from './summary.js'
 import { formatBucket, formatCents, formatCount } from './format.js'
 // The palette + chart marks + chrome are shared with <ConnectedUsage> (one visual
 // language for native + imported usage). See marks.tsx.
@@ -95,6 +96,62 @@ export function UsageChart({ data }: { data: CloudUsageOverview }) {
 }
 
 /** Spend-by-model — the top-N models plus a folded "Other", each a share meter. */
+/**
+ * Spend by CATEGORY — what the org ran, not only what it inferred.
+ *
+ * UsageBreakdown above splits the AI ledger by model. This splits the COMMERCE
+ * ledger by category, so a bill that includes a database and a machine shows
+ * them instead of showing the inference line and calling it the total.
+ *
+ * `available` is the server's word and is rendered as its own state: a roll-up
+ * that could not be taken and one that measured nothing are the same zeros and
+ * different facts, and drawing "spent nothing" over "could not ask" is the one
+ * mistake a spend panel must not make.
+ */
+export function UsageCategories({ data }: { data: UsageSummary }) {
+  const sp = data.spend
+  const total = sp.totalCents
+  const rows = sp.byCategory.map((c, i) => ({
+    key: `${c.category}-${i}`,
+    label: c.category || 'other',
+    amountCents: c.amountCents,
+    pct: total > 0 ? (c.amountCents / total) * 100 : 0,
+    color: colorAt(i),
+  }))
+  return (
+    <Panel title="Spend by category" action={<Text fontSize="$2" color="$color11">{formatCents(total)}</Text>}>
+      {!sp.available ? (
+        <Text fontSize="$3" color="$color10">
+          The ledger could not be read, so this is not a measurement.
+        </Text>
+      ) : rows.length ? (
+        <YStack gap="$3">
+          {rows.map((r) => (
+            <YStack key={r.key} gap="$1.5">
+              <XStack items="center" justify="space-between" gap="$2">
+                <XStack items="center" gap="$2" flex={1}>
+                  <YStack width={9} height={9} rounded="$1" bg={r.color as never} />
+                  <Text fontSize="$3" fontWeight="600" color="$color12" numberOfLines={1}>
+                    {r.label}
+                  </Text>
+                </XStack>
+                <Text fontSize="$3" color="$color12" fontWeight="600">
+                  {formatCents(r.amountCents)}
+                </Text>
+              </XStack>
+              <MeterBar pct={r.pct} color={r.color} />
+            </YStack>
+          ))}
+        </YStack>
+      ) : (
+        <Text fontSize="$3" color="$color10">
+          No spend in this range yet.
+        </Text>
+      )}
+    </Panel>
+  )
+}
+
 export function UsageBreakdown({ data }: { data: CloudUsageOverview }) {
   const bm = data.byModel
   const rows: { key: string; model: string; provider: string; spendCents: number; pct: number; color: string }[] = bm.items.map((m, i) => ({
@@ -210,6 +267,10 @@ export interface UsageSections {
   chart?: boolean
   breakdown?: boolean
   activity?: boolean
+  /** Spend by ledger CATEGORY — llm, compute, storage — read from
+   *  /v1/usage/summary. Off by default because it is a second network read, and
+   *  a panel that quietly doubles its requests is a panel nobody can budget for. */
+  categories?: boolean
 }
 
 interface UsagePanelBase {
@@ -240,11 +301,13 @@ export type UsagePanelProps = UsagePanelDataProps | UsagePanelFetchProps
 // caller-supplied data.
 const isDataMode = (p: UsagePanelProps): p is UsagePanelDataProps => !('baseUrl' in p)
 
-function Sections({ data, sections }: { data: CloudUsageOverview; sections?: UsageSections }) {
-  const show = { overview: true, chart: true, breakdown: true, activity: true, ...sections }
+
+function Sections({ data, sections, summary }: { data: CloudUsageOverview; sections?: UsageSections; summary?: UsageSummary | null }) {
+  const show = { overview: true, chart: true, breakdown: true, activity: true, categories: false, ...sections }
   return (
     <YStack gap="$4">
       {show.overview ? <UsageOverview data={data} /> : null}
+      {show.categories && summary ? <UsageCategories data={summary} /> : null}
       {show.chart ? <UsageChart data={data} /> : null}
       {show.breakdown || show.activity ? (
         <XStack flexWrap="wrap" gap="$4">
@@ -328,6 +391,11 @@ function FetchingUsagePanel(props: UsagePanelFetchProps & { title: string }): Re
   const [range, setRange] = useState<UsageRange>(props.range ?? '24h')
   const [state, setState] = useState<FetchState>({ phase: 'loading' })
   const [nonce, setNonce] = useState(0)
+  // The summary is a SECOND read against a different endpoint, so it is taken
+  // only when the section that renders it is on. Its failure is not the panel's
+  // failure: the AI overview is what the panel is for, and losing the category
+  // strip must not blank the page that still has an answer.
+  const [summary, setSummary] = useState<UsageSummary | null>(null)
   const { baseUrl, token, org, start, end, topModels, activityType, activityLimit, activityOffset } = props
   const fetchImpl = props.fetch
   const seq = useRef(0)
@@ -347,6 +415,30 @@ function FetchingUsagePanel(props: UsagePanelFetchProps & { title: string }): Re
     return () => ctrl.abort()
   }, [baseUrl, token, org, range, start, end, topModels, activityType, activityLimit, activityOffset, fetchImpl, nonce])
 
+  // Categories, when asked for. Deliberately separate from the overview read:
+  // one endpoint answers what the org INFERRED and the other what it RAN, and a
+  // panel that folded them would have to fail as a unit.
+  useEffect(() => {
+    if (!props.sections?.categories) {
+      setSummary(null)
+      return
+    }
+    const ctrl = new AbortController()
+    let live = true
+    fetchUsageSummary({ baseUrl, token, org, range, signal: ctrl.signal, fetch: fetchImpl })
+      .then((s) => {
+        if (live) setSummary(s)
+      })
+      .catch(() => {
+        if (live) setSummary(null)
+      })
+    return () => {
+      live = false
+      ctrl.abort()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [baseUrl, token, org, range, nonce, props.sections?.categories])
+
   const onRange = (r: UsageRange) => {
     setRange(r)
     props.onRangeChange?.(r)
@@ -362,7 +454,7 @@ function FetchingUsagePanel(props: UsagePanelFetchProps & { title: string }): Re
           Loading usage…
         </Text>
       ) : (
-        <Sections data={state.data} sections={props.sections} />
+        <Sections data={state.data} sections={props.sections} summary={summary} />
       )}
     </YStack>
   )
