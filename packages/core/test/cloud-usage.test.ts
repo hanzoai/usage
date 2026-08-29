@@ -45,13 +45,13 @@ describe('normalizeCloudUsage', () => {
 })
 
 describe('fetchCloudUsage', () => {
-  it('reads GET /v1/get-cloud-usages, unwraps the {status,data} envelope, and forwards params + bearer', async () => {
+  it('reads GET /v1/ai/usages/cloud, unwraps the {status,data} envelope, and forwards params + bearer', async () => {
     const { fn, calls } = stubFetch(200, { status: 'ok', msg: '', data: sampleOverview() })
     const out = await fetchCloudUsage({ baseUrl: 'https://api.hanzo.ai/', token: 'tok123', range: '7d', org: 'hanzo', topModels: 6, fetch: fn })
     expect(out.totals.spendCents).toBe(345)
     expect(out.byModel.items[0]!.model).toBe('gpt-4o')
     const call = calls[0]!
-    expect(call.url).toBe('https://api.hanzo.ai/v1/get-cloud-usages?range=7d&org=hanzo&topModels=6')
+    expect(call.url).toBe('https://api.hanzo.ai/v1/ai/usages/cloud?range=7d&org=hanzo&topModels=6')
     expect((call.init!.headers as Record<string, string>).Authorization).toBe('Bearer tok123')
   })
 

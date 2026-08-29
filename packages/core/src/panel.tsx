@@ -3,7 +3,7 @@
 // <UsagePanel> — the ONE canonical AI-usage surface every Hanzo app renders.
 //
 // It renders a full `CloudUsageOverview` (the server-owned shape from
-// `GET /v1/get-cloud-usages`): totals cards with prior-period deltas, a spend/token/
+// `GET /v1/ai/usages/cloud`): totals cards with prior-period deltas, a spend/token/
 // request time series, spend-by-model, and the recent-activity feed. This replaces
 // the per-surface re-implementations (console's re-derivation, the orphaned @hanzo/ui
 // usage kit, the shadcn billing panel) with a single component.
