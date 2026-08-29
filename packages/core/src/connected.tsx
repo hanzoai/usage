@@ -18,9 +18,9 @@ import { type ReactElement, type ReactNode } from 'react'
 import { Button, Text, XStack, YStack } from '@hanzo/gui'
 import { Activity, Coins, DollarSign, RefreshCw } from '@hanzogui/lucide-icons-2'
 
-import type { ProviderUsage, ProviderUsageModelSpend } from './provider-usage'
-import { formatBucket, formatCents, formatCount } from './format'
-import { BarSeries, colorAt, DOWN, MeterBar, SERIES, UP } from './marks'
+import type { ProviderUsage, ProviderUsageModelSpend } from './provider-usage.js'
+import { formatBucket, formatCents, formatCount } from './format.js'
+import { BarSeries, colorAt, DOWN, MeterBar, SERIES, UP } from './marks.js'
 
 // ── provider display meta (label + brand accent) ─────────────────────────────────────
 
@@ -39,8 +39,8 @@ const metaFor = (provider: string): { label: string; color: string } =>
  *  overview MetricTile, so several provider cards fit side by side). */
 function Stat({ icon, label, value }: { icon: ReactNode; label: string; value: string }): ReactElement {
   return (
-    <YStack gap="$1" flex={1} minWidth={92}>
-      <XStack alignItems="center" gap="$1.5">
+    <YStack gap="$1" flex={1} minW={92}>
+      <XStack items="center" gap="$1.5">
         {icon}
         <Text fontSize="$1" color="$color11" numberOfLines={1}>
           {label}
@@ -84,9 +84,9 @@ function ModelRows({ models, total, metric }: { models: ProviderUsageModelSpend[
     <YStack gap="$2">
       {rows.map((r) => (
         <YStack key={r.key} gap="$1">
-          <XStack alignItems="center" justifyContent="space-between" gap="$2">
-            <XStack alignItems="center" gap="$2" flex={1}>
-              <YStack width={8} height={8} borderRadius="$1" backgroundColor={r.color as never} />
+          <XStack items="center" justify="space-between" gap="$2">
+            <XStack items="center" gap="$2" flex={1}>
+              <YStack width={8} height={8} rounded="$1" bg={r.color as never} />
               <Text fontSize="$2" fontWeight="600" color="$color12" numberOfLines={1}>
                 {r.model}
               </Text>
@@ -117,10 +117,10 @@ export function ProviderUsageCard({ usage }: { usage: ProviderUsage }): ReactEle
   const modelTotal = usage.byModel.reduce((s, m) => s + (metric === 'spend' ? m.spendCents : m.tokens), 0)
 
   return (
-    <YStack flex={1} minWidth={360} gap="$3" padding="$4" borderWidth={1} borderColor="$borderColor" borderRadius="$4" backgroundColor="$color1">
-      <XStack alignItems="center" justifyContent="space-between" gap="$2">
-        <XStack alignItems="center" gap="$2" flex={1}>
-          <YStack width={10} height={10} borderRadius="$2" backgroundColor={meta.color as never} />
+    <YStack flex={1} minW={360} gap="$3" p="$4" borderWidth={1} borderColor="$borderColor" rounded="$4" bg="$color1">
+      <XStack items="center" justify="space-between" gap="$2">
+        <XStack items="center" gap="$2" flex={1}>
+          <YStack width={10} height={10} rounded="$2" bg={meta.color as never} />
           <Text fontSize="$4" fontWeight="800" color="$color12" numberOfLines={1}>
             {meta.label}
           </Text>
@@ -160,7 +160,7 @@ export function ProviderUsageCard({ usage }: { usage: ProviderUsage }): ReactEle
 
 function Header({ title, subtitle, right }: { title: string; subtitle?: string; right?: ReactNode }) {
   return (
-    <XStack alignItems="flex-start" justifyContent="space-between" gap="$3" flexWrap="wrap">
+    <XStack items="flex-start" justify="space-between" gap="$3" flexWrap="wrap">
       <YStack gap="$1">
         <Text fontSize="$6" fontWeight="900" color="$color12">
           {title}
@@ -178,7 +178,7 @@ function Header({ title, subtitle, right }: { title: string; subtitle?: string; 
 
 function ErrorCard({ message, onRetry }: { message: string; onRetry?: () => void }) {
   return (
-    <YStack padding="$5" gap="$3" borderWidth={1} borderColor="$borderColor" borderRadius="$4" backgroundColor="$color1" alignItems="center">
+    <YStack p="$5" gap="$3" borderWidth={1} borderColor="$borderColor" rounded="$4" bg="$color1" items="center">
       <Text fontSize="$4" fontWeight="700" color={DOWN as never}>
         Connected usage is unavailable
       </Text>
@@ -224,7 +224,7 @@ export function ConnectedUsage(props: ConnectedUsageProps): ReactElement {
           Loading connected usage…
         </Text>
       ) : items.length === 0 ? (
-        <YStack padding="$5" gap="$2" borderWidth={1} borderColor="$borderColor" borderRadius="$4" backgroundColor="$color1">
+        <YStack p="$5" gap="$2" borderWidth={1} borderColor="$borderColor" rounded="$4" bg="$color1">
           <Text fontSize="$4" fontWeight="700" color="$color12">
             No connected providers yet
           </Text>

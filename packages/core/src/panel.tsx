@@ -3,7 +3,7 @@
 // <UsagePanel> — the ONE canonical AI-usage surface every Hanzo app renders.
 //
 // It renders a full `CloudUsageOverview` (the server-owned shape from
-// `GET /v1/get-cloud-usages`): totals cards with prior-period deltas, a spend/token/
+// `GET /v1/ai/usages/cloud`): totals cards with prior-period deltas, a spend/token/
 // request time series, spend-by-model, and the recent-activity feed. This replaces
 // the per-surface re-implementations (console's re-derivation, the orphaned @hanzo/ui
 // usage kit, the shadcn billing panel) with a single component.
@@ -30,12 +30,12 @@ import type {
   CloudUsageSeriesPoint,
   FetchCloudUsageOptions,
   UsageRange,
-} from './cloud-usage'
-import { fetchCloudUsage } from './cloud-usage'
-import { formatBucket, formatCents, formatCount } from './format'
+} from './cloud-usage.js'
+import { fetchCloudUsage } from './cloud-usage.js'
+import { formatBucket, formatCents, formatCount } from './format.js'
 // The palette + chart marks + chrome are shared with <ConnectedUsage> (one visual
 // language for native + imported usage). See marks.tsx.
-import { BarSeries, colorAt, DOWN, MeterBar, MetricTile, Panel, SERIES, UP } from './marks'
+import { BarSeries, colorAt, DOWN, MeterBar, MetricTile, Panel, SERIES, UP } from './marks.js'
 
 // ── sub-parts (each renders one region of the overview) ──────────────────────────
 
@@ -114,9 +114,9 @@ export function UsageBreakdown({ data }: { data: CloudUsageOverview }) {
         <YStack gap="$3">
           {rows.map((r) => (
             <YStack key={r.key} gap="$1.5">
-              <XStack alignItems="center" justifyContent="space-between" gap="$2">
-                <XStack alignItems="center" gap="$2" flex={1}>
-                  <YStack width={9} height={9} borderRadius="$1" backgroundColor={r.color as never} />
+              <XStack items="center" justify="space-between" gap="$2">
+                <XStack items="center" gap="$2" flex={1}>
+                  <YStack width={9} height={9} rounded="$1" bg={r.color as never} />
                   <Text fontSize="$3" fontWeight="600" color="$color12" numberOfLines={1}>
                     {r.model}
                   </Text>
@@ -160,8 +160,8 @@ export function UsageActivity({ data }: { data: CloudUsageOverview }) {
       {items.length ? (
         <YStack>
           {items.map((r: CloudUsageActivityRow, i) => (
-            <XStack key={r.requestId || `${r.time}-${i}`} alignItems="center" gap="$2" paddingVertical="$2" borderColor="$borderColor" borderBottomWidth={i < items.length - 1 ? 1 : 0}>
-              <YStack width={7} height={7} borderRadius="$10" backgroundColor={statusTone(r.status) as never} />
+            <XStack key={r.requestId || `${r.time}-${i}`} items="center" gap="$2" py="$2" borderColor="$borderColor" borderBottomWidth={i < items.length - 1 ? 1 : 0}>
+              <YStack width={7} height={7} rounded="$10" bg={statusTone(r.status) as never} />
               <YStack flex={1} gap="$0.5">
                 <Text fontSize="$3" fontWeight="600" color="$color12" numberOfLines={1}>
                   {r.model || 'inference'}
@@ -258,7 +258,7 @@ function Sections({ data, sections }: { data: CloudUsageOverview; sections?: Usa
 
 function Header({ title, subtitle, right }: { title: string; subtitle?: string; right?: ReactNode }) {
   return (
-    <XStack alignItems="flex-start" justifyContent="space-between" gap="$3" flexWrap="wrap">
+    <XStack items="flex-start" justify="space-between" gap="$3" flexWrap="wrap">
       <YStack gap="$1">
         <Text fontSize="$6" fontWeight="900" color="$color12">
           {title}
@@ -276,7 +276,7 @@ function Header({ title, subtitle, right }: { title: string; subtitle?: string; 
 
 function ErrorCard({ message, onRetry }: { message: string; onRetry?: () => void }) {
   return (
-    <YStack padding="$5" gap="$3" borderWidth={1} borderColor="$borderColor" borderRadius="$4" backgroundColor="$color1" alignItems="center">
+    <YStack p="$5" gap="$3" borderWidth={1} borderColor="$borderColor" rounded="$4" bg="$color1" items="center">
       <Text fontSize="$4" fontWeight="700" color="$color12">
         Usage is unavailable
       </Text>

@@ -9,7 +9,7 @@
 
 import { type ReactElement, type ReactNode } from 'react'
 import { Text, XStack, YStack } from '@hanzo/gui'
-import { deltaDirection, formatDeltaPct } from './format'
+import { deltaDirection, formatDeltaPct } from './format.js'
 
 // ── palette (categorical, dark+light legible — the console SERIES set) ────────────────
 export const SERIES = ['#6ea8fe', '#7ee787', '#f0a868', '#c792ea', '#56d4c4', '#e879a6', '#d6c15a', '#8b9bb4'] as const
@@ -62,8 +62,8 @@ export function BarSeries({ bars, height = 120, color = SERIES[0] }: { bars: { l
 export function MeterBar({ pct, color }: { pct: number; color: string }): ReactElement {
   const v = Math.max(0, Math.min(100, pct))
   return (
-    <YStack height={6} backgroundColor={TRACK as never} borderRadius="$2" overflow="hidden">
-      <YStack height={6} width={`${Math.max(2, v)}%`} backgroundColor={color as never} borderRadius="$2" />
+    <YStack height={6} bg={TRACK as never} rounded="$2" overflow="hidden">
+      <YStack height={6} width={`${Math.max(2, v)}%`} bg={color as never} rounded="$2" />
     </YStack>
   )
 }
@@ -71,8 +71,8 @@ export function MeterBar({ pct, color }: { pct: number; color: string }): ReactE
 /** Card chrome: a titled, bordered panel with an optional right-aligned action. */
 export function Panel({ title, action, children, minW }: { title: string; action?: ReactNode; children: ReactNode; minW?: number }) {
   return (
-    <YStack flex={1} minWidth={minW ?? 320} gap="$3" padding="$4" borderWidth={1} borderColor="$borderColor" borderRadius="$4" backgroundColor="$color1">
-      <XStack alignItems="center" justifyContent="space-between" gap="$2">
+    <YStack flex={1} minW={minW ?? 320} gap="$3" p="$4" borderWidth={1} borderColor="$borderColor" rounded="$4" bg="$color1">
+      <XStack items="center" justify="space-between" gap="$2">
         <Text fontSize="$4" fontWeight="800" color="$color12">
           {title}
         </Text>
@@ -90,14 +90,14 @@ export function MetricTile({ icon, label, value, deltaPct, spark, sparkColor }: 
   const dir = deltaPct === undefined ? 'flat' : deltaDirection(deltaPct ?? null)
   const tone = dir === 'up' ? UP : dir === 'down' ? DOWN : '$color10'
   return (
-    <YStack padding="$4" gap="$2" borderWidth={1} borderColor="$borderColor" borderRadius="$4" backgroundColor="$color1" flex={1} minWidth={180}>
-      <XStack alignItems="center" gap="$2">
+    <YStack p="$4" gap="$2" borderWidth={1} borderColor="$borderColor" rounded="$4" bg="$color1" flex={1} minW={180}>
+      <XStack items="center" gap="$2">
         {icon}
         <Text fontSize="$2" color="$color11" numberOfLines={1}>
           {label}
         </Text>
       </XStack>
-      <XStack alignItems="flex-end" justifyContent="space-between" gap="$2">
+      <XStack items="flex-end" justify="space-between" gap="$2">
         <Text fontSize="$7" fontWeight="900" color="$color12">
           {value}
         </Text>

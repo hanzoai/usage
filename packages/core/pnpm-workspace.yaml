@@ -1,3 +1,8 @@
+# The one project here is this directory itself. pnpm 11 requires the field;
+# without it every install in this package stops at "packages field missing".
+packages:
+  - '.'
+
 # esbuild's install script is what puts its platform binary in place, and vitest
 # runs on esbuild — a dependency that resolves but cannot transform is no use.
 #

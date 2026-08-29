@@ -2,7 +2,7 @@
 //
 // Cloud usage — the ONE canonical usage-overview value + its ONE canonical read.
 //
-// The server owns the shape: `GET /v1/get-cloud-usages` (hanzoai/ai
+// The server owns the shape: `GET /v1/ai/usages/cloud` (hanzoai/ai
 // controllers/cloud_usage.go) aggregates the `hanzo.cloud_usage` ledger into
 // totals + prior-period deltas, an evenly-spaced time series, spend-by-model
 // (top-N + "other"), and the recent-activity feed — scoped to the caller's org
@@ -258,12 +258,26 @@ export interface FetchCloudUsageOptions {
 }
 
 /**
- * Read the canonical overview from `GET {baseUrl}/v1/get-cloud-usages`. Unwraps the
+ * Read the canonical overview from `GET {baseUrl}/v1/ai/usages/cloud`. Unwraps the
  * cloud `{ status, msg, data }` envelope (and tolerates a bare overview), throwing a
  * typed `UsageError` on a transport failure OR a `status:"error"` body (e.g. the
  * ledger's datastore peer being down) — so the caller renders an honest "unavailable"
  * state, never fabricated zeros.
  */
+/**
+ * WHERE THE OVERVIEW IS READ FROM.
+ *
+ * It was `/v1/get-cloud-usages`, an RPC name. The server now states the same
+ * thing as a resource — `usages` with a `cloud` action (hanzoai/ai
+ * routers/resources.go) — and the old name answers 404. What that looked like to
+ * a person was the billing panel saying "Usage is unavailable" with an HTTP 404
+ * beside it: the ledger was fine, the read was addressed to a name nothing serves.
+ *
+ * One constant, because a path written at its call site is a path that gets
+ * missed the next time the server renames one.
+ */
+const CLOUD_USAGE_PATH = '/v1/ai/usages/cloud'
+
 export async function fetchCloudUsage(opts: FetchCloudUsageOptions): Promise<CloudUsageOverview> {
   const doFetch = opts.fetch ?? globalThis.fetch
   if (!doFetch) throw new UsageError('no fetch implementation available')
@@ -282,7 +296,7 @@ export async function fetchCloudUsage(opts: FetchCloudUsageOptions): Promise<Clo
 
   let res: Response
   try {
-    res = await doFetch(`${base}/v1/get-cloud-usages${query ? `?${query}` : ''}`, {
+    res = await doFetch(`${base}${CLOUD_USAGE_PATH}${query ? `?${query}` : ''}`, {
       method: 'GET',
       headers: { Authorization: `Bearer ${opts.token}`, Accept: 'application/json' },
       signal: opts.signal,
@@ -290,7 +304,7 @@ export async function fetchCloudUsage(opts: FetchCloudUsageOptions): Promise<Clo
   } catch (e) {
     throw new UsageError(e instanceof Error ? e.message : String(e))
   }
-  if (!res.ok) throw new UsageError(`get-cloud-usages HTTP ${res.status}`, res.status)
+  if (!res.ok) throw new UsageError(`GET ${CLOUD_USAGE_PATH} HTTP ${res.status}`, res.status)
 
   const body = (await res.json()) as { status?: string; msg?: string; data?: unknown }
   if (body && typeof body === 'object' && 'status' in body && body.status && body.status !== 'ok') {

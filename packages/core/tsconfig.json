@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "lib": [
       "ES2022",
       "DOM"
@@ -17,6 +17,5 @@
     "jsx": "react-jsx"
   },
   "include": ["src"],
-  "//": "Core headless engine + the DOM <UsageDashboard> (./react) emit to dist. The gui/Tamagui <UsagePanel> (./panel) ships as SOURCE for the consumer's bundler to compile with its own @hanzo/gui config — tsc-emit of gui components is not portable (TS2742), the same pattern @hanzo/ui uses. panel.tsx is type-checked by tsconfig.check.json, not emitted here; gui.config.ts/gui.d.ts register the gui config for that check only.",
-  "exclude": ["src/panel.tsx", "src/connected.tsx", "src/marks.tsx", "src/gui.config.ts", "src/gui.d.ts"]
+  "//": "EVERYTHING emits, the gui panel included. A gui component's style props are named by the gui CONFIG, and a package that ships .tsx makes the consumer compile it against whatever config the consumer registered — so the same source is correct in one app and 14 errors in the next. Emitting declarations settles the names here, once, against the config in gui.config.ts, and a consumer reads a .d.ts like any other package."
 }
