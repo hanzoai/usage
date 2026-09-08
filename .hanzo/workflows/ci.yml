@@ -55,7 +55,7 @@ env:
 
 jobs:
   lint:
-    runs-on: [hanzo-build-linux-amd64]
+    runs-on: [linux-amd64]
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
@@ -70,7 +70,7 @@ jobs:
         run: ./Scripts/lint.sh lint-linux
 
   cli:
-    runs-on: [hanzo-build-linux-amd64]
+    runs-on: [linux-amd64]
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
