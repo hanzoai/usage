@@ -367,12 +367,27 @@ const isDataMode = (p: UsagePanelProps): p is UsagePanelDataProps => !('baseUrl'
 
 function Sections({ data, sections, summary, allowance, upgrade }: { data: CloudUsageOverview; sections?: UsageSections; summary?: UsageSummary | null; allowance?: Allowance | null; upgrade?: string }) {
   const show = { overview: true, chart: true, breakdown: true, activity: true, categories: false, allowance: true, ...sections }
+  // A Panel grows along a ROW (flex 1), which is how breakdown and activity share
+  // one. Stacked straight in this column the same flex collapses it to its title,
+  // so each full-width panel stands in a row of its own.
   return (
     <YStack gap="$4">
-      {show.allowance && allowance ? <UsageAllowance data={allowance} upgrade={upgrade} /> : null}
+      {show.allowance && allowance?.pooled ? (
+        <XStack>
+          <UsageAllowance data={allowance} upgrade={upgrade} />
+        </XStack>
+      ) : null}
       {show.overview ? <UsageOverview data={data} /> : null}
-      {show.categories && summary ? <UsageCategories data={summary} /> : null}
-      {show.chart ? <UsageChart data={data} /> : null}
+      {show.categories && summary ? (
+        <XStack>
+          <UsageCategories data={summary} />
+        </XStack>
+      ) : null}
+      {show.chart ? (
+        <XStack>
+          <UsageChart data={data} />
+        </XStack>
+      ) : null}
       {show.breakdown || show.activity ? (
         <XStack flexWrap="wrap" gap="$4">
           {show.breakdown ? <UsageBreakdown data={data} /> : null}
