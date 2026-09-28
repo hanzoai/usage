@@ -33,6 +33,7 @@ import type {
 } from './cloud-usage.js'
 import { fetchCloudUsage } from './cloud-usage.js'
 import { fetchUsageSummary, type UsageSummary } from './summary.js'
+import { fetchAllowance, poolWords, resetWords, windowWords, type Allowance } from './allowance.js'
 import { formatBucket, formatCents, formatCount } from './format.js'
 // The palette + chart marks + chrome are shared with <ConnectedUsage> (one visual
 // language for native + imported usage). See palette.ts / marks.tsx.
@@ -200,6 +201,59 @@ export function UsageBreakdown({ data }: { data: CloudUsageOverview }) {
   )
 }
 
+const POOL_TONE: Record<string, string> = { available: UP, busy: '#f0a868', exhausted: DOWN }
+
+/**
+ * The Free plan, stated as what it is: limited usage, from a pool shared by all
+ * free users. The caller's own remaining allowance for the window that binds
+ * them, the pool's state as its accounts last said, and the way up.
+ *
+ * Rendered only for a POOLED answer — a paid plan's usage is its spend, above —
+ * and every figure is the server's: an absent pool is not drawn.
+ */
+export function UsageAllowance({ data, upgrade, now = Date.now() }: { data: Allowance; upgrade?: string; now?: number }) {
+  if (!data.pooled || data.limit <= 0) return null
+  const left = Math.max(0, data.limit - data.used)
+  const reset = resetWords(data.resets, now)
+  return (
+    <Panel
+      title="Free plan"
+      action={
+        upgrade ? (
+          <a href={upgrade} style={{ textDecoration: 'none' }}>
+            <Text fontSize="$2" fontWeight="700" color="$color12">
+              Upgrade
+            </Text>
+          </a>
+        ) : undefined
+      }
+    >
+      <Text fontSize="$3" color="$color11">
+        Free — limited usage, from a pool shared by all free users.
+      </Text>
+      <YStack gap="$1.5">
+        <XStack items="baseline" justify="space-between" gap="$2" flexWrap="wrap">
+          <Text fontSize="$3" fontWeight="600" color="$color12">
+            {left} of {data.limit} left {windowWords(data.window)}
+          </Text>
+          <Text fontSize="$2" color="$color10">
+            {data.used} used{reset ? ` · refills ${reset}` : ''}
+          </Text>
+        </XStack>
+        <MeterBar pct={(Math.min(data.used, data.limit) / data.limit) * 100} color={data.spent ? DOWN : UP} />
+      </YStack>
+      {data.pool ? (
+        <XStack items="center" gap="$2">
+          <YStack width={8} height={8} rounded="$10" bg={(POOL_TONE[data.pool.state] ?? '$color10') as never} />
+          <Text fontSize="$2" color="$color11">
+            Shared pool: {poolWords(data.pool, now)}
+          </Text>
+        </XStack>
+      ) : null}
+    </Panel>
+  )
+}
+
 const statusTone = (s: string): string => {
   const v = s.toLowerCase()
   if (v === 'success' || v === 'ok' || v === '') return UP
@@ -273,12 +327,19 @@ export interface UsageSections {
    *  /v1/usage/summary. Off by default because it is a second network read, and
    *  a panel that quietly doubles its requests is a panel nobody can budget for. */
   categories?: boolean
+  /** The Free plan's allowance and the shared pool it is served from, read from
+   *  /v1/allowance. On by default, and the exception is deliberate: it is how a
+   *  Free user learns their usage is limited and pooled, which no other region
+   *  says. It draws nothing for a paid plan. */
+  allowance?: boolean
 }
 
 interface UsagePanelBase {
   title?: string
   subtitle?: string
   sections?: UsageSections
+  /** Where a Free user goes to upgrade — the brand's pay page. No link without it. */
+  upgrade?: string
   /** Controlled range + range tabs. In fetch mode the panel manages this itself. */
   range?: UsageRange
   onRangeChange?: (r: UsageRange) => void
@@ -304,10 +365,11 @@ export type UsagePanelProps = UsagePanelDataProps | UsagePanelFetchProps
 const isDataMode = (p: UsagePanelProps): p is UsagePanelDataProps => !('baseUrl' in p)
 
 
-function Sections({ data, sections, summary }: { data: CloudUsageOverview; sections?: UsageSections; summary?: UsageSummary | null }) {
-  const show = { overview: true, chart: true, breakdown: true, activity: true, categories: false, ...sections }
+function Sections({ data, sections, summary, allowance, upgrade }: { data: CloudUsageOverview; sections?: UsageSections; summary?: UsageSummary | null; allowance?: Allowance | null; upgrade?: string }) {
+  const show = { overview: true, chart: true, breakdown: true, activity: true, categories: false, allowance: true, ...sections }
   return (
     <YStack gap="$4">
+      {show.allowance && allowance ? <UsageAllowance data={allowance} upgrade={upgrade} /> : null}
       {show.overview ? <UsageOverview data={data} /> : null}
       {show.categories && summary ? <UsageCategories data={summary} /> : null}
       {show.chart ? <UsageChart data={data} /> : null}
@@ -364,6 +426,9 @@ function FetchingUsagePanel(props: UsagePanelFetchProps & { title: string }): Re
   // failure: the AI overview is what the panel is for, and losing the category
   // strip must not blank the page that still has an answer.
   const [summary, setSummary] = useState<UsageSummary | null>(null)
+  // The Free plan's allowance, a third read and its own failure: a panel that
+  // cannot say how much free usage is left still says what was spent.
+  const [allowance, setAllowance] = useState<Allowance | null>(null)
   const { baseUrl, token, org, start, end, topModels, activityType, activityLimit, activityOffset } = props
   const fetchImpl = props.fetch
   const seq = useRef(0)
@@ -407,6 +472,27 @@ function FetchingUsagePanel(props: UsagePanelFetchProps & { title: string }): Re
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [baseUrl, token, org, range, nonce, props.sections?.categories])
 
+  const wantAllowance = props.sections?.allowance !== false
+  useEffect(() => {
+    if (!wantAllowance) {
+      setAllowance(null)
+      return
+    }
+    const ctrl = new AbortController()
+    let live = true
+    fetchAllowance({ baseUrl, token, signal: ctrl.signal, fetch: fetchImpl })
+      .then((a) => {
+        if (live) setAllowance(a)
+      })
+      .catch(() => {
+        if (live) setAllowance(null)
+      })
+    return () => {
+      live = false
+      ctrl.abort()
+    }
+  }, [baseUrl, token, fetchImpl, nonce, wantAllowance])
+
   const onRange = (r: UsageRange) => {
     setRange(r)
     props.onRangeChange?.(r)
@@ -422,7 +508,7 @@ function FetchingUsagePanel(props: UsagePanelFetchProps & { title: string }): Re
           Loading usage…
         </Text>
       ) : (
-        <Sections data={state.data} sections={props.sections} summary={summary} />
+        <Sections data={state.data} sections={props.sections} summary={summary} allowance={allowance} upgrade={props.upgrade} />
       )}
     </YStack>
   )

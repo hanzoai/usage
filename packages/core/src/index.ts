@@ -2,6 +2,7 @@
 export * from './types.js'
 export * from './cloud-usage.js'
 export * from './summary.js'
+export * from './allowance.js'
 export * from './provider-usage.js'
 export * from './format.js'
 export * from './host.js'
