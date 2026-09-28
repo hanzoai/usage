@@ -11,7 +11,7 @@ const free = {
   window: 'hour',
   resets: 1790604000, // 2026-09-28T16:00:00Z
   pooled: true,
-  pool: { state: 'busy', keys: 3, ready: 2, resets: 1790640000 },
+  pool: { state: 'exhausted', resets: 1790640000 },
 }
 
 describe('normalizeAllowance', () => {
@@ -19,12 +19,12 @@ describe('normalizeAllowance', () => {
     const a = normalizeAllowance(free)
     expect(a).toMatchObject({ plan: 'free', limit: 10, used: 3, window: 'hour', pooled: true })
     expect(a.resets).toBe(1790604000 * 1000)
-    expect(a.pool).toEqual({ state: 'busy', keys: 3, ready: 2, resets: 1790640000 * 1000 })
+    expect(a.pool).toEqual({ state: 'exhausted', resets: 1790640000 * 1000 })
   })
 
   it('draws no pool it was not given, and none in a state it does not know', () => {
     expect(normalizeAllowance({ ...free, pool: undefined }).pool).toBeNull()
-    expect(normalizeAllowance({ ...free, pool: { state: 'fine', keys: 3, ready: 3 } }).pool).toBeNull()
+    expect(normalizeAllowance({ ...free, pool: { state: 'fine' } }).pool).toBeNull()
   })
 
   it('reads a paid plan as not pooled', () => {
@@ -41,11 +41,11 @@ describe('words', () => {
     expect(resetWords(Date.UTC(2026, 8, 29, 0, 0), now)).toBe('Sep 29, 00:00 UTC')
     expect(resetWords(null, now)).toBe('')
   })
-  it('says the pool state and how many accounts serve', () => {
-    expect(poolWords({ state: 'available', keys: 3, ready: 3, resets: null }, now)).toBe('Available · 3 of 3 accounts serving')
-    expect(poolWords({ state: 'exhausted', keys: 3, ready: 0, resets: Date.UTC(2026, 8, 29) }, now)).toBe(
-      'Exhausted until Sep 29, 00:00 UTC · 0 of 3 accounts serving',
-    )
+  it('says the pool state, and when an exhausted pool refills', () => {
+    expect(poolWords({ state: 'available', resets: null }, now)).toBe('Available')
+    expect(poolWords({ state: 'busy', resets: null }, now)).toBe('Busy — try again in a minute')
+    expect(poolWords({ state: 'exhausted', resets: Date.UTC(2026, 8, 29) }, now)).toBe('Used up until Sep 29, 00:00 UTC')
+    expect(poolWords({ state: 'exhausted', resets: null }, now)).toBe('Used up for now')
   })
 })
 

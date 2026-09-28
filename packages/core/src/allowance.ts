@@ -26,14 +26,10 @@ export class AllowanceError extends Error {
 /** The free pool's state, as its accounts last said. */
 export type PoolState = 'available' | 'busy' | 'exhausted'
 
-/** The free pool's standing: the platform's vendor accounts for free models. */
+/** The free pool's standing: the platform's vendor accounts for free models, as one. */
 export interface Pool {
   state: PoolState
-  /** Accounts in the pool. */
-  keys: number
-  /** Accounts that take a free request now. */
-  ready: number
-  /** When the first account that is out comes back (ms since epoch), or null. */
+  /** When the pool refills (ms since epoch): stated when exhausted, or busy for under a minute. */
   resets: number | null
 }
 
@@ -77,7 +73,7 @@ export function normalizeAllowance(input: unknown): Allowance {
     window: str(o.window),
     resets: at(o.resets),
     pooled: o.pooled === true,
-    pool: p && STATES.includes(state) ? { state, keys: num(p.keys), ready: num(p.ready), resets: at(p.resets) } : null,
+    pool: p && STATES.includes(state) ? { state, resets: at(p.resets) } : null,
   }
 }
 
@@ -122,15 +118,13 @@ export function resetWords(ms: number | null, now: number = Date.now()): string 
 
 /** What the pool's state means to a person sharing it. */
 export function poolWords(p: Pool, now: number = Date.now()): string {
-  const serving = `${p.ready} of ${p.keys} account${p.keys === 1 ? '' : 's'} serving`
+  const when = resetWords(p.resets, now)
   switch (p.state) {
     case 'available':
-      return `Available · ${serving}`
+      return 'Available'
     case 'busy':
-      return `Busy · ${serving}`
-    case 'exhausted': {
-      const when = resetWords(p.resets, now)
-      return `Exhausted${when ? ` until ${when}` : ''} · ${serving}`
-    }
+      return 'Busy — try again in a minute'
+    case 'exhausted':
+      return `Used up${when ? ` until ${when}` : ' for now'}`
   }
 }
