@@ -1,0 +1,79 @@
+name: Publish
+
+# @hanzo/usage (packages/core) reaches npmjs from here and nowhere else: a
+# version ahead of the registry is checked, built and published; anything else
+# is a no-op, so a re-run is safe. The npm credential is read from KMS by the
+# org's machine identity, never held as a repository secret.
+on:
+  push:
+    branches: [main]
+    paths: ['packages/core/**', '.github/workflows/publish.yml']
+  workflow_dispatch:
+
+concurrency:
+  group: publish
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: linux-amd64
+    defaults:
+      run:
+        working-directory: packages/core
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run check
+      - run: pnpm test
+
+      - name: Is the tree ahead of the registry
+        id: ahead
+        run: |
+          set -euo pipefail
+          NAME=$(jq -r .name package.json)
+          NEW=$(jq -r .version package.json)
+          OLD=$(curl -sf "https://registry.npmjs.org/${NAME/\//%2f}" | jq -r '."dist-tags".latest' 2>/dev/null || true)
+          [ -n "$OLD" ] && [ "$OLD" != null ] || OLD=0.0.0
+          NEWEST=$(printf '%s\n%s\n' "$OLD" "$NEW" | sort -V | tail -1)
+          if [ "$OLD" = "$NEW" ] || [ "$NEWEST" != "$NEW" ]; then
+            echo "registry serves $OLD; tree is $NEW — nothing to publish."
+            echo "yes=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "registry serves $OLD; tree is $NEW — publishing."
+            echo "yes=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Load the publish credential from KMS
+        if: steps.ahead.outputs.yes == 'true'
+        env:
+          KMS_CLIENT_ID: ${{ secrets.KMS_CLIENT_ID }}
+          KMS_CLIENT_SECRET: ${{ secrets.KMS_CLIENT_SECRET }}
+        run: |
+          set -uo pipefail
+          [ -n "$KMS_CLIENT_ID" ] && [ -n "$KMS_CLIENT_SECRET" ] || { echo "::error::KMS machine identity absent"; exit 1; }
+          KMS=https://kms.hanzo.ai
+          TOKEN=$(curl -s "$KMS/v1/kms/auth/login" -H 'Content-Type: application/json' \
+            -d "{\"clientId\":\"$KMS_CLIENT_ID\",\"clientSecret\":\"$KMS_CLIENT_SECRET\"}" | jq -r '.accessToken // empty')
+          [ -n "$TOKEN" ] || { echo "::error::KMS login failed"; exit 1; }
+          URL="$KMS/v1/kms/secrets/NPM_TOKEN?env=prod"
+          for attempt in 1 2 3 4 5; do
+            BODY=$(curl -s -w '\n%{http_code}' "$URL" -H "Authorization: Bearer $TOKEN")
+            CODE=$(printf '%s' "$BODY" | tail -1)
+            case "$CODE" in 5*) sleep 15 ;; *) break ;; esac
+          done
+          VAL=$(printf '%s' "$BODY" | sed '$d' | jq -r '.value // empty' 2>/dev/null || true)
+          [ -n "$VAL" ] || { echo "::error::KMS returned HTTP $CODE for $URL with no value"; exit 1; }
+          echo "::add-mask::$VAL"
+          echo "NODE_AUTH_TOKEN=$VAL" >> "$GITHUB_ENV"
+
+      - name: Publish
+        if: steps.ahead.outputs.yes == 'true'
+        run: npm publish --access public
