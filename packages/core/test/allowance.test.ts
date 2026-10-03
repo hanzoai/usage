@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Hanzo AI Inc. MIT License.
 import { describe, expect, it } from 'vitest'
 
-import { fetchAllowance, normalizeAllowance, poolWords, resetWords } from '../src/allowance.js'
+import { fetchAllowance, normalizeAllowance, poolWords, resetWords, usedShare } from '../src/allowance.js'
 
 const free = {
   plan: 'free',
@@ -70,5 +70,15 @@ describe('fetchAllowance', () => {
     await expect(
       fetchAllowance({ baseUrl: 'https://api.hanzo.ai', fetch: (async () => new Response('', { status: 401 })) as typeof fetch }),
     ).rejects.toMatchObject({ name: 'AllowanceError', status: 401 })
+  })
+})
+
+describe('usedShare', () => {
+  it('is a percent rounded up to the next five, never the count', () => {
+    expect(usedShare({ used: 3, limit: 10 })).toBe(30)
+    expect(usedShare({ used: 1, limit: 50 })).toBe(5)
+    expect(usedShare({ used: 0, limit: 50 })).toBe(0)
+    expect(usedShare({ used: 51, limit: 50 })).toBe(100)
+    expect(usedShare({ used: 0, limit: 0 })).toBe(0)
   })
 })

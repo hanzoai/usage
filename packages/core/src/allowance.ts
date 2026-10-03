@@ -100,6 +100,15 @@ export async function fetchAllowance(opts: FetchAllowanceOptions): Promise<Allow
 }
 
 /** "this hour" / "today" — the window as a person reads it. */
+/**
+ * The share of the window used, as the reader is shown it: a percent rounded up
+ * to the next five, never the count behind it.
+ */
+export function usedShare(a: Pick<Allowance, 'used' | 'limit'>): number {
+  if (a.limit <= 0) return 0
+  return Math.min(100, Math.ceil(((Math.min(a.used, a.limit) / a.limit) * 100) / 5) * 5)
+}
+
 export function windowWords(window: string): string {
   return window === 'hour' ? 'this hour' : window === 'day' ? 'today' : 'this period'
 }

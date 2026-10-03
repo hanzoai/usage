@@ -33,7 +33,7 @@ import type {
 } from './cloud-usage.js'
 import { fetchCloudUsage } from './cloud-usage.js'
 import { fetchUsageSummary, type UsageSummary } from './summary.js'
-import { fetchAllowance, poolWords, resetWords, windowWords, type Allowance } from './allowance.js'
+import { fetchAllowance, poolWords, resetWords, usedShare, windowWords, type Allowance } from './allowance.js'
 import { formatBucket, formatCents, formatCount } from './format.js'
 // The palette + chart marks + chrome are shared with <ConnectedUsage> (one visual
 // language for native + imported usage). See palette.ts / marks.tsx.
@@ -205,15 +205,16 @@ const POOL_TONE: Record<string, string> = { available: UP, busy: '#f0a868', exha
 
 /**
  * The Free plan, stated as what it is: limited usage, from a pool shared by all
- * free users. The caller's own remaining allowance for the window that binds
- * them, the pool's state as its accounts last said, and the way up.
+ * free users. The share of the window that binds the caller used — a percent,
+ * never the count behind it — the pool's state as its accounts last said, and
+ * the way up.
  *
  * Rendered only for a POOLED answer — a paid plan's usage is its spend, above —
  * and every figure is the server's: an absent pool is not drawn.
  */
 export function UsageAllowance({ data, upgrade, now = Date.now() }: { data: Allowance; upgrade?: string; now?: number }) {
   if (!data.pooled || data.limit <= 0) return null
-  const left = Math.max(0, data.limit - data.used)
+  const used = usedShare(data)
   const reset = resetWords(data.resets, now)
   return (
     <Panel
@@ -234,13 +235,15 @@ export function UsageAllowance({ data, upgrade, now = Date.now() }: { data: Allo
       <YStack gap="$1.5">
         <XStack items="baseline" justify="space-between" gap="$2" flexWrap="wrap">
           <Text fontSize="$3" fontWeight="600" color="$color12">
-            {left} of {data.limit} left {windowWords(data.window)}
+            {used}% used {windowWords(data.window)}
           </Text>
-          <Text fontSize="$2" color="$color10">
-            {data.used} used{reset ? ` · refills ${reset}` : ''}
-          </Text>
+          {reset ? (
+            <Text fontSize="$2" color="$color10">
+              Refills {reset}
+            </Text>
+          ) : null}
         </XStack>
-        <MeterBar pct={(Math.min(data.used, data.limit) / data.limit) * 100} color={data.spent ? DOWN : UP} />
+        <MeterBar pct={used} color={data.spent ? DOWN : UP} />
       </YStack>
       {data.pool ? (
         <XStack items="center" gap="$2">
