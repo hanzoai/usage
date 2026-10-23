@@ -46,3 +46,8 @@
 - Keep provider data siloed: when rendering usage or account info for a provider (Claude vs Codex), never display identity/plan fields sourced from a different provider.***
 - Claude CLI status line is custom + user-configurable; never rely on it for usage parsing.
 - Cookie imports: default Chrome-only when possible to avoid other browser prompts; override via browser list when needed.
+
+## @hanzo/usage (`packages/core`)
+- The npm package every Hanzo surface reads usage through; `.github/workflows/publish.yml` publishes it when `packages/core/package.json` is ahead of npm (KMS-held token). Gates: `pnpm run check`, `pnpm test`, `pnpm build` in `packages/core`.
+- `limits(base, headers)` reads `GET /v1/ai/limits` and `credits(base, headers, on)` writes the org's continue-on-credits choice (`PUT /v1/ai/limits`); both throw `LimitsError` with the status. Moved from @hanzo/app's `lib/limits.ts`. `base` is the gateway origin and `headers` the bearer and `X-Org-Id` (@hanzo/iam `scope()`); nothing here holds a session.
+- This package imports neither @hanzo/ui nor @hanzo/build: @hanzo/ui peers on it and re-exports it (`@hanzo/ui/usage`), and @hanzo/build peers on @hanzo/ui, so either import is a cycle. Holding the limits for a page (@hanzo/ui `useLimits`) and wording them (@hanzo/build `plan`) stay with those packages.
